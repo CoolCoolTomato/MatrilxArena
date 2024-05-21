@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
 )
 
-func GetImageList() (images []image.Summary, err error){
+func GetImageList() (images []image.Summary, err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return nil, err
@@ -25,7 +26,23 @@ func GetImageList() (images []image.Summary, err error){
 	return images, err
 }
 
-func PullImage(imageName string) (err error){
+func GetImage(imageID string) (imageInspect types.ImageInspect, err error) {
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	if err != nil {
+		return imageInspect, err
+	}
+	defer cli.Close()
+
+	ctx := context.Background()
+	imageInspect, _, err = cli.ImageInspectWithRaw(ctx, imageID)
+	if err != nil {
+		return imageInspect, err
+	}
+
+	return imageInspect, err
+}
+
+func PullImage(imageName string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return  err
@@ -42,7 +59,7 @@ func PullImage(imageName string) (err error){
 	return err
 }
 
-func PullImageWithAuth(imageName string, username string, password string) (err error){
+func PullImageWithAuth(imageName string, username string, password string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
@@ -68,7 +85,7 @@ func PullImageWithAuth(imageName string, username string, password string) (err 
 	return err
 }
 
-func RemoveImage(imageID string) (err error){
+func RemoveImage(imageID string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
