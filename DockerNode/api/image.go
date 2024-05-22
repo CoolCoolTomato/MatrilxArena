@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/DockerNode/common/response"
+	"github.com/CoolCoolTomato/MatrilxArena/DockerNode/config"
 	"github.com/CoolCoolTomato/MatrilxArena/DockerNode/docker"
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +12,7 @@ type ImageRequest struct {
 	ImageName string
 	Username string
 	Password string
+	Repository string
 }
 
 func GetImageList(c *gin.Context) {
@@ -45,8 +47,10 @@ func PullImage(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
-	err := docker.PullImage(imageRequest.ImageName)
+	if imageRequest.Repository == "" {
+		imageRequest.Repository = config.GetConfig().GetString("Repository")
+	}
+	err := docker.PullImage(imageRequest.Repository + "/" + imageRequest.ImageName)
 	if err != nil {
 		response.Fail(err, "Pull image fail", c)
 		return

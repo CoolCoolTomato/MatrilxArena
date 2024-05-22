@@ -1,1 +1,4 @@
-
+{
+    "Port": "8080",
+    "Repository": "docker.io"
+}
