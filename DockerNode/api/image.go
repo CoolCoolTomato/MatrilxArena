@@ -47,10 +47,15 @@ func PullImage(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	if imageRequest.Repository == "" {
-		imageRequest.Repository = config.GetConfig().GetString("Repository")
+	var refStr string
+	if imageRequest.Repository != "" {
+		refStr = imageRequest.Repository + "/" + imageRequest.ImageName
+	} else if config.GetConfig().GetString("Repository") != "" {
+		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.ImageName
+	} else {
+		refStr = imageRequest.ImageName
 	}
-	err := docker.PullImage(imageRequest.Repository + "/" + imageRequest.ImageName)
+	err := docker.PullImage(refStr)
 	if err != nil {
 		response.Fail(err, "Pull image fail", c)
 		return

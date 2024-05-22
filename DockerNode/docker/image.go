@@ -44,7 +44,7 @@ func GetImage(imageID string) (imageInspect types.ImageInspect, err error) {
 	return imageInspect, err
 }
 
-func PullImage(imageName string) (err error) {
+func PullImage(refStr string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
@@ -52,7 +52,7 @@ func PullImage(imageName string) (err error) {
 	defer cli.Close()
 	
 	ctx := context.Background()
-	out, err := cli.ImagePull(ctx, imageName, image.PullOptions{})
+	out, err := cli.ImagePull(ctx, refStr, image.PullOptions{})
 	if err != nil {
 		return err
 	}
