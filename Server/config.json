@@ -1,0 +1,12 @@
+{
+    "Database": {
+        "Driver": "mysql",
+        "Username": "root",
+        "Password": "root",
+        "Host": "127.0.0.1",
+        "Port": "3306",
+        "Database": "matrilx",
+        "Charset": "utf8mb4",
+        "Local": "Asia%2FShanghai"
+    }
+}
