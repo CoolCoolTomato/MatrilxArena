@@ -1,4 +1,4 @@
-package api
+package docker
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
+	"io"
+	"io/ioutil"
 )
 
 func GetImageList() (images []image.Summary, err error) {
@@ -45,7 +47,7 @@ func GetImage(imageID string) (imageInspect types.ImageInspect, err error) {
 func PullImage(imageName string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		return  err
+		return err
 	}
 	defer cli.Close()
 	
@@ -54,6 +56,7 @@ func PullImage(imageName string) (err error) {
 	if err != nil {
 		return err
 	}
+	io.Copy(ioutil.Discard, out)
 	defer out.Close()
 	
 	return err
@@ -80,6 +83,7 @@ func PullImageWithAuth(imageName string, username string, password string) (err 
 	if err != nil {
 		return err
 	}
+	io.Copy(ioutil.Discard, out)
 	defer out.Close()
 	
 	return err

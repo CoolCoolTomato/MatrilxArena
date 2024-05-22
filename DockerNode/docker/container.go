@@ -1,4 +1,4 @@
-package api
+package docker
 
 import (
 	"context"
@@ -83,7 +83,7 @@ func CreateContainer(imageID string) (containerID string, err error) {
 		return containerID, err
 	}
 
-	return res.ID, nil
+	return res.ID, err
 }
 
 func StartContainer(containerID string) (err error) {
@@ -99,7 +99,7 @@ func StartContainer(containerID string) (err error) {
 		return err
 	}
 
-	return nil
+	return err
 }
 
 func StopContainer(containerID string) (err error) {
@@ -117,7 +117,7 @@ func StopContainer(containerID string) (err error) {
 		return err
 	}
 
-	return nil
+	return err
 }
 
 func RemoveContainer(containerID string) (err error) {
