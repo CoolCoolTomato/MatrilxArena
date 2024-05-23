@@ -62,7 +62,7 @@ func PullImage(refStr string) (err error) {
 	return err
 }
 
-func PullImageWithAuth(imageName string, username string, password string) (err error) {
+func PullImageWithAuth(refStr string, username string, password string) (err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return err
@@ -79,7 +79,7 @@ func PullImageWithAuth(imageName string, username string, password string) (err 
 		return err
 	}
 	authStr := base64.URLEncoding.EncodeToString(encodedJSON)
-	out, err := cli.ImagePull(ctx, imageName, image.PullOptions{RegistryAuth: authStr})
+	out, err := cli.ImagePull(ctx, refStr, image.PullOptions{RegistryAuth: authStr})
 	if err != nil {
 		return err
 	}

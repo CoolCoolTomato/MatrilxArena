@@ -70,8 +70,15 @@ func PullImageWithAuth(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
-	err := docker.PullImageWithAuth(imageRequest.ImageName, imageRequest.Username, imageRequest.Password)
+	var refStr string
+	if imageRequest.Repository != "" {
+		refStr = imageRequest.Repository + "/" + imageRequest.ImageName
+	} else if config.GetConfig().GetString("Repository") != "" {
+		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.ImageName
+	} else {
+		refStr = imageRequest.ImageName
+	}
+	err := docker.PullImageWithAuth(refStr, imageRequest.Username, imageRequest.Password)
 	if err != nil {
 		response.Fail(err, "Pull image fail", c)
 		return

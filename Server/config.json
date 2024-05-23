@@ -1,4 +1,7 @@
 {
+    "Server": {
+        "Port": "8081"
+    },
     "Database": {
         "Driver": "mysql",
         "Username": "root",
