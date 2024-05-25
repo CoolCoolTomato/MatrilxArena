@@ -7,9 +7,19 @@ import (
 
 type Challenge struct {
 	gorm.Model
+	ImageID 		uint
 	Image 			Image
 	Title 			string
 	Description 	string
+}
+
+func GetChallengeList() ([]Challenge, error) {
+	var challengeList []Challenge
+	err := database.GetDatabase().Find(&challengeList).Error
+	if err != nil {
+		return nil, err
+	}
+	return challengeList, nil
 }
 
 func (challenge *Challenge) GetChallenge() error {

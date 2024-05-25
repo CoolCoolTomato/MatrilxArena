@@ -12,6 +12,15 @@ type Image struct {
 	Repository		string
 }
 
+func GetImageList() ([]Image, error) {
+	var imageList []Image
+	err := database.GetDatabase().Find(&imageList).Error
+	if err != nil {
+		return nil, err
+	}
+	return imageList, nil
+}
+
 func (image *Image) GetImage() error {
 	return database.GetDatabase().First(&image).Error
 }

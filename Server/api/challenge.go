@@ -6,6 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetChallengeList(c *gin.Context) {
+	challengeList, err := model.GetChallengeList()
+	if err != nil {
+		response.Fail(err, "Get challenge list fail", c)
+		return
+	}
+	response.OK(challengeList, "Get challenge list success", c)
+}
+
 func GetChallenge(c *gin.Context) {
 	var challenge model.Challenge
 	err := c.ShouldBindJSON(&challenge)

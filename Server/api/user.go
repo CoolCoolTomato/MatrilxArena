@@ -6,6 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetUserList(c *gin.Context) {
+	userList, err := model.GetUserList()
+	if err != nil {
+		response.Fail(err, "Get user list fail", c)
+		return
+	}
+
+	response.OK(userList, "Get user list success", c)
+}
+
 func GetUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)

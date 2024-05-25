@@ -13,17 +13,17 @@ func GetImage(url string, ImageID string) (map[string]interface{}, error) {
 	return request.Post(url, data)
 }
 
-func PullImage(url string, ImageName string, Repository string) (map[string]interface{}, error) {
+func PullImage(url string, RepoTags string, Repository string) (map[string]interface{}, error) {
 	data := map[string]interface{}{
-		"ImageName": ImageName,
+		"RepoTags": RepoTags,
 		"Repository": Repository,
 	}
 	return request.Post(url, data)
 }
 
-func PullImageWithAuth(url string, ImageName string, Repository string, Username string, Password string) (map[string]interface{}, error) {
+func PullImageWithAuth(url string, RepoTags string, Repository string, Username string, Password string) (map[string]interface{}, error) {
 	data := map[string]interface{}{
-		"ImageName": ImageName,
+		"RepoTags": RepoTags,
 		"Repository": Repository,
 		"Username": Username,
 		"Password": Password,

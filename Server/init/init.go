@@ -38,6 +38,7 @@ func init() {
 		&model.User{},
 		&model.Image{},
 		&model.Challenge{},
+		&model.DockerNode{},
 		)
 	
 	database.Database = conn
@@ -46,4 +47,5 @@ func init() {
 	route.SetUserRoute(route.Route)
 	route.SetImageRoute(route.Route)
 	route.SetChallengeRoute(route.Route)
+	route.SetDockerNodeRoute(route.Route)
 }

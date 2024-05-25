@@ -1,0 +1,6 @@
+*.log
+DockerNode/.fleet/
+DockerNode/tmp/
+Server/.fleet/
+Server/tmp/
+Web/.fleet/

@@ -12,6 +12,15 @@ type User struct {
 	Email            string
 }
 
+func GetUserList() ([]User, error) {
+	var userList []User
+	err := database.GetDatabase().Find(&userList).Error
+	if err != nil {
+		return nil, err
+	}
+	return userList, nil
+}
+
 func (user *User) GetUser() error {
 	return database.GetDatabase().First(&user).Error
 }

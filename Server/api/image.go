@@ -2,9 +2,20 @@ package api
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/gin-gonic/gin"
 )
+
+func GetImageList(c *gin.Context) {
+	imageList, err := model.GetImageList()
+	if err != nil {
+		response.Fail(err, "Get image list fail", c)
+		return
+	}
+
+	response.OK(imageList, "Get image list success", c)
+}
 
 func GetImage(c *gin.Context) {
 	var image model.Image
@@ -31,6 +42,25 @@ func CreateImage(c *gin.Context) {
 		return
 	}
 	
+	dockerNodeList, err := model.GetDockerNodeList()
+	if err != nil {
+		response.Fail(err, "Get dockerNodeList fail", c)
+		return
+	}
+
+	for _, dockerNode := range dockerNodeList {
+		url := "http://" + dockerNode.Host + ":" + dockerNode.Port + "/image/PullImage"
+		res, err := docker.PullImage(url, image.RepoTags, image.Repository)
+		if err != nil {
+			response.Fail(err, "Create image fail", c)
+			return
+		}
+		if res["code"].(float64) != 0 {
+			response.Fail(err, "Create image fail", c)
+			return
+		}
+	}
+
 	err = image.CreateImage()
 	if err != nil {
 		response.Fail(err, "Create image fail", c)

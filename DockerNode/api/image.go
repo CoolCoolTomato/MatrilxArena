@@ -9,7 +9,7 @@ import (
 
 type ImageRequest struct {
 	ImageID string
-	ImageName string
+	RepoTags string
 	Username string
 	Password string
 	Repository string
@@ -49,11 +49,11 @@ func PullImage(c *gin.Context) {
 	}
 	var refStr string
 	if imageRequest.Repository != "" {
-		refStr = imageRequest.Repository + "/" + imageRequest.ImageName
+		refStr = imageRequest.Repository + "/" + imageRequest.RepoTags
 	} else if config.GetConfig().GetString("Repository") != "" {
-		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.ImageName
+		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.RepoTags
 	} else {
-		refStr = imageRequest.ImageName
+		refStr = imageRequest.RepoTags
 	}
 	err := docker.PullImage(refStr)
 	if err != nil {
@@ -72,11 +72,11 @@ func PullImageWithAuth(c *gin.Context) {
 	}
 	var refStr string
 	if imageRequest.Repository != "" {
-		refStr = imageRequest.Repository + "/" + imageRequest.ImageName
+		refStr = imageRequest.Repository + "/" + imageRequest.RepoTags
 	} else if config.GetConfig().GetString("Repository") != "" {
-		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.ImageName
+		refStr = config.GetConfig().GetString("Repository") + "/" + imageRequest.RepoTags
 	} else {
-		refStr = imageRequest.ImageName
+		refStr = imageRequest.RepoTags
 	}
 	err := docker.PullImageWithAuth(refStr, imageRequest.Username, imageRequest.Password)
 	if err != nil {
