@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500" fill="none">
+<rect x="0" y="0" width="0" height="0" fill="rgba(249, 249, 249, 1)" />
+<path d="M423.205 150L423.205 350L250 450L76.7949 350L76.7949 150L250 50L423.205 150Z"   fill="#FFFFFF" >
+</path>
+<path d="M379.904 175L379.904 325L250 400L120.096 325L120.096 175L250 100L379.904 175Z"   fill="#202020" >
+</path>
+<g  mask="url(#mask-3_19)">
+<rect x="368" y="280" width="26" height="45"   fill="#FFFFFF" >
+</rect>
+<rect x="368" y="175" width="26" height="45"   fill="#FFFFFF" >
+</rect>
+<path d="M394 175L307.333 325L264 325L350.667 175L394 175Z"   fill="#FFFFFF" >
+</path>
+<path d="M264 175L350.667 325L394 325L307.333 175L264 175Z"   fill="#FFFFFF" >
+</path>
+<rect x="119" y="285" width="170" height="40"   fill="#FFFFFF" >
+</rect>
+<rect x="119" y="175" width="110" height="40"   fill="#FFFFFF" >
+</rect>
+<rect x="189" y="175" width="40" height="150"   fill="#FFFFFF" >
+</rect>
+</g>
+<rect x="115" y="175" width="20" height="40"   fill="#FFFFFF" >
+</rect>
+<rect x="361" y="283" width="20" height="40"   fill="#FFFFFF" >
+</rect>
+<rect x="368" y="175" width="20" height="40"   fill="#FFFFFF" >
+</rect>
+<rect x="115" y="285" width="20" height="40"   fill="#FFFFFF" >
+</rect>
+<defs>
+<mask id="mask-3_19" style="mask-type:alpha" maskUnits="userSpaceOnUse">
+<path d="M379.904 175L379.904 325L250 400L120.096 325L120.096 175L250 100L379.904 175Z"   fill="#202020" >
+</path>
+</mask>
+</defs>
+</svg>

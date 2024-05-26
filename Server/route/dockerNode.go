@@ -13,6 +13,9 @@ func SetDockerNodeRoute(r *gin.Engine) {
 		dockerNode.POST("/CreateDockerNode", api.CreateDockerNode)
 		dockerNode.POST("/UpdateDockerNode", api.UpdateDockerNode)
 		dockerNode.POST("/DeleteDockerNode", api.DeleteDockerNode)
-		dockerNode.POST("/PullImage", api.PullImage)
+		
+		dockerNode.POST("/GetImageListFromDockerNode", api.GetImageListFromDockerNode)
+		dockerNode.POST("/PullImageForDockerNode", api.PullImageForDockerNode)
+		dockerNode.POST("/RemoveImageFromDockerNode", api.RemoveImageFromDockerNode)
 	}
 }

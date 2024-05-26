@@ -7,7 +7,6 @@ import (
 
 type Image struct {
 	gorm.Model
-	DockerID		string
 	RepoTags		string
 	Repository		string
 }

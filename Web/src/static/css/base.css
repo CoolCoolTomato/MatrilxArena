@@ -1,0 +1,23 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+::view-transition-old(*) {
+    mix-blend-mode: normal;
+    animation: none;
+}
+::view-transition-new(*) {
+    mix-blend-mode: normal;
+    animation: clip 1s ease-in-out;
+}
+@keyframes clip {
+    from {
+        clip-path: circle(0% at var(--x) var(--y));
+    }
+    40%, 60% {
+        clip-path: circle(200px at var(--x) var(--y));
+    }
+    to {
+        clip-path: circle(100vmax at var(--x) var(--y));
+    }
+}
