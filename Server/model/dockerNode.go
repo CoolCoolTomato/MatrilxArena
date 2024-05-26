@@ -21,7 +21,7 @@ func GetDockerNodeList() ([]DockerNode, error) {
 }
 
 func (dockerNode *DockerNode) GetDockerNode() error {
-	return database.GetDatabase().First(&dockerNode).Error
+	return database.GetDatabase().Model(&DockerNode{}).Where("ID = ?", dockerNode.ID).First(&dockerNode).Error
 }
 
 func (dockerNode *DockerNode) CreateDockerNode() error {
@@ -29,9 +29,9 @@ func (dockerNode *DockerNode) CreateDockerNode() error {
 }
 
 func (dockerNode *DockerNode) UpdateDockerNode() error {
-	return database.GetDatabase().Updates(&dockerNode).Error
+	return database.GetDatabase().Model(&DockerNode{}).Where("ID = ?", dockerNode.ID).Updates(&dockerNode).Error
 }
 
 func (dockerNode *DockerNode) DeleteDockerNode() error {
-	return database.GetDatabase().Delete(&dockerNode).Error
+	return database.GetDatabase().Model(&DockerNode{}).Where("ID = ?", dockerNode.ID).Delete(&dockerNode).Error
 }

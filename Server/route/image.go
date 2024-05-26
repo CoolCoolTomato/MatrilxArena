@@ -8,6 +8,7 @@ import (
 func SetImageRoute(r *gin.Engine) {
 	image := r.Group("/image")
 	{
+		image.POST("/GetImageList", api.GetImageList)
 		image.POST("/GetImage", api.GetImage)
 		image.POST("/CreateImage", api.CreateImage)
 		image.POST("/UpdateImage", api.UpdateImage)

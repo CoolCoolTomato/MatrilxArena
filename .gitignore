@@ -4,3 +4,4 @@ DockerNode/tmp/
 Server/.fleet/
 Server/tmp/
 Web/.fleet/
+Web/node_modules/

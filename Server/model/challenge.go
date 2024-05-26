@@ -23,7 +23,7 @@ func GetChallengeList() ([]Challenge, error) {
 }
 
 func (challenge *Challenge) GetChallenge() error {
-	return database.GetDatabase().First(&challenge).Error
+	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
 }
 
 func (challenge *Challenge) CreateChallenge() error {
@@ -31,9 +31,9 @@ func (challenge *Challenge) CreateChallenge() error {
 }
 
 func (challenge *Challenge) UpdateChallenge() error {
-	return database.GetDatabase().Updates(&challenge).Error
+	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
 }
 
 func (challenge *Challenge) DeleteChallenge() error {
-	return database.GetDatabase().Delete(&challenge).Error
+	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
 }

@@ -8,6 +8,7 @@ import (
 func SetUserRoute(r *gin.Engine) {
 	user := r.Group("/user")
 	{
+		user.POST("/GetUserList", api.GetUserList)
 		user.POST("/GetUser", api.GetUser)
 		user.POST("/CreateUser", api.CreateUser)
 		user.POST("/UpdateUser", api.UpdateUser)

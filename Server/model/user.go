@@ -22,7 +22,7 @@ func GetUserList() ([]User, error) {
 }
 
 func (user *User) GetUser() error {
-	return database.GetDatabase().First(&user).Error
+	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).First(&user).Error
 }
 
 func (user *User) CreateUser() error {
@@ -30,9 +30,9 @@ func (user *User) CreateUser() error {
 }
 
 func (user *User) UpdateUser() error {
-	return database.GetDatabase().Updates(&user).Error
+	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Updates(&user).Error
 }
 
 func (user *User) DeleteUser() error {
-	return database.GetDatabase().Delete(&user).Error
+	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Delete(&user).Error
 }

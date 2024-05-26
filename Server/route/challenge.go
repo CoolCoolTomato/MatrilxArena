@@ -8,6 +8,7 @@ import (
 func SetChallengeRoute(r *gin.Engine) {
 	challenge := r.Group("/challenge")
 	{
+		challenge.POST("/GetChallengeList", api.GetChallengeList)
 		challenge.POST("/GetChallenge", api.GetChallenge)
 		challenge.POST("/CreateChallenge", api.CreateChallenge)
 		challenge.POST("/UpdateChallenge", api.UpdateChallenge)

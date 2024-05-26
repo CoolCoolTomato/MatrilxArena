@@ -19,7 +19,7 @@ func GetUserList(c *gin.Context) {
 func GetUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil {
+	if err != nil || user.ID == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
@@ -53,7 +53,7 @@ func CreateUser(c *gin.Context) {
 func UpdateUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil {
+	if err != nil || user.ID == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
@@ -70,7 +70,7 @@ func UpdateUser(c *gin.Context) {
 func DeleteUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil {
+	if err != nil || user.ID == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}

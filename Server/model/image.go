@@ -22,7 +22,7 @@ func GetImageList() ([]Image, error) {
 }
 
 func (image *Image) GetImage() error {
-	return database.GetDatabase().First(&image).Error
+	return database.GetDatabase().Model(&Image{}).Where("ID = ?", image.ID).First(&image).Error
 }
 
 func (image *Image) CreateImage() error {
@@ -30,9 +30,9 @@ func (image *Image) CreateImage() error {
 }
 
 func (image *Image) UpdateImage() error {
-	return database.GetDatabase().Updates(&image).Error
+	return database.GetDatabase().Model(&Image{}).Where("ID = ?", image.ID).Updates(&image).Error
 }
 
 func (image *Image) DeleteImage() error {
-	return database.GetDatabase().Delete(&image).Error
+	return database.GetDatabase().Model(&Image{}).Where("ID = ?", image.ID).Delete(&image).Error
 }
