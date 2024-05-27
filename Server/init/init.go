@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/config"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/database"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/middleware"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/route"
 	"github.com/gin-gonic/gin"
@@ -44,6 +45,7 @@ func init() {
 	database.Database = conn
 	
 	route.Route = gin.Default()
+	route.Route.Use(middleware.CORSMiddleware())
 	route.SetUserRoute(route.Route)
 	route.SetImageRoute(route.Route)
 	route.SetChallengeRoute(route.Route)
