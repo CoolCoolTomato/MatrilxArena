@@ -1,36 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100" fill="none">
 <rect x="0" y="0" width="0" height="0" fill="rgba(249, 249, 249, 1)" />
-<path d="M423.205 150L423.205 350L250 450L76.7949 350L76.7949 150L250 50L423.205 150Z"   fill="#FFFFFF" >
+<path d="M93.3013 25L93.3013 75L50 100L6.69873 75L6.69873 25L50 0L93.3013 25Z"   fill="#FFFFFF" >
 </path>
-<path d="M379.904 175L379.904 325L250 400L120.096 325L120.096 175L250 100L379.904 175Z"   fill="#202020" >
+<path d="M82.476 31.25L82.476 68.75L50 87.5L17.524 68.75L17.524 31.25L50 12.5L82.476 31.25Z"   fill="#202020" >
 </path>
 <g  mask="url(#mask-3_19)">
-<rect x="368" y="280" width="26" height="45"   fill="#FFFFFF" >
+<rect x="79.5" y="57.5" width="6.5" height="11.25"   fill="#FFFFFF" >
 </rect>
-<rect x="368" y="175" width="26" height="45"   fill="#FFFFFF" >
+<rect x="79.5" y="31.25" width="6.5" height="11.25"   fill="#FFFFFF" >
 </rect>
-<path d="M394 175L307.333 325L264 325L350.667 175L394 175Z"   fill="#FFFFFF" >
+<path d="M86 31.25L64.3334 68.75L53.5 68.75L75.1667 31.25L86 31.25Z"   fill="#FFFFFF" >
 </path>
-<path d="M264 175L350.667 325L394 325L307.333 175L264 175Z"   fill="#FFFFFF" >
+<path d="M53.5 31.25L75.1666 68.75L86 68.75L64.3333 31.25L53.5 31.25Z"   fill="#FFFFFF" >
 </path>
-<rect x="119" y="285" width="170" height="40"   fill="#FFFFFF" >
+<rect x="17.25" y="58.75" width="42.5" height="10"   fill="#FFFFFF" >
 </rect>
-<rect x="119" y="175" width="110" height="40"   fill="#FFFFFF" >
+<rect x="17.25" y="31.25" width="27.5" height="10"   fill="#FFFFFF" >
 </rect>
-<rect x="189" y="175" width="40" height="150"   fill="#FFFFFF" >
+<rect x="34.75" y="31.25" width="10" height="37.5"   fill="#FFFFFF" >
 </rect>
 </g>
-<rect x="115" y="175" width="20" height="40"   fill="#FFFFFF" >
+<rect x="16.25" y="31.25" width="5" height="10"   fill="#FFFFFF" >
 </rect>
-<rect x="361" y="283" width="20" height="40"   fill="#FFFFFF" >
+<rect x="77.75" y="58.25" width="5" height="10"   fill="#FFFFFF" >
 </rect>
-<rect x="368" y="175" width="20" height="40"   fill="#FFFFFF" >
+<rect x="79.5" y="31.25" width="5" height="10"   fill="#FFFFFF" >
 </rect>
-<rect x="115" y="285" width="20" height="40"   fill="#FFFFFF" >
+<rect x="16.25" y="58.75" width="5" height="10"   fill="#FFFFFF" >
 </rect>
 <defs>
 <mask id="mask-3_19" style="mask-type:alpha" maskUnits="userSpaceOnUse">
-<path d="M379.904 175L379.904 325L250 400L120.096 325L120.096 175L250 100L379.904 175Z"   fill="#202020" >
+<path d="M82.476 31.25L82.476 68.75L50 87.5L17.524 68.75L17.524 31.25L50 12.5L82.476 31.25Z"   fill="#202020" >
 </path>
 </mask>
 </defs>

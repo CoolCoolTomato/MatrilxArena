@@ -12,7 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
           router
           >
           <el-menu-item class="el-menu-item-no-style">
-            <el-image src="/image/svg/matrilx.svg" style="width: 56px;" />
+            <el-image src="/image/svg/matrilx.svg" style="width: 40px; margin-bottom: 16px; margin-right: 5px;" />
             <h2>MatrilxArena</h2>
           </el-menu-item>
           <div class="flex-grow" />
