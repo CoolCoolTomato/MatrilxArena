@@ -6,25 +6,13 @@
           <el-icon>
             <Menu />
           </el-icon>
-          <span slot="title">Menu</span>
+            <template #title>Menu</template>
         </el-menu-item>
         <el-menu-item index="2">
           <el-icon>
             <Aim />
           </el-icon>
-          <span slot="title">Web</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <el-icon>
-            <Aim />
-          </el-icon>
-          <span slot="title">Misc</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon>
-            <Aim />
-          </el-icon>
-          <span slot="title">Pwn</span>
+          <template #title>Web</template>
         </el-menu-item>
       </el-menu>
     </el-aside>
