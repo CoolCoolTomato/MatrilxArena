@@ -5,3 +5,4 @@ Server/.fleet/
 Server/tmp/
 Web/.fleet/
 Web/node_modules/
+.editorconfig

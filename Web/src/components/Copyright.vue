@@ -5,6 +5,6 @@
 </template>
 <style scoped>
 .el-text{
-    margin: 0 5px;
+  margin: 0 5px;
 }
 </style>
