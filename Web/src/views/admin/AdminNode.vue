@@ -1,83 +1,88 @@
 <template>
-  <el-text size="large">Docker Node Manager</el-text>
-  <br>
-  <el-button style="margin: 10px" @click="CreateDockerNodeFormVisible = true">Add</el-button>
-  <el-table
-    :data="dockerNodeList"
-    table-layout="fixed"
-  >
-    <el-table-column prop="Host" label="Host"/>
-    <el-table-column prop="Port" label="Port"/>
-    <el-table-column fixed="right" label="Operations" width="300px">
-      <template #default=scope>
-        <el-button
-          @click="OpenDockerNodeDetail(scope.row)"
-          >
-          Detail
-        </el-button>
-        <el-button
-          @click="OpenUpdateDockerNodeForm(scope.row)"
-          >
-          Update
-        </el-button>
-        <el-button
-          @click="OpenDeleteDockerNodeForm(scope.row)"
-          >
-          Delete
-        </el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-dialog
-    v-model="CreateDockerNodeFormVisible"
-    title="Create Node"
-    width="500"
-    @close="ClearCreateDockerNodeForm"
-    >
-    <el-form :model=CreateDockerNodeData>
-      <el-form-item label="Host">
-        <el-input v-model="CreateDockerNodeData.Host"/>
-      </el-form-item>
-      <el-form-item label="Port">
-        <el-input v-model="CreateDockerNodeData.Port"/>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button @click="CreateDockerNodeFormVisible = false">Cancel</el-button>
-      <el-button @click="CreateDockerNode">Submit</el-button>
-    </template>
-  </el-dialog>
-  <el-dialog
-    v-model="UpdateDockerNodeFormVisible"
-    title="Update Node"
-    width="500"
-    @close="ClearUpdateDockerNodeForm"
-    >
-    <el-form :model=UpdateDockerNodeData>
-      <el-form-item label="Host">
-        <el-input v-model="UpdateDockerNodeData.Host"/>
-      </el-form-item>
-      <el-form-item label="Port">
-        <el-input v-model="UpdateDockerNodeData.Port"/>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button @click="UpdateDockerNodeFormVisible = false">Cancel</el-button>
-      <el-button @click="UpdateDockerNode">Submit</el-button>
-    </template>
-  </el-dialog>
-  <el-dialog
-    v-model="DeleteDockerNodeFormVisible"
-    title="Delete Node"
-    width="500"
-    @close="ClearDeleteDockerNodeForm"
-    >
-    <el-text>Are you confirm to delete the docker node?</el-text>
-    <template #footer>
-      <el-button @click="DeleteDockerNodeFormVisible = false">Cancel</el-button>
-      <el-button @click="DeleteDockerNode">Confirm</el-button>
-    </template>
-  </el-dialog>
+  <el-container>
+    <el-header>
+      <h2 style="color: var(--el-text-color-primary)">Docker Node Manager</h2>
+    </el-header>
+    <el-main>
+      <el-button style="margin: 10px" @click="createDockerNodeFormVisible = true">Add</el-button>
+      <el-table
+        :data="dockerNodeList"
+        table-layout="fixed"
+      >
+        <el-table-column prop="Host" label="Host"/>
+        <el-table-column prop="Port" label="Port"/>
+        <el-table-column fixed="right" label="Operations" width="300px">
+          <template #default=scope>
+            <el-button
+              @click="OpenDockerNodeDetail(scope.row)"
+              >
+              Detail
+            </el-button>
+            <el-button
+              @click="OpenUpdateDockerNodeForm(scope.row)"
+              >
+              Update
+            </el-button>
+            <el-button
+              @click="OpenDeleteDockerNodeForm(scope.row)"
+              >
+              Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog
+        v-model="createDockerNodeFormVisible"
+        title="Create Node"
+        width="500"
+        @close="ClearCreateDockerNodeForm"
+        >
+        <el-form :model=createDockerNodeData>
+          <el-form-item label="Host">
+            <el-input v-model="createDockerNodeData.Host"/>
+          </el-form-item>
+          <el-form-item label="Port">
+            <el-input v-model="createDockerNodeData.Port"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button @click="createDockerNodeFormVisible = false">Cancel</el-button>
+          <el-button @click="CreateDockerNode">Submit</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="updateDockerNodeFormVisible"
+        title="Update Node"
+        width="500"
+        @close="ClearUpdateDockerNodeForm"
+        >
+        <el-form :model=updateDockerNodeData>
+          <el-form-item label="Host">
+            <el-input v-model="updateDockerNodeData.Host"/>
+          </el-form-item>
+          <el-form-item label="Port">
+            <el-input v-model="updateDockerNodeData.Port"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button @click="updateDockerNodeFormVisible = false">Cancel</el-button>
+          <el-button @click="UpdateDockerNode">Submit</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="deleteDockerNodeFormVisible"
+        title="Delete Node"
+        width="500"
+        @close="ClearDeleteDockerNodeForm"
+        >
+        <el-text>Are you confirm to delete the docker node?</el-text>
+        <template #footer>
+          <el-button @click="deleteDockerNodeFormVisible = false">Cancel</el-button>
+          <el-button @click="DeleteDockerNode">Confirm</el-button>
+        </template>
+      </el-dialog>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import dockerNodeApi from "@/api/dockerNode.js"
@@ -87,19 +92,19 @@ export default {
   data() {
     return {
       dockerNodeList: [],
-      CreateDockerNodeFormVisible: false,
-      CreateDockerNodeData: {
+      createDockerNodeFormVisible: false,
+      createDockerNodeData: {
         "Host": "",
         "Port": "",
       },
-      UpdateDockerNodeFormVisible: false,
-      UpdateDockerNodeData: {
+      updateDockerNodeFormVisible: false,
+      updateDockerNodeData: {
         "ID": 0,
         "Host": "",
         "Port": "",
       },
-      DeleteDockerNodeFormVisible: false,
-      DeleteDockerNodeData: {
+      deleteDockerNodeFormVisible: false,
+      deleteDockerNodeData: {
         "ID": 0,
       }
     }
@@ -120,9 +125,9 @@ export default {
       this.$router.push(`/admin/node/${row.ID}`);
     },
     CreateDockerNode() {
-      dockerNodeApi.CreateDockerNode(this.CreateDockerNodeData).then(res => {
+      dockerNodeApi.CreateDockerNode(this.createDockerNodeData).then(res => {
         if (res.code === 0) {
-          this.CreateDockerNodeFormVisible = false
+          this.createDockerNodeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -136,15 +141,15 @@ export default {
       })
     },
     ClearCreateDockerNodeForm() {
-      this.CreateDockerNodeData = {
+      this.createDockerNodeData = {
         "Host": "",
         "Port": "",
       }
     },
     UpdateDockerNode() {
-      dockerNodeApi.UpdateDockerNode(this.UpdateDockerNodeData).then(res => {
+      dockerNodeApi.UpdateDockerNode(this.updateDockerNodeData).then(res => {
         if (res.code === 0) {
-          this.UpdateDockerNodeFormVisible = false
+          this.updateDockerNodeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -158,24 +163,24 @@ export default {
       })
     },
     OpenUpdateDockerNodeForm(row) {
-      this.UpdateDockerNodeData = {
+      this.updateDockerNodeData = {
         "ID": row.ID,
         "Host": row.Host,
         "Port": row.Port,
       }
-      this.UpdateDockerNodeFormVisible = true
+      this.updateDockerNodeFormVisible = true
     },
     ClearUpdateDockerNodeForm() {
-      this.UpdateDockerNodeData = {
+      this.updateDockerNodeData = {
         "ID": 0,
         "Host": "",
         "Port": "",
       }
     },
     DeleteDockerNode() {
-      dockerNodeApi.DeleteDockerNode(this.DeleteDockerNodeData).then(res => {
+      dockerNodeApi.DeleteDockerNode(this.deleteDockerNodeData).then(res => {
         if (res.code === 0) {
-          this.DeleteDockerNodeFormVisible = false
+          this.deleteDockerNodeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -189,13 +194,13 @@ export default {
       })
     },
     OpenDeleteDockerNodeForm(row) {
-      this.DeleteDockerNodeData = {
+      this.deleteDockerNodeData = {
         "ID": row.ID,
       }
-      this.DeleteDockerNodeFormVisible = true
+      this.deleteDockerNodeFormVisible = true
     },
     ClearDeleteDockerNodeForm() {
-      this.DeleteDockerNodeData = {
+      this.deleteDockerNodeData = {
         "ID": 0,
       }
     },

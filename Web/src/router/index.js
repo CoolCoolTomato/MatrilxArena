@@ -21,7 +21,7 @@ const router = createRouter({
     {path: "/admin", component: BaseAdmin, children: [
       {path: "", component: AdminIndex},
       {path: "node", component: AdminNode},
-      {path: "node/:id", component: AdminNodeDetail},
+      {path: "node/:id(\\d+)", component: AdminNodeDetail},
       {path: "image", component: AdminImage},
       {path: "challenge", component: AdminChallenge},
       {path: "user", component: AdminUser},
