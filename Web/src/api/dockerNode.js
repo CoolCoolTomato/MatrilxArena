@@ -28,8 +28,8 @@ function GetImageFromDockerNode(data) {
     return apiClient.post("/dockerNode/GetImageFromDockerNode", data).then(handleResponse).catch(handleError)
 }
 
-function PullImageForDockerNode(data) {
-    return apiClient.post("/dockerNode/PullImageForDockerNode", data).then(handleResponse).catch(handleError)
+function PullImageFromDockerNode(data) {
+    return apiClient.post("/dockerNode/PullImageFromDockerNode", data).then(handleResponse).catch(handleError)
 }
 
 function RemoveImageFromDockerNode(data) {
@@ -69,7 +69,7 @@ const dockerNodeApi = {
 
     GetImageListFromDockerNode,
     GetImageFromDockerNode,
-    PullImageForDockerNode,
+    PullImageFromDockerNode,
     RemoveImageFromDockerNode,
 
     GetContainerListFromDockerNode,

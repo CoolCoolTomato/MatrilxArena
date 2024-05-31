@@ -1,20 +1,27 @@
 <template>
   <el-container>
-    <el-header>
-      <h2 style="color: var(--el-text-color-primary);">Node Detail</h2>
+    <el-header style="display: flex">
+      <h2 style="color: var(--el-text-color-primary);">Node Detail / Host: {{dockerNode.Host}} | Port: {{dockerNode.Port}}</h2>
+      <div style="flex-grow: 1;" />
+      <div style="display: flex; align-items: center">
+        <el-button
+          @click="pullImageFormVisible = true"
+          >Pull image</el-button>
+        <el-button
+          @click="goBack"
+          >
+           Back
+        </el-button>
+      </div>
     </el-header>
     <el-main>
-      <el-descriptions size="large">
-        <el-descriptions-item label="Host" width="130px">{{dockerNode.Host}}</el-descriptions-item>
-        <el-descriptions-item label="Port" width="130px">{{dockerNode.Port}}</el-descriptions-item>
-      </el-descriptions>
       <el-tabs
         v-model="activeTab"
         class="el-tabs-custom"
         >
         <el-tab-pane label="Image" name="image">
           <el-table
-            :data="imageList"
+            :data="dockerNodeImageList"
             table-layout="fixed"
             height="99%"
             >
@@ -32,10 +39,12 @@
             <el-table-column fixed="right" label="Operations" width="200px">
               <template #default=scope>
                 <el-button
+                  @click="OpenImageDetail(scope.row)"
                   >
                   Detail
                 </el-button>
                 <el-button
+                  @click="OpenRemoveImageForm(scope.row)"
                   >
                   Remove
                 </el-button>
@@ -45,7 +54,7 @@
         </el-tab-pane>
         <el-tab-pane label="Container" name="container">
           <el-table
-            :data="containerList"
+            :data="dockerNodeContainerList"
             table-layout="fixed"
             height="99%"
             >
@@ -67,31 +76,127 @@
           </el-table>
         </el-tab-pane>
       </el-tabs>
+      <el-dialog
+        v-model="pullImageFormVisible"
+        title="Pull Image"
+        width="1000px"
+        style="max-height: 620px;"
+        @close="ClearPullImageForm"
+        >
+        <el-row>
+          <el-col :span="15">
+            <el-table
+              ref="pullImageForm"
+              :data="imageList"
+              max-height="500px"
+              @selection-change="handleSelectionChange"
+              >
+              <el-table-column type="selection" width="50" />
+              <el-table-column prop="RepoTags" label="RepoTags"/>
+              <el-table-column label="Repository">
+                <template #default="scope">
+                    {{ formatRepository(scope.row.Repository) }}
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+          <el-col :span=9>
+            <el-table
+              :data="pullImageDataList"
+              max-height="500px"
+              >
+              <el-table-column prop="RepoTags" label="Selected image"/>
+              <el-table-column prop="Status" label="Status"/>
+            </el-table>
+          </el-col>
+        </el-row>
+        <template #footer>
+          <el-button
+            @click="pullImageFormVisible = false"
+            >
+            Cancel
+          </el-button>
+          <el-button
+            @click="PullImageFromDockerNode"
+            >
+            Pull
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="removeImageFormVisible"
+        title="Remove Image"
+        width="500"
+        @close="ClearRemoveImageForm"
+        >
+        <el-text>Are you confirm to remove the image?</el-text>
+        <template #footer>
+          <el-button @click="removeImageFormVisible = false">Cancel</el-button>
+          <el-button @click="RemoveImageFromDockerNode">Confirm</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="imageDetailVisible"
+        title="Image Detail"
+        width="1000"
+        @close="ClearImageDetail"
+        >
+        <el-card>
+          <p style="word-break: break-all;">ID: {{ imageDetail.Id }}</p>
+          <p style="word-break: break-all;">RepoTags: {{ imageDetail.RepoTags }}</p>
+          <p style="word-break: break-all;">Size: {{ (imageDetail.Size / 1000000).toFixed(2) }} MB</p>
+          <p style="word-break: break-all;">Created: {{ formatDate(imageDetail.Created) }}</p>
+          <p style="word-break: break-all;">RepoDigests: {{ imageDetail.RepoDigests }}</p>
+        </el-card>
+        <template #footer>
+          <el-button @click="imageDetailVisible = false">Close</el-button>
+        </template>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
 <script>
 import dockerNodeApi from "@/api/dockerNode.js";
+import imageApi from "@/api/image.js";
 import {ElMessage} from "element-plus";
 export default {
   data() {
     return {
       activeTab: "image",
       dockerNode: {
-        ID: 0,
+        "ID": 0,
       },
       getImageListFromDockerNodeData: {
-        DockerNodeID: 0,
+        "DockerNodeID": 0,
       },
+      dockerNodeImageList: [],
       imageList: [],
-      getContainerListFromDockerNodeData: {
-        DockerNodeID: 0,
+      inPull: false,
+      pullImageFormVisible: false,
+      pullImageDataList: [],
+      imageDetailVisible: false,
+      imageDetail: {
+        "Id": "",
+        "Created": 0,
+        "RepoDigests": "",
+        "RepoTags": "",
+        "Size": ""
       },
-      containerList: [],
-
+      removeImageFormVisible: false,
+      removeImageData: {
+        "DockerNodeID": 0,
+        "DockerNodeImageID": "",
+      },
+      getContainerListFromDockerNodeData: {
+        "DockerNodeID": 0,
+      },
+      dockerNodeContainerList: [],
     }
   },
   methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
     GetDockerNode() {
       dockerNodeApi.GetDockerNode(this.dockerNode).then(res => {
         if (res.code === 0) {
@@ -103,10 +208,21 @@ export default {
         console.log(error)
       })
     },
+    GetImageList() {
+      imageApi.GetImageList().then(res => {
+        if (res.code === 0) {
+          this.imageList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     GetImageListFromDockerNode() {
       dockerNodeApi.GetImageListFromDockerNode(this.getImageListFromDockerNodeData).then(res => {
         if (res.code === 0) {
-          this.imageList = res.data
+          this.dockerNodeImageList = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -117,7 +233,7 @@ export default {
     GetContainerListFromDockerNode() {
       dockerNodeApi.GetContainerListFromDockerNode(this.getContainerListFromDockerNodeData).then(res => {
         if (res.code === 0) {
-          this.containerList = res.data
+          this.dockerNodeContainerList = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -125,12 +241,87 @@ export default {
         console.log(error)
       })
     },
+    async PullImageFromDockerNode() {
+      this.inPull = true;
+      const pullPromises = this.pullImageDataList.map(async data => {
+        try {
+          data.Status = "pulling";
+          const res = await dockerNodeApi.PullImageFromDockerNode({
+            "DockerNodeID": data.DockerNodeID,
+            "ImageID": data.ImageID
+          });
+          if (res.code === 0) {
+            data.Status = "pulled";
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      await Promise.all(pullPromises)
+      this.GetImageListFromDockerNode()
+      this.inPull = false;
+    },
+    ClearPullImageForm() {
+      if (!this.inPull){
+        this.$refs.pullImageForm.clearSelection()
+        this.pullImageDataList = []
+      }
+    },
+    OpenImageDetail(row){
+      this.imageDetail = row
+      this.imageDetailVisible = true
+    },
+    ClearImageDetail(){
+      this.imageDetail = {}
+    },
+    RemoveImageFromDockerNode() {
+      dockerNodeApi.RemoveImageFromDockerNode(this.removeImageData).then(res => {
+        if (res.code === 0) {
+          this.removeImageFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetImageListFromDockerNode()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenRemoveImageForm(row)  {
+      this.removeImageData = {
+        "DockerNodeID": this.dockerNode.ID,
+        "DockerNodeImageID": row.Id,
+      }
+      this.removeImageFormVisible = true
+    },
+    ClearRemoveImageForm() {
+      this.removeImageData = {
+        "DockerNodeID": 0,
+        "DockerNodeImageID": "",
+      }
+    },
+    handleSelectionChange(selection) {
+      if (!this.inPull){
+        this.pullImageDataList = selection.map(item => ({
+          "DockerNodeID": this.dockerNode.ID,
+          "ImageID": item.ID,
+          "RepoTags": item.RepoTags,
+          "Status": "waiting",
+        }));
+      }
+    },
     formatDate(timestamp) {
-      const date = new Date(timestamp * 1000);
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
+      const date = new Date(timestamp * 1000)
+      const year = date.getFullYear()
+      const month = (date.getMonth() + 1).toString().padStart(2, '0')
+      const day = date.getDate().toString().padStart(2, '0')
+      return `${year}-${month}-${day}`
+    },
+    formatRepository(repository) {
+      return repository === '' ? 'Not Specified' : repository;
     },
   },
   mounted() {
@@ -138,15 +329,25 @@ export default {
     this.getImageListFromDockerNodeData.DockerNodeID = Number(this.$route.params.id)
     this.getContainerListFromDockerNodeData.DockerNodeID = Number(this.$route.params.id)
     this.GetDockerNode()
+    this.GetImageList()
     this.GetImageListFromDockerNode()
     this.GetContainerListFromDockerNode()
   }
 }
 </script>
 <style>
+.el-menu-item-no-style{
+  background-color: transparent !important;
+  color: inherit !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+}
 .el-tabs-custom{
-  height: 90%;
   overflow-y: hidden;
+  height: 100%;
 }
 .el-tabs-custom .el-tabs__content{
   height: 90%;
@@ -154,4 +355,7 @@ export default {
 .el-tabs-custom .el-tabs__content .el-tab-pane{
   height: 100%;
 }
+</style>
+<style scoped>
+
 </style>

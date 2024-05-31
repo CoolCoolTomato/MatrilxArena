@@ -19,3 +19,13 @@ function UpdateImage(data) {
 function DeleteImage(data) {
     return apiClient.post("/image/DeleteImage", data).then(handleResponse).catch(handleError)
 }
+
+const imageApi = {
+  GetImageList,
+  GetImage,
+  CreateImage,
+  UpdateImage,
+  DeleteImage
+}
+
+export default imageApi
