@@ -10,7 +10,7 @@ import (
 type ImageRequest struct {
 	DockerNodeID uint
 	DockerNodeImageID string
-	ImageIDList []uint
+    ImageID uint
 }
 
 func GetImageListFromDockerNode(c *gin.Context) {
@@ -68,7 +68,7 @@ func GetImageFromDockerNode(c *gin.Context) {
 func PullImageFromDockerNode(c *gin.Context) {
 	var imageRequest ImageRequest
 	err := c.ShouldBindJSON(&imageRequest)
-	if err != nil || imageRequest.DockerNodeID == 0 || len(imageRequest.ImageIDList) == 0 {
+	if err != nil || imageRequest.DockerNodeID == 0 || imageRequest.ImageID == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
@@ -81,31 +81,26 @@ func PullImageFromDockerNode(c *gin.Context) {
 		return
 	}
 
-	var imageList []model.Image
-	for _, id := range imageRequest.ImageIDList {
-		image := model.Image{}
-		image.ID = id
-		err = image.GetImage()
-		if err != nil {
-			continue
-		}
-		imageList = append(imageList, image)
-	}
+	image := model.Image{}
+	image.ID = imageRequest.ImageID
+	err = image.GetImage()
+    if err != nil {
+        response.Fail(err, "Get image fail", c)
+        return
+    }
 
-	for _, image := range imageList {
-		url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathPullImage
-		res, err := docker.PullImage(url, image.RepoTags, image.Repository)
-		if err != nil {
-			response.Fail(err, "Pull image fail", c)
-			continue
-		}
-		if res["code"].(float64) != 0 {
-			response.Fail(err, "Pull image fail", c)
-			continue
-		}
-	}
+    url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathPullImage
+    res, err := docker.PullImage(url, image.RepoTags, image.Repository)
+    if err != nil {
+        response.Fail(err, "Pull image fail", c)
+        return
+    }
+    if res["code"].(float64) != 0 {
+        response.Fail(err, "Pull image fail", c)
+        return
+    }
 
-	response.OK(nil, "Pull image success", c)
+    response.OK(image, "Pull image success", c)
 }
 
 func RemoveImageFromDockerNode(c *gin.Context) {
