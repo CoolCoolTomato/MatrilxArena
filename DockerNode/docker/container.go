@@ -18,7 +18,7 @@ func GetContainerList() (containers []types.Container, err error) {
 	defer cli.Close()
 	
 	ctx := context.Background()
-	containers, err = cli.ContainerList(ctx, container.ListOptions{})
+	containers, err = cli.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
 		return containers, err
 	}
