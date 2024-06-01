@@ -63,13 +63,25 @@
             <el-table-column prop="Names" label="Names"/>
             <el-table-column prop="Image" label="Image"/>
             <el-table-column prop="State" label="State"/>
-            <el-table-column fixed="right" label="Operations" width="200px">
+            <el-table-column fixed="right" label="Operations" width="320px">
               <template #default=scope>
                 <el-button
                   size="small"
                   @click="OpenContainerDetail(scope.row)"
                   >
                   Detail
+                </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenStartContainerForm(scope.row)"
+                  >
+                  Start
+                  </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenStopContainerForm(scope.row)"
+                  >
+                  Stop
                 </el-button>
                 <el-button
                   size="small"
@@ -184,6 +196,30 @@
         </template>
       </el-dialog>
       <el-dialog
+        v-model="startContainerFormVisible"
+        title="Start Container"
+        width="500"
+        @close="ClearStartContainerForm"
+        >
+        <el-text>Are you confirm to start the container?</el-text>
+        <template #footer>
+          <el-button @click="startContainerFormVisible = false">Cancel</el-button>
+          <el-button @click="StartContainerFromDockerNode">Confirm</el-button>
+          </template>
+      </el-dialog>
+      <el-dialog
+        v-model="stopContainerFormVisible"
+        title="Stop Container"
+        width="500"
+        @close="ClearStopContainerForm"
+        >
+        <el-text>Are you confirm to stop the container?</el-text>
+        <template #footer>
+        <el-button @click="stopContainerFormVisible = false">Cancel</el-button>
+        <el-button @click="StopContainerFromDockerNode">Confirm</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
         v-model="removeContainerFormVisible"
         title="Remove Container"
         width="500"
@@ -191,9 +227,9 @@
         >
         <el-text>Are you confirm to remove the container?</el-text>
         <template #footer>
-          <el-button @click="removeContainerFormVisible = false">Cancel</el-button>
-          <el-button @click="RemoveContainerFromDockerNode">Confirm</el-button>
-          </template>
+        <el-button @click="removeContainerFormVisible = false">Cancel</el-button>
+        <el-button @click="RemoveContainerFromDockerNode">Confirm</el-button>
+        </template>
       </el-dialog>
     </el-main>
   </el-container>
@@ -244,6 +280,16 @@ export default {
         "Ports": [],
         "State": "",
         "Status": "",
+      },
+      startContainerFormVisible: false,
+      startContainerData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+      },
+      stopContainerFormVisible: false,
+      stopContainerData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
       },
       removeContainerFormVisible: false,
       removeContainerData: {
@@ -382,6 +428,64 @@ export default {
         "Ports": [],
         "State": "",
         "Status": "",
+      }
+    },
+    StartContainerFromDockerNode() {
+      dockerNodeApi.StartContainerFromDockerNode(this.startContainerData).then(res => {
+        if (res.code === 0) {
+          this.startContainerFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetContainerListFromDockerNode()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenStartContainerForm(row) {
+      this.startContainerData = {
+        "DockerNodeID": this.dockerNode.ID,
+        "DockerNodeContainerID": row.Id,
+      }
+      this.startContainerFormVisible = true
+    },
+    ClearStartContainerForm() {
+      this.startContainerData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+      }
+    },
+    StopContainerFromDockerNode() {
+      dockerNodeApi.StopContainerFromDockerNode(this.stopContainerData).then(res => {
+        if (res.code === 0) {
+          this.stopContainerFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetContainerListFromDockerNode()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenStopContainerForm(row) {
+      this.stopContainerData = {
+        "DockerNodeID": this.dockerNode.ID,
+        "DockerNodeContainerID": row.Id,
+      }
+      this.stopContainerFormVisible = true
+    },
+    ClearStopContainerForm() {
+      this.stopContainerData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
       }
     },
     RemoveContainerFromDockerNode() {
