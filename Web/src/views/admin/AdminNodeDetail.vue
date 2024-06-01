@@ -39,11 +39,13 @@
             <el-table-column fixed="right" label="Operations" width="200px">
               <template #default=scope>
                 <el-button
+                  size="small"
                   @click="OpenImageDetail(scope.row)"
                   >
                   Detail
                 </el-button>
                 <el-button
+                  size="small"
                   @click="OpenRemoveImageForm(scope.row)"
                   >
                   Remove
@@ -64,10 +66,14 @@
             <el-table-column fixed="right" label="Operations" width="200px">
               <template #default=scope>
                 <el-button
+                  size="small"
+                  @click="OpenContainerDetail(scope.row)"
                   >
                   Detail
                 </el-button>
                 <el-button
+                  size="small"
+                  @click="OpenRemoveContainerForm(scope.row)"
                   >
                   Remove
                 </el-button>
@@ -96,6 +102,11 @@
               <el-table-column label="Repository">
                 <template #default="scope">
                     {{ formatRepository(scope.row.Repository) }}
+                </template>
+              </el-table-column>
+              <el-table-column label="Existence">
+                <template #default="scope">
+                  {{ checkImageExistence(scope.row.RepoTags) }}
                 </template>
               </el-table-column>
             </el-table>
@@ -152,6 +163,38 @@
           <el-button @click="imageDetailVisible = false">Close</el-button>
         </template>
       </el-dialog>
+      <el-dialog
+        v-model="containerDetailVisible"
+        title="Container Detail"
+        width="1000"
+        @close="ClearContainerDetail"
+        >
+        <el-card>
+          <p style="word-break: break-all;">ID: {{ containerDetail.Id }}</p>
+          <p style="word-break: break-all;">Names: {{ containerDetail.Names }}</p>
+          <p style="word-break: break-all;">Created: {{ formatDate(containerDetail.Created) }}</p>
+          <p style="word-break: break-all;">Image: {{ containerDetail.Image }}</p>
+          <p style="word-break: break-all;">ImageID: {{ containerDetail.ImageID }}</p>
+          <p style="word-break: break-all;">Ports: {{ containerDetail.Ports }}</p>
+          <p style="word-break: break-all;">State: {{ containerDetail.State }}</p>
+          <p style="word-break: break-all;">Status: {{ containerDetail.Status }}</p>
+        </el-card>
+        <template #footer>
+          <el-button @click="containerDetailVisible = false">Close</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="removeContainerFormVisible"
+        title="Remove Container"
+        width="500"
+        @close="ClearRemoveContainerForm"
+        >
+        <el-text>Are you confirm to remove the container?</el-text>
+        <template #footer>
+          <el-button @click="removeContainerFormVisible = false">Cancel</el-button>
+          <el-button @click="RemoveContainerFromDockerNode">Confirm</el-button>
+          </template>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -191,6 +234,22 @@ export default {
         "DockerNodeID": 0,
       },
       dockerNodeContainerList: [],
+      containerDetailVisible: false,
+      containerDetail: {
+        "Id": "",
+        "Names": [],
+        "Created": 0,
+        "Image": "",
+        "ImageID": "",
+        "Ports": [],
+        "State": "",
+        "Status": "",
+      },
+      removeContainerFormVisible: false,
+      removeContainerData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+      },
     }
   },
   methods: {
@@ -272,7 +331,13 @@ export default {
       this.imageDetailVisible = true
     },
     ClearImageDetail(){
-      this.imageDetail = {}
+      this.imageDetail = {
+        "Id": "",
+        "Created": 0,
+        "RepoDigests": "",
+        "RepoTags": "",
+        "Size": ""
+      }
     },
     RemoveImageFromDockerNode() {
       dockerNodeApi.RemoveImageFromDockerNode(this.removeImageData).then(res => {
@@ -303,6 +368,51 @@ export default {
         "DockerNodeImageID": "",
       }
     },
+    OpenContainerDetail(row) {
+      this.containerDetail = row
+      this.containerDetailVisible = true
+    },
+    ClearContainerDetail() {
+      this.containerDetail = {
+        "Id": "",
+        "Names": [],
+        "Created": 0,
+        "Image": "",
+        "ImageID": "",
+        "Ports": [],
+        "State": "",
+        "Status": "",
+      }
+    },
+    RemoveContainerFromDockerNode() {
+      dockerNodeApi.RemoveContainerFromDockerNode(this.removeContainerData).then(res => {
+        if (res.code === 0) {
+          this.removeContainerFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetContainerListFromDockerNode()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenRemoveContainerForm(row) {
+      this.removeContainerData = {
+        "DockerNodeID": this.dockerNode.ID,
+        "DockerNodeContainerID": row.Id,
+      }
+      this.removeContainerFormVisible = true
+    },
+    ClearRemoveContainerForm() {
+      this.removeContainerData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+      }
+    },
     handleSelectionChange(selection) {
       if (!this.inPull){
         this.pullImageDataList = selection.map(item => ({
@@ -312,6 +422,9 @@ export default {
           "Status": "waiting",
         }));
       }
+    },
+    checkImageExistence(repoTags) {
+      return this.dockerNodeImageList.some(image => image.RepoTags.some(tag => repoTags.includes(tag))) ? 'Exists' : 'Not Exists';
     },
     formatDate(timestamp) {
       const date = new Date(timestamp * 1000)
