@@ -35,7 +35,7 @@ func GetChallenge(c *gin.Context) {
 func CreateChallenge(c *gin.Context) {
 	var challenge model.Challenge
 	err := c.ShouldBindJSON(&challenge)
-	if err != nil {
+	if err != nil || challenge.Title == "" || challenge.Description == "" || challenge.ImageID == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
@@ -52,7 +52,7 @@ func CreateChallenge(c *gin.Context) {
 func UpdateChallenge(c *gin.Context) {
 	var challenge model.Challenge
 	err := c.ShouldBindJSON(&challenge)
-	if err != nil || challenge.ID == 0 {
+	if err != nil || challenge.ID == 0 || challenge.Title == "" || challenge.Description == "" || challenge.ImageID == 0{
 		response.Fail(err, "Invalid argument", c)
 		return
 	}

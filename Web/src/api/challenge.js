@@ -9,7 +9,7 @@ function GetChallenge(data) {
 }
 
 function CreateChallenge(data) {
-    return apiClient.post("/challenge/GetChallenge", data).then(handleResponse).catch(handleError)
+    return apiClient.post("/challenge/CreateChallenge", data).then(handleResponse).catch(handleError)
 }
 
 function UpdateChallenge(data) {

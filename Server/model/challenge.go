@@ -15,7 +15,7 @@ type Challenge struct {
 
 func GetChallengeList() ([]Challenge, error) {
 	var challengeList []Challenge
-	err := database.GetDatabase().Find(&challengeList).Error
+	err := database.GetDatabase().Preload("Image").Find(&challengeList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -23,17 +23,17 @@ func GetChallengeList() ([]Challenge, error) {
 }
 
 func (challenge *Challenge) GetChallenge() error {
-	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
+	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
 }
 
 func (challenge *Challenge) CreateChallenge() error {
-	return database.GetDatabase().Create(&challenge).Error
+	return database.GetDatabase().Preload("Image").Create(&challenge).Error
 }
 
 func (challenge *Challenge) UpdateChallenge() error {
-	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
+	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
 }
 
 func (challenge *Challenge) DeleteChallenge() error {
-	return database.GetDatabase().Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
+	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
 }

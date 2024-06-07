@@ -4,6 +4,7 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/gin-gonic/gin"
+    "golang.org/x/crypto/bcrypt"
 )
 
 func GetUserList(c *gin.Context) {
@@ -36,11 +37,12 @@ func GetUser(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil {
+	if err != nil || user.Username == "" || user.Password == "" || user.Email == "" {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+    user.Password = string(hashPassword)
 	err = user.CreateUser()
 	if err != nil {
 		response.Fail(err, "Create user fail", c)
@@ -53,11 +55,12 @@ func CreateUser(c *gin.Context) {
 func UpdateUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil || user.ID == 0 {
+	if err != nil || user.ID == 0 || user.Username == "" || user.Password == "" || user.Email == "" {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+    hashPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+    user.Password = string(hashPassword)
 	err = user.UpdateUser()
 	if err != nil {
 		response.Fail(err, "Update user fail", c)

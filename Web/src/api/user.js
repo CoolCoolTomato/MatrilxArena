@@ -19,3 +19,13 @@ function UpdateUser(data) {
 function DeleteUser(data) {
     return apiClient.post("/user/DeleteUser", data).then(handleResponse).catch(handleError)
 }
+
+const userApi = {
+  GetUserList,
+  GetUser,
+  CreateUser,
+  UpdateUser,
+  DeleteUser
+}
+
+export default userApi

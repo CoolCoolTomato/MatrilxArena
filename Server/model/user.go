@@ -14,7 +14,7 @@ type User struct {
 
 func GetUserList() ([]User, error) {
 	var userList []User
-	err := database.GetDatabase().Find(&userList).Error
+	err := database.GetDatabase().Select("ID", "Username", "Email").Find(&userList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func GetUserList() ([]User, error) {
 }
 
 func (user *User) GetUser() error {
-	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).First(&user).Error
+	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Select("ID", "Username", "Email").First(&user).Error
 }
 
 func (user *User) CreateUser() error {
