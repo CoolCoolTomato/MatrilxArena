@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Base from "@/components/Base.vue";
+import Login from "@/views/Login.vue";
 import Index from "@/views/Index.vue";
 import Challenge from "@/views/Challenge.vue";
 
@@ -14,6 +15,7 @@ import AdminUser from "@/views/admin/AdminUser.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    { path: "/login", component: Login },
     {path: "/", component: Base, children: [
       {path: "", component: Index},
       {path: "challenge", component: Challenge},
@@ -28,5 +30,15 @@ const router = createRouter({
     ]},
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token");
+  if (!token && to.path !== "/login") {
+    next("/login");
+  } else {
+    next();
+  }
+});
+
 
 export default router

@@ -39,7 +39,6 @@ import Copyright from "@/components/Copyright.vue";
   </div>
 </template>
 <style scoped>
-
 #main{
   width: 100%;
   height: 100%;
@@ -54,15 +53,15 @@ import Copyright from "@/components/Copyright.vue";
   -ms-user-select: none;
   cursor: default;
 }
+.flex-grow {
+  flex-grow: 1;
+}
 ::v-deep .el-menu-item-no-style > .el-button > [class^="el-icon"] {
   margin-right: 0;
 }
 .el-container{
   width: 100%;
   height: 100%;
-}
-.flex-grow {
-  flex-grow: 1;
 }
 .el-footer{
   display: flex;

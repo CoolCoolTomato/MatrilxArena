@@ -10,7 +10,7 @@ import (
 func Login(c *gin.Context) {
 	var loginUser model.User
 	err := c.ShouldBindJSON(&loginUser)
-	if err != nil {
+	if err != nil || (loginUser.Username == "" && loginUser.Password == "") {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}

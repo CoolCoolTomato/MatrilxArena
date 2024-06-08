@@ -99,13 +99,11 @@ export default {
 };
 </script>
 <style scoped>
-
 #main {
   width: 100%;
   height: 100%;
   position: absolute;
 }
-
 .el-menu-item-no-style {
   background-color: transparent !important;
   color: inherit !important;
@@ -115,30 +113,24 @@ export default {
   -ms-user-select: none;
   cursor: default;
 }
-
+.flex-grow {
+  flex-grow: 1;
+}
 ::v-deep .el-menu-item-no-style > .el-button > [class^="el-icon"] {
   margin-right: 0;
 }
-
 .el-container {
   width: 100%;
   height: 100%;
 }
-
-.flex-grow {
-  flex-grow: 1;
-}
-
 .el-footer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .el-aside {
   overflow-x: hidden;
   transition: width var(--el-transition-duration);
   border-right: 1px solid var(--el-border-color);
 }
-
 </style>

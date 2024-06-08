@@ -4,6 +4,7 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 func JWTAuthMiddleware() gin.HandlerFunc {
@@ -14,6 +15,11 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		if strings.HasPrefix(tokenString, "Bearer ") {
+			tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+		}
+
 		claims, err := utils.ValidateJWT(tokenString)
 		if err != nil {
 			response.Fail("", "Invalid token", c)
