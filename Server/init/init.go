@@ -19,7 +19,7 @@ func init() {
 	config.Config.SetConfigType("json")
 	config.Config.AddConfigPath(".")
 	config.Config.ReadInConfig()
-	
+
 	dsn := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=%s&parseTime=true&loc=%s",
 		config.GetConfig().GetString("Database.Username"),
 		config.GetConfig().GetString("Database.Password"),
@@ -28,24 +28,25 @@ func init() {
 		config.GetConfig().GetString("Database.Database"),
 		config.GetConfig().GetString("Database.Charset"),
 		config.GetConfig().GetString("Database.Local"),
-		)
-	
+	)
+
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
-	
+
 	conn.AutoMigrate(
 		&model.User{},
 		&model.Image{},
 		&model.Challenge{},
 		&model.DockerNode{},
-		)
-	
+	)
+
 	database.Database = conn
-	
+
 	route.Route = gin.Default()
 	route.Route.Use(middleware.CORSMiddleware())
+	route.SetAuthRoute(route.Route)
 	route.SetUserRoute(route.Route)
 	route.SetImageRoute(route.Route)
 	route.SetChallengeRoute(route.Route)
