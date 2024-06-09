@@ -7,7 +7,10 @@ import (
 )
 
 type ContainerRequest struct {
-	ContainerID string
+	ContainerID    string
+	ImageID        string
+	SpecifiedPorts []string
+	Commands       []string
 }
 
 func GetContainerList(c *gin.Context) {
@@ -16,7 +19,7 @@ func GetContainerList(c *gin.Context) {
 		response.Fail(err, "Get container list fail", c)
 		return
 	}
-	
+
 	response.OK(containers, "Get container list success", c)
 }
 
@@ -26,29 +29,29 @@ func GetContainer(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+
 	containerJSON, err := docker.GetContainer(containerRequest.ContainerID)
 	if err != nil {
 		response.Fail(err, "Get container fail", c)
 		return
 	}
-	
+
 	response.OK(containerJSON, "Get container success", c)
 }
 
 func CreateContainer(c *gin.Context) {
-	var imageRequest ImageRequest
-	if err := c.ShouldBindJSON(&imageRequest); err != nil {
+	var containerRequest ContainerRequest
+	if err := c.ShouldBindJSON(&containerRequest); err != nil {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
-	containerID, err := docker.CreateContainer(imageRequest.ImageID)
+
+	containerID, err := docker.CreateContainer(containerRequest.ImageID, containerRequest.SpecifiedPorts, containerRequest.Commands)
 	if err != nil {
 		response.Fail(err, "Create container fail", c)
 		return
 	}
-	
+
 	response.OK(containerID, "Create container success", c)
 }
 
@@ -58,13 +61,13 @@ func StartContainer(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+
 	err := docker.StartContainer(containerRequest.ContainerID)
 	if err != nil {
 		response.Fail(err, "Start container fail", c)
 		return
 	}
-	
+
 	response.OK(nil, "Start container success", c)
 }
 
@@ -74,13 +77,13 @@ func StopContainer(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+
 	err := docker.StopContainer(containerRequest.ContainerID)
 	if err != nil {
 		response.Fail(err, "Stop container fail", c)
 		return
 	}
-	
+
 	response.OK(nil, "Stop container success", c)
 }
 
@@ -90,12 +93,12 @@ func RemoveContainer(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	
+
 	err := docker.RemoveContainer(containerRequest.ContainerID)
 	if err != nil {
 		response.Fail(err, "Remove container fail", c)
 		return
 	}
-	
+
 	response.OK(nil, "Remove container success", c)
 }

@@ -16,13 +16,13 @@ func GetContainerList() (containers []types.Container, err error) {
 		return containers, err
 	}
 	defer cli.Close()
-	
+
 	ctx := context.Background()
 	containers, err = cli.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
 		return containers, err
 	}
-	
+
 	return containers, err
 }
 
@@ -32,51 +32,77 @@ func GetContainer(containerID string) (containerJSON types.ContainerJSON, err er
 		return containerJSON, err
 	}
 	defer cli.Close()
-	
+
 	ctx := context.Background()
 	containerJSON, err = cli.ContainerInspect(ctx, containerID)
 	if err != nil {
 		return containerJSON, err
 	}
-	
+
 	return containerJSON, err
 }
 
-func CreateContainer(imageID string) (containerID string, err error) {
+func CreateContainer(imageID string, specifiedPorts []string, commands []string) (containerID string, err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return containerID, err
 	}
 	defer cli.Close()
-	
+
 	image, err := GetImage(imageID)
 	if err != nil {
 		return containerID, err
 	}
-	
-	exposedPorts := image.Config.ExposedPorts
-	randomPorts, err := freeport.GetFreePorts(len(exposedPorts))
-	if err != nil {
-		return containerID, err
+
+	exposedPorts := nat.PortSet{}
+	portBindings := nat.PortMap{}
+
+	var randomPorts []int
+	if len(specifiedPorts) > 0 {
+		randomPorts, err = freeport.GetFreePorts(len(specifiedPorts))
+		if err != nil {
+			return containerID, err
+		}
+
+		for i, port := range specifiedPorts {
+			exposedPort := nat.Port(port)
+			exposedPorts[exposedPort] = struct{}{}
+			portBindings[exposedPort] = []nat.PortBinding{
+				{
+					HostIP:   "0.0.0.0",
+					HostPort: fmt.Sprintf("%d", randomPorts[i]),
+				},
+			}
+		}
+	} else {
+		exposedPorts = image.Config.ExposedPorts
+		randomPorts, err = freeport.GetFreePorts(len(exposedPorts))
+		if err != nil {
+			return containerID, err
+		}
+		i := 0
+		for port := range exposedPorts {
+			portBindings[port] = []nat.PortBinding{
+				{
+					HostIP:   "0.0.0.0",
+					HostPort: fmt.Sprintf("%d", randomPorts[i]),
+				},
+			}
+			i++
+		}
 	}
 
-	portBindings := nat.PortMap{}
-	i := 0
-	for port := range exposedPorts {
-		portBindings[port] = []nat.PortBinding{
-			{
-				HostIP:   "0.0.0.0",
-				HostPort: fmt.Sprintf("%d", randomPorts[i]),
-			},
-		}
-		i++
-	}
-	
-	ctx := context.Background()
-	res, err := cli.ContainerCreate(ctx, &container.Config{
+	config := &container.Config{
 		Image:        imageID,
 		ExposedPorts: exposedPorts,
-	}, &container.HostConfig{
+	}
+
+	if len(commands) > 0 {
+		config.Cmd = commands
+	}
+
+	ctx := context.Background()
+	res, err := cli.ContainerCreate(ctx, config, &container.HostConfig{
 		PortBindings: portBindings,
 	}, nil, nil, "")
 	if err != nil {
@@ -126,7 +152,7 @@ func RemoveContainer(containerID string) (err error) {
 		return err
 	}
 	defer cli.Close()
-	
+
 	ctx := context.Background()
 	removeOptions := container.RemoveOptions{
 		RemoveVolumes: true,
