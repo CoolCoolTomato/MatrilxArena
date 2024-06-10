@@ -8,6 +8,7 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/route"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -43,6 +44,12 @@ func init() {
 	)
 
 	database.Database = conn
+
+	database.Redis = redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%s", config.GetConfig().GetString("Redis.Host"), config.GetConfig().GetString("Redis.Port")),
+		Password: config.GetConfig().GetString("Redis.Password"),
+		DB:       config.GetConfig().GetInt("Redis.DB"),
+	})
 
 	route.Route = gin.Default()
 	route.Route.Use(middleware.CORSMiddleware())
