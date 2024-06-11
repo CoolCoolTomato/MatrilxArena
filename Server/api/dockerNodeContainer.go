@@ -29,8 +29,7 @@ func GetContainerListFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathGetContainerList
-	res, err := docker.GetContainerList(url)
+	res, err := docker.GetContainerList(dockerNode)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Get container list fail", c)
 		return
@@ -55,8 +54,7 @@ func GetContainerFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathGetContainer
-	res, err := docker.GetContainer(url, containerRequest.DockerNodeContainerID)
+	res, err := docker.GetContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Get container fail", c)
 		return
@@ -81,8 +79,7 @@ func CreateContainerFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathCreateContainer
-	res, err := docker.CreateContainer(url, containerRequest.DockerNodeImageID)
+	res, err := docker.CreateContainer(dockerNode, containerRequest.DockerNodeImageID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Create container fail", c)
 		return
@@ -107,8 +104,7 @@ func StartContainerFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathStartContainer
-	res, err := docker.StartContainer(url, containerRequest.DockerNodeContainerID)
+	res, err := docker.StartContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Start container fail", c)
 		return
@@ -133,8 +129,7 @@ func StopContainerFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathStopContainer
-	res, err := docker.StopContainer(url, containerRequest.DockerNodeContainerID)
+	res, err := docker.StopContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Stop container fail", c)
 		return
@@ -159,8 +154,7 @@ func RemoveContainerFromDockerNode(c *gin.Context) {
 		return
 	}
 	
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathRemoveContainer
-	res, err := docker.RemoveContainer(url, containerRequest.DockerNodeContainerID)
+	res, err := docker.RemoveContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Remove container fail", c)
 		return

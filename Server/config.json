@@ -11,5 +11,11 @@
         "Database": "matrilx",
         "Charset": "utf8mb4",
         "Local": "Asia%2FShanghai"
+    },
+    "Redis": {
+        "Host": "127.0.0.1",
+        "Port": "3306",
+        "Password": "",
+        "DB": 0
     }
 }

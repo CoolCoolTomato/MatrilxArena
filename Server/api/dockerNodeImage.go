@@ -29,8 +29,7 @@ func GetImageListFromDockerNode(c *gin.Context) {
 		return
 	}
 
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathGetImageList
-	res, err := docker.GetImageList(url)
+	res, err := docker.GetImageList(dockerNode)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Get image list fail", c)
 		return
@@ -55,8 +54,7 @@ func GetImageFromDockerNode(c *gin.Context) {
 		return
 	}
 
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathGetImage
-	res, err := docker.GetImage(url, imageRequest.DockerNodeImageID)
+	res, err := docker.GetImage(dockerNode, imageRequest.DockerNodeImageID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Get image fail", c)
 		return
@@ -89,8 +87,7 @@ func PullImageFromDockerNode(c *gin.Context) {
         return
     }
 
-    url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathPullImage
-    res, err := docker.PullImage(url, image.RepoTags, image.Repository)
+    res, err := docker.PullImage(dockerNode, image.RepoTags, image.Repository)
     if err != nil {
         response.Fail(err, "Pull image fail", c)
         return
@@ -119,8 +116,7 @@ func RemoveImageFromDockerNode(c *gin.Context) {
 		return
 	}
 
-	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + docker.PathRemoveImage
-	res, err := docker.RemoveImage(url, imageRequest.DockerNodeImageID)
+	res, err := docker.RemoveImage(dockerNode, imageRequest.DockerNodeImageID)
 	if err != nil || res["code"].(float64) != 0{
 		response.Fail(err, "Remove image fail", c)
 		return
