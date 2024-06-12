@@ -11,6 +11,7 @@ type Challenge struct {
 	Image 			Image
 	Title 			string
 	Description 	string
+    Attachment      string
 }
 
 func GetChallengeList() ([]Challenge, error) {
