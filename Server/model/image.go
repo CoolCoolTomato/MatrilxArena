@@ -7,6 +7,7 @@ import (
 
 type Image struct {
 	gorm.Model
+    Remark          string
 	RepoTags		string
 	Repository		string
 }

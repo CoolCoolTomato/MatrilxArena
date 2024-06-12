@@ -9,6 +9,7 @@
         :data="imageList"
         table-layout="fixed"
         >
+        <el-table-column prop="Remark" label="Remark"/>
         <el-table-column prop="RepoTags" label="RepoTags"/>
         <el-table-column label="Repository">
           <template #default="scope">
@@ -37,6 +38,9 @@
         @close="ClearCreateImageForm"
         >
         <el-form :model=createImageData>
+          <el-form-item label="Remark">
+            <el-input v-model="createImageData.Remark"/>
+            </el-form-item>
           <el-form-item label="RepoTags">
             <el-input v-model="createImageData.RepoTags"/>
           </el-form-item>
@@ -56,6 +60,9 @@
         @close="ClearUpdateImageForm"
         >
         <el-form :model=updateImageData>
+          <el-form-item label="Remark">
+            <el-input v-model="updateImageData.Remark"/>
+          </el-form-item>
           <el-form-item label="RepoTags">
             <el-input v-model="updateImageData.RepoTags"/>
           </el-form-item>
@@ -93,12 +100,14 @@ export default {
       imageList: [],
       createImageFormVisible: false,
       createImageData: {
+        "Remark": "",
         "RepoTags": "",
         "Repository": "",
       },
       updateImageFormVisible: false,
       updateImageData: {
         "ID": 0,
+        "Remark": "",
         "RepoTags": "",
         "Repository": "",
       },
@@ -138,6 +147,7 @@ export default {
     },
     ClearCreateImageForm() {
       this.createImageData = {
+        "Remark": "",
         "RepoTags": "",
         "Repository": "",
       }
@@ -161,6 +171,7 @@ export default {
     OpenUpdateImageForm(row) {
       this.updateImageData = {
         "ID": row.ID,
+        "Remark": row.Remark,
         "RepoTags": row.RepoTags,
         "Repository": row.Repository,
       }
@@ -169,6 +180,7 @@ export default {
     ClearUpdateImageForm() {
       this.updateImageData = {
         "ID": 0,
+        "Remark": "",
         "RepoTags": "",
         "Repository": "",
       }

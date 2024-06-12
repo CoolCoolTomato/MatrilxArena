@@ -110,6 +110,7 @@
               @selection-change="handleSelectionChange"
               >
               <el-table-column type="selection" width="50" />
+              <el-table-column prop="Remark" label="Remark"/>
               <el-table-column prop="RepoTags" label="RepoTags"/>
               <el-table-column label="Repository">
                 <template #default="scope">
