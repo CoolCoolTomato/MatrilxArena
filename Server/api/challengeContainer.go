@@ -1,13 +1,11 @@
 package api
 
 import (
-    "context"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/database"
     "github.com/CoolCoolTomato/MatrilxArena/Server/docker"
     "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
     "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
     "github.com/gin-gonic/gin"
-    "time"
 )
 
 func CreateContainerFromChallenge(c *gin.Context) {
@@ -17,15 +15,12 @@ func CreateContainerFromChallenge(c *gin.Context) {
         return
     }
 
-    ctx := context.Background()
-    userKey := "user:" + username.(string) + ":containers"
-    containerCount, err := database.GetRedis().SCard(ctx, userKey).Result()
+    userContainers, err := manager.GetUserContainers(username.(string))
     if err != nil {
-        response.Fail(err, "Failed to check container count", c)
+        response.Fail(nil, "Get user containers fail", c)
         return
     }
-
-    if containerCount >= 3 {
+    if len(userContainers) >= 3 {
         response.Fail(nil, "You can only create up to 3 containers", c)
         return
     }
@@ -77,18 +72,12 @@ func CreateContainerFromChallenge(c *gin.Context) {
     }
 
     containerID := res["data"].(string)
-    err = database.GetRedis().SAdd(ctx, userKey, containerID).Err()
-    if err != nil {
-        response.Fail(err, "Failed to save container ID", c)
+    err = manager.AddUserContainer(username.(string), containerID, dockerNode.ID)
+
+    container, err := docker.GetContainer(dockerNode, containerID)
+    if err != nil || res["code"].(float64) != 0 {
+        response.Fail(err, "Get container fail", c)
         return
     }
-
-    containerKey := "container:" + containerID
-    err = database.GetRedis().Set(ctx, containerKey, username.(string), time.Hour).Err()
-    if err != nil {
-        response.Fail(err, "Failed to set container TTL", c)
-        return
-    }
-
-    response.OK(res, "Create container success", c)
+    response.OK(container["data"], "Create container success", c)
 }
