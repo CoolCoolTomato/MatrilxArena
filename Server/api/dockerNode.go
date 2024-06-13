@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/gin-gonic/gin"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+    "github.com/gin-gonic/gin"
 )
 
 func GetDockerNodeList(c *gin.Context) {

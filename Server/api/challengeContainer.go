@@ -1,15 +1,37 @@
 package api
 
 import (
-    "github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
+    "context"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/database"
     "github.com/CoolCoolTomato/MatrilxArena/Server/docker"
     "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
     "github.com/gin-gonic/gin"
+    "time"
 )
 
 func CreateContainerFromChallenge(c *gin.Context) {
+    username, exists := c.Get("Username")
+    if !exists {
+        response.Fail(nil, "User not found", c)
+        return
+    }
+
+    ctx := context.Background()
+    userKey := "user:" + username.(string) + ":containers"
+    containerCount, err := database.GetRedis().SCard(ctx, userKey).Result()
+    if err != nil {
+        response.Fail(err, "Failed to check container count", c)
+        return
+    }
+
+    if containerCount >= 3 {
+        response.Fail(nil, "You can only create up to 3 containers", c)
+        return
+    }
+
     var challenge model.Challenge
-    err := c.ShouldBindJSON(&challenge)
+    err = c.ShouldBindJSON(&challenge)
     if err != nil || challenge.ID == 0{
         response.Fail(err, "Invalid argument", c)
         return
@@ -51,6 +73,20 @@ func CreateContainerFromChallenge(c *gin.Context) {
     res, err := docker.CreateContainer(dockerNode, dockerNodeImageID)
     if err != nil || res["code"].(float64) != 0 {
         response.Fail(err, "Create container fail", c)
+        return
+    }
+
+    containerID := res["data"].(string)
+    err = database.GetRedis().SAdd(ctx, userKey, containerID).Err()
+    if err != nil {
+        response.Fail(err, "Failed to save container ID", c)
+        return
+    }
+
+    containerKey := "container:" + containerID
+    err = database.GetRedis().Set(ctx, containerKey, username.(string), time.Hour).Err()
+    if err != nil {
+        response.Fail(err, "Failed to set container TTL", c)
         return
     }
 

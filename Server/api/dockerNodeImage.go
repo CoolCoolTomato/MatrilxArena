@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/gin-gonic/gin"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/docker"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+    "github.com/gin-gonic/gin"
 )
 
 type ImageRequest struct {

@@ -53,6 +53,7 @@ func init() {
 
 	route.Route = gin.Default()
 	route.Route.Use(middleware.CORSMiddleware())
+    route.Route.Use(middleware.JWTAuthMiddleware())
 	route.SetAuthRoute(route.Route)
 	route.SetUserRoute(route.Route)
 	route.SetImageRoute(route.Route)

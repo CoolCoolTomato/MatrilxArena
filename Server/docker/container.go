@@ -1,8 +1,8 @@
 package docker
 
 import (
-    "github.com/CoolCoolTomato/MatrilxArena/Server/common/request"
     "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/request"
 )
 
 func GetContainerList(dockerNode model.DockerNode) (map[string]interface{}, error) {

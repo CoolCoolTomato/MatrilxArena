@@ -1,4 +1,4 @@
-package utils
+package jwt
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/config"

@@ -1,10 +1,10 @@
 package api
 
 import (
-	"github.com/CoolCoolTomato/MatrilxArena/Server/common/response"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils"
-	"github.com/gin-gonic/gin"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/jwt"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+    "github.com/gin-gonic/gin"
 )
 
 func Login(c *gin.Context) {
@@ -28,7 +28,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateJWT(dbUser.Username)
+	token, err := jwt.GenerateJWT(dbUser.Username)
 	if err != nil {
 		response.Fail(err, "Failed to generate token", c)
 		return
