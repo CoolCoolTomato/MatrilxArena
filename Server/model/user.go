@@ -16,7 +16,7 @@ type User struct {
 
 func GetUserList() ([]User, error) {
 	var userList []User
-	err := database.GetDatabase().Select("ID", "Username", "Email").Find(&userList).Error
+	err := database.GetDatabase().Select("ID", "Username", "Email", "Role").Find(&userList).Error
 	if err != nil {
 		return nil, err
 	}

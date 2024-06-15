@@ -11,6 +11,11 @@
       >
         <el-table-column prop="Username" label="Username"/>
         <el-table-column prop="Email" label="Email"/>
+        <el-table-column label="Role">
+          <template #default="scope">
+            {{ formatRole(scope.row.Role) }}
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
             <el-button
@@ -39,9 +44,15 @@
           <el-form-item label="Email">
             <el-input v-model="createUserData.Email"/>
           </el-form-item>
+          <el-form-item label="Role">
+            <el-select v-model="createUserData.Role">
+              <el-option :key="1" :value="1" label="admin"/>
+              <el-option :key="2" :value="2" label="user"/>
+            </el-select>
+          </el-form-item>
           <el-form-item label="Password">
             <el-input v-model="createUserData.Password"/>
-            </el-form-item>
+          </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="createUserFormVisible = false">Cancel</el-button>
@@ -60,6 +71,12 @@
           </el-form-item>
           <el-form-item label="Email">
             <el-input v-model="updateUserData.Email"/>
+          </el-form-item>
+          <el-form-item label="Role">
+            <el-select v-model="updateUserData.Role">
+              <el-option :key="1" :value="1" label="admin"/>
+              <el-option :key="2" :value="2" label="user"/>
+            </el-select>
           </el-form-item>
           <el-form-item label="Password">
             <el-input v-model="updateUserData.Password"/>
@@ -98,6 +115,7 @@ export default {
         "Username": "",
         "Password": "",
         "Email": "",
+        "Role": null,
       },
       updateUserFormVisible: false,
       updateUserData: {
@@ -105,6 +123,7 @@ export default {
         "Username": "",
         "Password": "",
         "Email": "",
+        "Role": null,
       },
       deleteUserFormVisible: false,
       deleteUserData: {
@@ -145,6 +164,7 @@ export default {
         "Username": "",
         "Password": "",
         "Email": "",
+        "Role": null,
       }
     },
     UpdateUser() {
@@ -169,6 +189,7 @@ export default {
         "Username": row.Username,
         "Password": row.Password,
         "Email": row.Email,
+        "Role": row.Role,
       }
       this.updateUserFormVisible = true
     },
@@ -178,6 +199,7 @@ export default {
         "Username": "",
         "Password": "",
         "Email": "",
+        "Role": null,
       }
     },
     DeleteUser() {
@@ -205,6 +227,15 @@ export default {
     ClearDeleteUserForm() {
       this.deleteUserData = {
         "ID": 0,
+      }
+    },
+    formatRole(role) {
+      if (role === 1) {
+        return "admin"
+      } else if (role === 2) {
+        return "user"
+      } else {
+        return "select"
       }
     },
   },

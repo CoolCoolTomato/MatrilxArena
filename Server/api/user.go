@@ -1,9 +1,9 @@
 package api
 
 import (
-    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
-    "github.com/gin-gonic/gin"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+	"github.com/gin-gonic/gin"
 )
 
 func GetUserList(c *gin.Context) {
@@ -36,7 +36,7 @@ func GetUser(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil || user.Username == "" || user.Password == "" || user.Email == "" {
+	if err != nil || user.Username == "" || user.Password == "" || user.Email == "" || user.Role == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
@@ -57,7 +57,7 @@ func CreateUser(c *gin.Context) {
 func UpdateUser(c *gin.Context) {
 	var user model.User
 	err := c.ShouldBindJSON(&user)
-	if err != nil || user.ID == 0 || user.Username == "" || user.Password == "" || user.Email == "" {
+	if err != nil || user.ID == 0 || user.Username == "" || user.Email == "" || user.Role == 0 {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
