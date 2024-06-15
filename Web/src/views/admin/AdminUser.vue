@@ -46,8 +46,7 @@
           </el-form-item>
           <el-form-item label="Role">
             <el-select v-model="createUserData.Role">
-              <el-option :key="1" :value="1" label="admin"/>
-              <el-option :key="2" :value="2" label="user"/>
+              <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
           <el-form-item label="Password">
@@ -74,8 +73,7 @@
           </el-form-item>
           <el-form-item label="Role">
             <el-select v-model="updateUserData.Role">
-              <el-option :key="1" :value="1" label="admin"/>
-              <el-option :key="2" :value="2" label="user"/>
+              <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
           <el-form-item label="Password">
@@ -128,7 +126,17 @@ export default {
       deleteUserFormVisible: false,
       deleteUserData: {
         "ID": 0,
-      }
+      },
+      roles: [
+        {
+          "value": 1,
+          "label": "admin"
+        },
+        {
+          "value": 2,
+          "label": "user"
+        }
+      ]
     }
   },
   methods: {
