@@ -10,5 +10,6 @@ func SetChallengeContainerRoute(r *gin.Engine) {
 	{
 		challengeContainer.POST("CreateContainerFromChallenge", api.CreateContainerFromChallenge)
 		challengeContainer.POST("DestroyContainerByUser", api.DestroyContainerByUser)
+		challengeContainer.POST("DelayContainerByUser", api.DelayContainerByUser)
 	}
 }

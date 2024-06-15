@@ -127,3 +127,44 @@ func DestroyContainerByUser(c *gin.Context) {
 	}
 	response.Fail(nil, "Container not found", c)
 }
+
+func DelayContainerByUser(c *gin.Context) {
+	username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, "User not found", c)
+		return
+	}
+
+	var containerRequest ContainerRequest
+	err := c.ShouldBindJSON(&containerRequest)
+	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
+		response.Fail(err, "Invalid argument", c)
+		return
+	}
+
+	userContainers, err := manager.GetUserContainers(username.(string))
+	if err != nil {
+		response.Fail(nil, "Get user containers fail", c)
+		return
+	}
+
+	for _, userContainer := range userContainers {
+		if userContainer.DockerNodeID == containerRequest.DockerNodeID && userContainer.DockerNodeContainerID == containerRequest.DockerNodeContainerID {
+			var dockerNode model.DockerNode
+			dockerNode.ID = userContainer.DockerNodeID
+			err = dockerNode.GetDockerNode()
+			if err != nil {
+				response.Fail(err, "Get dockerNode fail", c)
+				return
+			}
+			err = manager.ResetUserContainerTime(userContainer.DockerNodeContainerID)
+			if err != nil {
+				response.Fail(err, "Delay user container fail", c)
+				return
+			}
+			response.OK(nil, "Delay container success", c)
+			return
+		}
+	}
+	response.Fail(nil, "Container not found", c)
+}
