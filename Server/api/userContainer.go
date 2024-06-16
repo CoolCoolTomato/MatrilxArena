@@ -8,6 +8,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func GetContainerByUser(c *gin.Context) {
+    username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, "User not found", c)
+		return
+	}
+
+    userContainers, err := manager.GetUserContainers(username.(string))
+	if err != nil {
+		response.Fail(nil, "Get user containers fail", c)
+		return
+	}
+
+    response.OK(userContainers, "Get user container success", c)
+}
+
 func CreateContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {

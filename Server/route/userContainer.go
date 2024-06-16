@@ -10,6 +10,7 @@ func SetUserContainerRoute(r *gin.Engine) {
 	userContainer := r.Group("/userContainer")
 	userContainer.Use(middleware.JWTAuthMiddleware())
 	{
+        userContainer.POST("GetContainerByUser", api.GetContainerByUser)
 		userContainer.POST("CreateContainerByUser", api.CreateContainerByUser)
 		userContainer.POST("DestroyContainerByUser", api.DestroyContainerByUser)
 		userContainer.POST("DelayContainerByUser", api.DelayContainerByUser)
