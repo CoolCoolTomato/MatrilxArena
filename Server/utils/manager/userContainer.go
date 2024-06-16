@@ -9,10 +9,10 @@ import (
 )
 
 type ContainerInfo struct {
-	DockerNodeContainerID string        `json:"container_id"`
-	DockerNodeID          uint          `json:"docker_node_id"`
-    ChallengeID           uint          `json:"challenge_id"`
-	RemainingTime         time.Duration `json:"remaining_time"`
+	DockerNodeContainerID string        `json:"DockerNodeContainerID"`
+	DockerNodeID          uint          `json:"DockerNodeID"`
+    ChallengeID           uint          `json:"ChallengeID"`
+	RemainingTime         time.Duration `json:"RemainingTime"`
 }
 
 func GetUserContainers(username string) ([]ContainerInfo, error) {
@@ -40,7 +40,7 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 			continue
 		}
 
-		dockerNodeIDStr, err := database.GetRedis().HGet(ctx, containerKey, "docker_node_id").Result()
+		dockerNodeIDStr, err := database.GetRedis().HGet(ctx, containerKey, "DockerNodeID").Result()
 		if err != nil {
 			return nil, err
 		}
@@ -55,7 +55,7 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 			return nil, err
 		}
 
-		challengeIDStr, err := database.GetRedis().HGet(ctx, containerKey, "challenge_id").Result()
+		challengeIDStr, err := database.GetRedis().HGet(ctx, containerKey, "ChallengeID").Result()
 		if err != nil {
 			return nil, err
 		}
@@ -85,11 +85,11 @@ func AddUserContainer(username, dockerNodeContainerID string, dockerNodeID uint,
 		return err
 	}
 
-	if err := database.GetRedis().HSet(ctx, containerKey, "docker_node_id", strconv.FormatUint(uint64(dockerNodeID), 10)).Err(); err != nil {
+	if err := database.GetRedis().HSet(ctx, containerKey, "DockerNodeID", strconv.FormatUint(uint64(dockerNodeID), 10)).Err(); err != nil {
 		return err
 	}
 
-	if err := database.GetRedis().HSet(ctx, containerKey, "challenge_id", strconv.FormatUint(uint64(challengeID), 10)).Err(); err != nil {
+	if err := database.GetRedis().HSet(ctx, containerKey, "ChallengeID", strconv.FormatUint(uint64(challengeID), 10)).Err(); err != nil {
 		return err
 	}
 

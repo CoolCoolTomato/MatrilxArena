@@ -6,9 +6,10 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
+    "strings"
 )
 
-func GetContainerByUser(c *gin.Context) {
+func GetContainerListByUser(c *gin.Context) {
     username, exists := c.Get("Username")
 	if !exists {
 		response.Fail(nil, "User not found", c)
@@ -127,14 +128,14 @@ func DestroyContainerByUser(c *gin.Context) {
 				response.Fail(err, "Get dockerNode fail", c)
 				return
 			}
+            err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID)
+			if err != nil {
+				response.Fail(err, "Delete user container fail", c)
+				return
+			}
 			res, err := docker.RemoveContainer(dockerNode, userContainer.DockerNodeContainerID)
 			if err != nil || res["code"].(float64) != 0 {
 				response.Fail(err, "Remove container fail", c)
-				return
-			}
-			err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID)
-			if err != nil {
-				response.Fail(err, "Delete user container fail", c)
 				return
 			}
 			response.OK(nil, "Destroy container success", c)
@@ -175,8 +176,13 @@ func DelayContainerByUser(c *gin.Context) {
 			}
 			err = manager.ResetUserContainerTime(userContainer.DockerNodeContainerID)
 			if err != nil {
-				response.Fail(err, "Delay user container fail", c)
-				return
+                if strings.Contains(err.Error(), "you can only extend the container life when it has less than 10 minutes remaining") {
+                    response.Fail(err, "you can only extend the container life when it has less than 10 minutes remaining", c)
+				    return
+                } else {
+                    response.Fail(err, "Delay user container fail", c)
+				    return
+                }
 			}
 			response.OK(nil, "Delay container success", c)
 			return
