@@ -72,7 +72,7 @@ func CreateContainerFromChallenge(c *gin.Context) {
 	}
 
 	containerID := res["data"].(string)
-	err = manager.AddUserContainer(username.(string), containerID, dockerNode.ID)
+	err = manager.AddUserContainer(username.(string), containerID, dockerNode.ID, challenge.ID)
 
 	container, err := docker.GetContainer(dockerNode, containerID)
 	if err != nil || res["code"].(float64) != 0 {
