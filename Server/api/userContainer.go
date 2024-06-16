@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateContainerFromChallenge(c *gin.Context) {
+func CreateContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
 		response.Fail(nil, "User not found", c)
