@@ -19,10 +19,10 @@
     <el-main>
       <el-scrollbar style="width: 80%; left: 10%;">
         <el-row>
-          <el-col v-for="i in 10" :span=12>
-            <div class="challenge">
-              <h2>Web{{i}}</h2>
-              <el-text>这是一个Web{{i}}的题目，你能找到它的flag吗？</el-text>
+          <el-col v-for="challenge in challengeList" :span=12>
+            <div class="challenge" @click="OpenChallengeDetail(challenge)">
+              <h2>{{ challenge.Title }}</h2>
+              <el-text>{{ challenge.Description }}</el-text>
             </div>
           </el-col>
         </el-row>
@@ -32,23 +32,271 @@
           :total="200"
           />
       </el-scrollbar>
+      <el-dialog
+        v-model="challengeDetailVisible"
+        title="Challenge Detail"
+        width="700"
+        @close="ClearChallengeDetail"
+        >
+        <h2>{{ challengeDetail.Title }}</h2>
+        <el-text>{{ challengeDetail.Description }}</el-text>
+        <br/>
+        <el-progress
+          v-if="checkContainerInUse(challengeDetail.ID)"
+          :percentage="userContainer.RemainingTime / 36000000000"
+          style="margin-top: 15px"
+          >
+          <el-text>{{ formatTime(userContainer.RemainingTime) }}</el-text>
+        </el-progress>
+        <div class="operations">
+          <el-button
+            @click="CreateContainerByUser"
+            v-if="!checkContainerInUse(challengeDetail.ID)"
+            >
+            Create
+          </el-button>
+          <el-button
+            @click="DestroyContainerByUser"
+            v-if="checkContainerInUse(challengeDetail.ID)"
+            >
+            Destroy
+          </el-button>
+          <el-button
+            @click="DelayContainerByUser"
+            v-if="checkContainerInUse(challengeDetail.ID)"
+            >
+            Delay
+          </el-button>
+        </div>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
 
 <script>
 import {Aim, Menu} from '@element-plus/icons-vue'
+import challengeApi from "@/api/challenge.js"
+import challengeContainerApi from "@/api/challengeContainer.js";
+import { ElMessage } from "element-plus";
 
 export default {
   components: {Aim, Menu},
   data() {
     return {
       isMenuOpen: false,
-    };
+      userContainerList: [],
+      userContainer: {
+        "DockerNodeContainerID": "",
+        "DockerNodeID": 0,
+        "ChallengeID": 0,
+        "RemainingTime": 0,
+      },
+      challengeList: [],
+      challengeDetailVisible: false,
+      challengeDetail: {
+        "ID": 0,
+        "Title": "",
+        "Description": "",
+        "Attachment": ""
+      },
+      createContainerByUserData: {
+        "ID": 0,
+      },
+      destroyContainerByUserData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": ""
+      },
+      delayContainerByUserData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": ""
+      },
+      intervalId: null
+    }
   },
   methods: {
     toggleSidebar() {
       this.isMenuOpen = !this.isMenuOpen;
+    },
+    async GetContainerListByUser() {
+      return challengeContainerApi.GetContainerListByUser().then(res => {
+        if (res.code === 0) {
+          this.userContainerList = res.data == null ? [] : res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    GetChallengeList() {
+      challengeApi.GetChallengeList().then(res => {
+        if (res.code === 0) {
+          this.challengeList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenChallengeDetail(challenge) {
+      this.challengeDetailVisible = true
+      this.challengeDetail = {
+        "ID": challenge.ID,
+        "Title": challenge.Title,
+        "Description": challenge.Description,
+        "Attachment": challenge.Attachment
+      }
+      this.createContainerByUserData = {
+        "ID": challenge.ID,
+      }
+      if (this.checkContainerInUse(challenge.ID)) {
+        this.getContainerInUse(challenge.ID)
+        this.destroyContainerByUserData = {
+          "DockerNodeID": this.userContainer.DockerNodeID,
+          "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+        }
+        this.delayContainerByUserData = {
+          "DockerNodeID": this.userContainer.DockerNodeID,
+          "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+        }
+      }
+    },
+    ClearChallengeDetail() {
+      this.challengeDetail = {
+        "ID": 0,
+        "Title": "",
+        "Description": "",
+        "Attachment": ""
+      }
+      this.createContainerByUserData = {
+        "ID": 0,
+      }
+      this.destroyContainerByUserData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": ""
+      }
+      this.delayContainerByUserData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": ""
+      }
+      this.userContainer = {
+        "DockerNodeContainerID": "",
+        "DockerNodeID": 0,
+        "ChallengeID": 0,
+        "RemainingTime": 0,
+      }
+    },
+    CreateContainerByUser() {
+      challengeContainerApi.CreateContainerByUser(this.createContainerByUserData).then(async res => {
+        if (res.code === 0) {
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          await this.GetContainerListByUser()
+          if (this.checkContainerInUse(this.challengeDetail.ID)) {
+            this.getContainerInUse(this.challengeDetail.ID)
+            this.destroyContainerByUserData = {
+              "DockerNodeID": this.userContainer.DockerNodeID,
+              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+            }
+            this.delayContainerByUserData = {
+              "DockerNodeID": this.userContainer.DockerNodeID,
+              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+            }
+          }
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    DestroyContainerByUser() {
+      challengeContainerApi.DestroyContainerByUser(this.destroyContainerByUserData).then(async res => {
+        if (res.code === 0) {
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          await this.GetContainerListByUser()
+          this.destroyContainerByUserData = {
+            "DockerNodeID": 0,
+            "DockerNodeContainerID": ""
+          }
+          this.delayContainerByUserData = {
+            "DockerNodeID": 0,
+            "DockerNodeContainerID": ""
+          }
+          this.userContainer = {
+            "DockerNodeContainerID": "",
+            "DockerNodeID": 0,
+            "ChallengeID": 0,
+            "RemainingTime": 0,
+          }
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    DelayContainerByUser() {
+      challengeContainerApi.DelayContainerByUser(this.delayContainerByUserData).then(async res => {
+        if (res.code === 0) {
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          await this.GetContainerListByUser()
+          if (this.checkContainerInUse(this.challengeDetail.ID)) {
+            this.getContainerInUse(this.challengeDetail.ID)
+            this.destroyContainerByUserData = {
+              "DockerNodeID": this.userContainer.DockerNodeID,
+              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+            }
+            this.delayContainerByUserData = {
+              "DockerNodeID": this.userContainer.DockerNodeID,
+              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+            }
+          }
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    checkContainerInUse(challengeID) {
+      return this.userContainerList.some(container => container.ChallengeID === challengeID)
+    },
+    getContainerInUse(challengeID) {
+      this.userContainer = this.userContainerList.find(container => container.ChallengeID === challengeID)
+    },
+    formatTime(time) {
+      const oneHour = 3600000000000;
+      let minutes = Math.floor(time / (oneHour / 60))
+      let remaining = time % (oneHour / 60)
+      let seconds = Math.floor(remaining / (oneHour / 3600))
+      return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+    },
+    calculateTime() {
+      this.userContainerList.forEach(user => {
+        if (user.RemainingTime > 0) {
+          user.RemainingTime -= 1000000000;
+        }
+      })
+    },
+  },
+  mounted() {
+    this.GetContainerListByUser()
+    this.GetChallengeList()
+    this.intervalId = setInterval(this.calculateTime, 1000);
+  },
+  beforeDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
   }
 };
@@ -65,6 +313,7 @@ export default {
   height: 200px;
   margin: 20px;
   border: 1px solid var(--el-border-color);
+  cursor: pointer;
 }
 .challenge h2{
   margin: 20px;
@@ -72,6 +321,9 @@ export default {
 .challenge .el-text{
   margin: 20px;
 }
+.operations{
+  margin-top: 15px;
+ }
 .el-pagination{
   justify-content: center;
 }
