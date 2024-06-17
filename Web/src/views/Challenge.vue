@@ -41,6 +41,14 @@
         <h2>{{ challengeDetail.Title }}</h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <br/>
+        <div
+          v-if="checkContainerInUse(challengeDetail.ID)"
+          v-for="portMap in userContainer.PortMaps"
+          style="margin-top: 15px">
+          <el-text>
+            {{ portMap.PortProtocol }} -> {{ portMap.Link }}
+          </el-text>
+        </div>
         <el-progress
           v-if="checkContainerInUse(challengeDetail.ID)"
           :percentage="userContainer.RemainingTime / 36000000000"
@@ -90,6 +98,7 @@ export default {
         "DockerNodeID": 0,
         "ChallengeID": 0,
         "RemainingTime": 0,
+        "PortMaps": []
       },
       challengeList: [],
       challengeDetailVisible: false,
@@ -185,6 +194,7 @@ export default {
         "DockerNodeID": 0,
         "ChallengeID": 0,
         "RemainingTime": 0,
+        "PortMaps": []
       }
     },
     CreateContainerByUser() {
@@ -234,6 +244,7 @@ export default {
             "DockerNodeID": 0,
             "ChallengeID": 0,
             "RemainingTime": 0,
+            "PortMaps": []
           }
         } else {
           ElMessage.error(res.msg)

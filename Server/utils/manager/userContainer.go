@@ -2,17 +2,24 @@ package manager
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/database"
 	"strconv"
 	"time"
 )
 
+type PortMap struct {
+    PortProtocol string
+    Link         string
+}
+
 type ContainerInfo struct {
-	DockerNodeContainerID string        `json:"DockerNodeContainerID"`
-	DockerNodeID          uint          `json:"DockerNodeID"`
-    ChallengeID           uint          `json:"ChallengeID"`
-	RemainingTime         time.Duration `json:"RemainingTime"`
+	DockerNodeContainerID string                   `json:"DockerNodeContainerID"`
+	DockerNodeID          uint                     `json:"DockerNodeID"`
+    ChallengeID           uint                     `json:"ChallengeID"`
+	RemainingTime         time.Duration            `json:"RemainingTime"`
+    PortMaps              []PortMap                 `json:"PortMaps"`
 }
 
 func GetUserContainers(username string) ([]ContainerInfo, error) {
@@ -65,18 +72,29 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 			return nil, err
 		}
 
+        portMapsStr, err := database.GetRedis().HGet(ctx, containerKey, "PortMaps").Result()
+        if err != nil {
+            return nil, err
+        }
+
+        var portMaps []PortMap
+        if err := json.Unmarshal([]byte(portMapsStr), &portMaps); err != nil {
+            return nil, err
+        }
+
 		containers = append(containers, ContainerInfo{
 			DockerNodeContainerID: dockerNodeContainerID,
 			DockerNodeID:          uint(dockerNodeID),
             ChallengeID:           uint(challengeID),
 			RemainingTime:         ttl,
+            PortMaps:              portMaps,
 		})
 	}
 
 	return containers, nil
 }
 
-func AddUserContainer(username, dockerNodeContainerID string, dockerNodeID uint, challengeID uint) error {
+func AddUserContainer(username string, dockerNodeContainerID string, portMaps []PortMap, dockerNodeID uint, challengeID uint) error {
 	ctx := context.Background()
 	userKey := "user:" + username + ":containers"
 	containerKey := "container:" + dockerNodeContainerID
@@ -92,6 +110,15 @@ func AddUserContainer(username, dockerNodeContainerID string, dockerNodeID uint,
 	if err := database.GetRedis().HSet(ctx, containerKey, "ChallengeID", strconv.FormatUint(uint64(challengeID), 10)).Err(); err != nil {
 		return err
 	}
+
+    portMapsBytes, err := json.Marshal(portMaps)
+    if err != nil {
+        return err
+    }
+
+    if err := database.GetRedis().HSet(ctx, containerKey, "PortMaps", string(portMapsBytes)).Err(); err != nil {
+        return err
+    }
 
 	if err := database.GetRedis().Expire(ctx, containerKey, time.Hour).Err(); err != nil {
 		return err
