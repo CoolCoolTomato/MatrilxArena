@@ -6,8 +6,8 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
-    "github.com/mitchellh/mapstructure"
-    "strings"
+	"github.com/mitchellh/mapstructure"
+	"strings"
 )
 
 type PortBinding struct {
@@ -30,19 +30,19 @@ type ContainerResponse struct {
 }
 
 func GetContainerListByUser(c *gin.Context) {
-    username, exists := c.Get("Username")
+	username, exists := c.Get("Username")
 	if !exists {
 		response.Fail(nil, "User not found", c)
 		return
 	}
 
-    userContainers, err := manager.GetUserContainers(username.(string))
+	userContainers, err := manager.GetUserContainers(username.(string))
 	if err != nil {
 		response.Fail(nil, "Get user containers fail", c)
 		return
 	}
 
-    response.OK(userContainers, "Get user container success", c)
+	response.OK(userContainers, "Get user container success", c)
 }
 
 func CreateContainerByUser(c *gin.Context) {
@@ -102,44 +102,44 @@ func CreateContainerByUser(c *gin.Context) {
 
 	}
 
-	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID)
+	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID, challenge.SpecifiedPorts, challenge.Commands)
 	if err != nil || res["code"].(float64) != 0 {
 		response.Fail(err, "Create container fail", c)
 		return
 	}
 
-    containerID := res["data"].(string)
+	containerID := res["data"].(string)
 	res, err = docker.GetContainer(dockerNode, containerID)
 	if err != nil || res["code"].(float64) != 0 {
 		response.Fail(err, "Get container fail", c)
 		return
 	}
 
-    var containerResponse ContainerResponse
-    err = mapstructure.Decode(res, &containerResponse)
-    if err != nil {
-        response.Fail(err, "Decode container fail", c)
+	var containerResponse ContainerResponse
+	err = mapstructure.Decode(res, &containerResponse)
+	if err != nil {
+		response.Fail(err, "Decode container fail", c)
 		return
-    }
+	}
 
-    var portMaps []manager.PortMap
-    portBindings := containerResponse.Data.HostConfig.PortBindings
-    for portProtocol, bindings := range portBindings {
-        for _, binding := range bindings {
-            portMaps = append(portMaps, manager.PortMap{
-                PortProtocol: portProtocol,
-                Link: dockerNode.Host + ":" + binding.HostPort,
-            })
-        }
-    }
+	var portMaps []manager.PortMap
+	portBindings := containerResponse.Data.HostConfig.PortBindings
+	for portProtocol, bindings := range portBindings {
+		for _, binding := range bindings {
+			portMaps = append(portMaps, manager.PortMap{
+				PortProtocol: portProtocol,
+				Link:         dockerNode.Host + ":" + binding.HostPort,
+			})
+		}
+	}
 
-	err = manager.AddUserContainer(username.(string), containerID,  portMaps, dockerNode.ID, challenge.ID)
-    if err != nil {
-        response.Fail(err, "Add user container fail", c)
+	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID)
+	if err != nil {
+		response.Fail(err, "Add user container fail", c)
 		return
-    }
+	}
 
-    res, err = docker.StartContainer(dockerNode, containerID)
+	res, err = docker.StartContainer(dockerNode, containerID)
 	if err != nil || res["code"].(float64) != 0 {
 		response.Fail(err, "Start container fail", c)
 		return
@@ -177,7 +177,7 @@ func DestroyContainerByUser(c *gin.Context) {
 				response.Fail(err, "Get dockerNode fail", c)
 				return
 			}
-            err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID)
+			err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID)
 			if err != nil {
 				response.Fail(err, "Delete user container fail", c)
 				return
@@ -225,13 +225,13 @@ func DelayContainerByUser(c *gin.Context) {
 			}
 			err = manager.ResetUserContainerTime(userContainer.DockerNodeContainerID)
 			if err != nil {
-                if strings.Contains(err.Error(), "you can only extend the container life when it has less than 10 minutes remaining") {
-                    response.Fail(err, "you can only extend the container life when it has less than 10 minutes remaining", c)
-				    return
-                } else {
-                    response.Fail(err, "Delay user container fail", c)
-				    return
-                }
+				if strings.Contains(err.Error(), "you can only extend the container life when it has less than 10 minutes remaining") {
+					response.Fail(err, "you can only extend the container life when it has less than 10 minutes remaining", c)
+					return
+				} else {
+					response.Fail(err, "Delay user container fail", c)
+					return
+				}
 			}
 			response.OK(nil, "Delay container success", c)
 			return

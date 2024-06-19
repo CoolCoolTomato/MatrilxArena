@@ -12,6 +12,9 @@
         <el-table-column prop="Title" label="Title"/>
         <el-table-column prop="Description" label="Description"/>
         <el-table-column prop="Image.RepoTags" label="Image"/>
+        <el-table-column prop="Attachment" label="Attachment"/>
+        <el-table-column prop="SpecifiedPorts" label="SpecifiedPorts"/>
+        <el-table-column prop="Commands" label="Commands"/>
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
             <el-button
@@ -54,6 +57,43 @@
               >
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item label="Attachment">
+            <el-input v-model="createChallengeData.Attachment"/>
+          </el-form-item>
+          <el-form-item label="SpecifiedPorts">
+            <div style="display: flex">
+              <el-input
+                v-model="createChallengePort"
+              >
+                <template #append>
+                  <el-select
+                    v-model="createChallengeProtocol"
+                    placeholder="Select"
+                    style="width: 100px"
+                  >
+                    <el-option label="tcp" value="tcp"/>
+                    <el-option label="udp" value="udp"/>
+                  </el-select>
+                </template>
+              </el-input>
+              <el-button
+                style="margin-left: 20px;"
+                @click="AddCreateChallengeSpecifiedPorts"
+              >
+                Add
+              </el-button>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <div>
+              <div v-for="port in createChallengeData.SpecifiedPorts">
+                <el-text>{{ port }}</el-text>
+              </div>
+            </div>
+          </el-form-item>
+          <el-form-item label="Commands">
+
           </el-form-item>
         </el-form>
         <template #footer>
@@ -125,13 +165,21 @@ export default {
         "ImageID": null,
         "Title": "",
         "Description": "",
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": []
       },
+      createChallengePort: "",
+      createChallengeProtocol: "",
       updateChallengeFormVisible: false,
       updateChallengeData: {
         "ID": 0,
         "ImageID": null,
         "Title": "",
         "Description": "",
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": []
       },
       deleteChallengeFormVisible: false,
       deleteChallengeData: {
@@ -162,6 +210,11 @@ export default {
         console.log(error)
       })
     },
+    AddCreateChallengeSpecifiedPorts() {
+      let portProtocol = this.createChallengePort + "/" + this.createChallengeProtocol
+
+      this.createChallengeData.SpecifiedPorts.push(portProtocol)
+    },
     CreateChallenge() {
       challengeApi.CreateChallenge(this.createChallengeData).then(res => {
         if (res.code === 0) {
@@ -183,7 +236,12 @@ export default {
         "ImageID": null,
         "Title": "",
         "Description": "",
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": []
       }
+      this.createChallengePort = ""
+      this.createChallengeProtocol = ""
     },
     UpdateChallenge() {
       challengeApi.UpdateChallenge(this.updateChallengeData).then(res => {
@@ -207,6 +265,9 @@ export default {
         "ImageID": row.ImageID,
         "Title": row.Title,
         "Description": row.Description,
+        "Attachment": row.Attachment,
+        "SpecifiedPorts": row.SpecifiedPorts,
+        "Commands": row.Commands
       }
       this.updateChallengeFormVisible = true
     },
@@ -216,6 +277,9 @@ export default {
         "ImageID": null,
         "Title": "",
         "Description": "",
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": []
       }
     },
     DeleteChallenge() {

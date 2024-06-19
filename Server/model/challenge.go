@@ -7,11 +7,13 @@ import (
 
 type Challenge struct {
 	gorm.Model
-	ImageID 		uint
-	Image 			Image
-	Title 			string
-	Description 	string
-    Attachment      string
+	ImageID        uint
+	Image          Image
+	Title          string
+	Description    string
+	Attachment     string
+	SpecifiedPorts []string `gorm:"type:json"`
+	Commands       []string `gorm:"type:json"`
 }
 
 func GetChallengeList() ([]Challenge, error) {
