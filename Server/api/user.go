@@ -61,10 +61,12 @@ func UpdateUser(c *gin.Context) {
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
-	err = user.SetPassword(user.Password)
-	if err != nil {
-		response.Fail(err, "Set password fail", c)
-		return
+	if user.Password != "" {
+		err = user.SetPassword(user.Password)
+		if err != nil {
+			response.Fail(err, "Set password fail", c)
+			return
+		}
 	}
 	err = user.UpdateUser()
 	if err != nil {
