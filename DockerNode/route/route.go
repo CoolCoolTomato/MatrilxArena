@@ -22,5 +22,6 @@ func SetRoutes(r *gin.Engine) {
 		container.POST("/StartContainer", api.StartContainer)
 		container.POST("/StopContainer", api.StopContainer)
 		container.POST("/RemoveContainer", api.RemoveContainer)
+		container.POST("/ExecuteCommand", api.ExecuteCommand)
 	}
 }

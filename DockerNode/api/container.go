@@ -10,7 +10,7 @@ type ContainerRequest struct {
 	ContainerID    string
 	ImageID        string
 	SpecifiedPorts []string
-	Commands       []string
+	Command        []string
 }
 
 func GetContainerList(c *gin.Context) {
@@ -46,7 +46,7 @@ func CreateContainer(c *gin.Context) {
 		return
 	}
 
-	containerID, err := docker.CreateContainer(containerRequest.ImageID, containerRequest.SpecifiedPorts, containerRequest.Commands)
+	containerID, err := docker.CreateContainer(containerRequest.ImageID, containerRequest.SpecifiedPorts)
 	if err != nil {
 		response.Fail(err, "Create container fail", c)
 		return
@@ -101,4 +101,20 @@ func RemoveContainer(c *gin.Context) {
 	}
 
 	response.OK(nil, "Remove container success", c)
+}
+
+func ExecuteCommand(c *gin.Context) {
+	var containerRequest ContainerRequest
+	if err := c.ShouldBindJSON(&containerRequest); err != nil {
+		response.Fail(err, "Invalid argument", c)
+		return
+	}
+
+	err := docker.ExecuteCommand(containerRequest.ContainerID, containerRequest.Command)
+	if err != nil {
+		response.Fail(err, "Execute command fail", c)
+		return
+	}
+
+	response.OK(nil, "Execute command success", c)
 }

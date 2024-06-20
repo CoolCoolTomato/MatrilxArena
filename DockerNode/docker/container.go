@@ -42,7 +42,7 @@ func GetContainer(containerID string) (containerJSON types.ContainerJSON, err er
 	return containerJSON, err
 }
 
-func CreateContainer(imageID string, specifiedPorts []string, commands []string) (containerID string, err error) {
+func CreateContainer(imageID string, specifiedPorts []string) (containerID string, err error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		return containerID, err
@@ -97,10 +97,6 @@ func CreateContainer(imageID string, specifiedPorts []string, commands []string)
 		ExposedPorts: exposedPorts,
 	}
 
-	if len(commands) > 0 {
-		config.Cmd = commands
-	}
-
 	ctx := context.Background()
 	res, err := cli.ContainerCreate(ctx, config, &container.HostConfig{
 		PortBindings: portBindings,
@@ -108,8 +104,9 @@ func CreateContainer(imageID string, specifiedPorts []string, commands []string)
 	if err != nil {
 		return containerID, err
 	}
+	containerID = res.ID
 
-	return res.ID, err
+	return containerID, err
 }
 
 func StartContainer(containerID string) (err error) {
@@ -162,6 +159,43 @@ func RemoveContainer(containerID string) (err error) {
 	err = cli.ContainerRemove(ctx, containerID, removeOptions)
 	if err != nil {
 		return err
+	}
+
+	return err
+}
+
+func ExecuteCommand(containerID string, command []string) (err error) {
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	if err != nil {
+		return err
+	}
+	defer cli.Close()
+
+	execConfig := types.ExecConfig{
+		Cmd:          command,
+		User:         "root",
+		AttachStdout: true,
+		AttachStderr: true,
+	}
+
+	ctx := context.Background()
+	res, err := cli.ContainerExecCreate(ctx, containerID, execConfig)
+	if err != nil {
+		return err
+	}
+
+	err = cli.ContainerExecStart(ctx, res.ID, types.ExecStartCheck{})
+	if err != nil {
+		return err
+	}
+
+	inspectResp, err := cli.ContainerExecInspect(ctx, res.ID)
+	if err != nil {
+		return err
+	}
+
+	if inspectResp.ExitCode != 0 {
+		return fmt.Errorf("command failed with exit code %d", inspectResp.ExitCode)
 	}
 
 	return err
