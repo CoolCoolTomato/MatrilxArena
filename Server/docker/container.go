@@ -10,44 +10,52 @@ func GetContainerList(dockerNode model.DockerNode) (map[string]interface{}, erro
 	return request.Post(url, nil)
 }
 
-func GetContainer(dockerNode model.DockerNode, ContainerID string) (map[string]interface{}, error) {
+func GetContainer(dockerNode model.DockerNode, containerID string) (map[string]interface{}, error) {
 	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathGetContainer
 	data := map[string]interface{}{
-		"ContainerID": ContainerID,
+		"ContainerID": containerID,
 	}
 	return request.Post(url, data)
 }
 
-func CreateContainer(dockerNode model.DockerNode, ImageID string, SpecifiedPorts []string, Commands []string) (map[string]interface{}, error) {
+func CreateContainer(dockerNode model.DockerNode, imageID string, specifiedPorts []string) (map[string]interface{}, error) {
 	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathCreateContainer
 	data := map[string]interface{}{
-		"ImageID":        ImageID,
-		"SpecifiedPorts": SpecifiedPorts,
-		"Commands":       Commands,
+		"ImageID":        imageID,
+		"SpecifiedPorts": specifiedPorts,
 	}
 	return request.Post(url, data)
 }
 
-func StartContainer(dockerNode model.DockerNode, ContainerID string) (map[string]interface{}, error) {
+func StartContainer(dockerNode model.DockerNode, containerID string) (map[string]interface{}, error) {
 	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathStartContainer
 	data := map[string]interface{}{
-		"ContainerID": ContainerID,
+		"ContainerID": containerID,
 	}
 	return request.Post(url, data)
 }
 
-func StopContainer(dockerNode model.DockerNode, ContainerID string) (map[string]interface{}, error) {
+func StopContainer(dockerNode model.DockerNode, containerID string) (map[string]interface{}, error) {
 	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathStopContainer
 	data := map[string]interface{}{
-		"ContainerID": ContainerID,
+		"ContainerID": containerID,
 	}
 	return request.Post(url, data)
 }
 
-func RemoveContainer(dockerNode model.DockerNode, ContainerID string) (map[string]interface{}, error) {
+func RemoveContainer(dockerNode model.DockerNode, containerID string) (map[string]interface{}, error) {
 	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathRemoveContainer
 	data := map[string]interface{}{
-		"ContainerID": ContainerID,
+		"ContainerID": containerID,
+	}
+	return request.Post(url, data)
+}
+
+func ExecuteCommand(dockerNode model.DockerNode, containerID string, command []string) (map[string]interface{}, error) {
+	url := "http://" + dockerNode.Host + ":" + dockerNode.Port + PathExecuteCommand
+	data := map[string]interface{}{
+		"ContainerID": containerID,
+		"Command":     command,
 	}
 	return request.Post(url, data)
 }

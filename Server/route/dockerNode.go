@@ -27,5 +27,6 @@ func SetDockerNodeRoute(r *gin.Engine) {
 		dockerNode.POST("/StartContainerFromDockerNode", api.StartContainerFromDockerNode)
 		dockerNode.POST("/StopContainerFromDockerNode", api.StopContainerFromDockerNode)
 		dockerNode.POST("/RemoveContainerFromDockerNode", api.RemoveContainerFromDockerNode)
+		dockerNode.POST("/ExecuteCommandFromDockerNode", api.ExecuteCommandFromDockerNode)
 	}
 }
