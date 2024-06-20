@@ -102,7 +102,7 @@ func CreateContainerByUser(c *gin.Context) {
 
 	}
 
-	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID, challenge.SpecifiedPorts, challenge.Commands)
+	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID, challenge.SpecifiedPorts)
 	if err != nil || res["code"].(float64) != 0 {
 		response.Fail(err, "Create container fail", c)
 		return
@@ -143,6 +143,14 @@ func CreateContainerByUser(c *gin.Context) {
 	if err != nil || res["code"].(float64) != 0 {
 		response.Fail(err, "Start container fail", c)
 		return
+	}
+
+	for _, command := range challenge.Commands {
+		res, err = docker.ExecuteCommand(dockerNode, containerID, []string{"/bin/sh", "-c", command})
+		if err != nil || res["code"].(float64) != 0 {
+			response.Fail(err, "Execute command fail", c)
+			return
+		}
 	}
 
 	response.OK(nil, "Create container success", c)
