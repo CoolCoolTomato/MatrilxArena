@@ -204,20 +204,20 @@ export default {
             message: res.msg,
             type: 'success',
             })
-          await this.GetContainerListByUser()
-          if (this.checkContainerInUse(this.challengeDetail.ID)) {
-            this.getContainerInUse(this.challengeDetail.ID)
-            this.destroyContainerByUserData = {
-              "DockerNodeID": this.userContainer.DockerNodeID,
-              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
-            }
-            this.delayContainerByUserData = {
-              "DockerNodeID": this.userContainer.DockerNodeID,
-              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
-            }
-          }
         } else {
           ElMessage.error(res.msg)
+        }
+        await this.GetContainerListByUser()
+        if (this.checkContainerInUse(this.challengeDetail.ID)) {
+          this.getContainerInUse(this.challengeDetail.ID)
+          this.destroyContainerByUserData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
+          this.delayContainerByUserData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
         }
       }).catch(error => {
         console.log(error)
@@ -230,24 +230,24 @@ export default {
             message: res.msg,
             type: 'success',
             })
-          await this.GetContainerListByUser()
-          this.destroyContainerByUserData = {
-            "DockerNodeID": 0,
-            "DockerNodeContainerID": ""
-          }
-          this.delayContainerByUserData = {
-            "DockerNodeID": 0,
-            "DockerNodeContainerID": ""
-          }
-          this.userContainer = {
-            "DockerNodeContainerID": "",
-            "DockerNodeID": 0,
-            "ChallengeID": 0,
-            "RemainingTime": 0,
-            "PortMaps": []
-          }
         } else {
           ElMessage.error(res.msg)
+        }
+        await this.GetContainerListByUser()
+        this.destroyContainerByUserData = {
+          "DockerNodeID": 0,
+          "DockerNodeContainerID": ""
+        }
+        this.delayContainerByUserData = {
+          "DockerNodeID": 0,
+          "DockerNodeContainerID": ""
+        }
+        this.userContainer = {
+          "DockerNodeContainerID": "",
+          "DockerNodeID": 0,
+          "ChallengeID": 0,
+          "RemainingTime": 0,
+          "PortMaps": []
         }
       }).catch(error => {
         console.log(error)
@@ -260,20 +260,20 @@ export default {
             message: res.msg,
             type: 'success',
             })
-          await this.GetContainerListByUser()
-          if (this.checkContainerInUse(this.challengeDetail.ID)) {
-            this.getContainerInUse(this.challengeDetail.ID)
-            this.destroyContainerByUserData = {
-              "DockerNodeID": this.userContainer.DockerNodeID,
-              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
-            }
-            this.delayContainerByUserData = {
-              "DockerNodeID": this.userContainer.DockerNodeID,
-              "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
-            }
-          }
         } else {
           ElMessage.error(res.msg)
+        }
+        await this.GetContainerListByUser()
+        if (this.checkContainerInUse(this.challengeDetail.ID)) {
+          this.getContainerInUse(this.challengeDetail.ID)
+          this.destroyContainerByUserData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
+          this.delayContainerByUserData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
         }
       }).catch(error => {
         console.log(error)
