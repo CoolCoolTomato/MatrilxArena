@@ -15,11 +15,12 @@ type PortMap struct {
 }
 
 type ContainerInfo struct {
-	DockerNodeContainerID string                   `json:"DockerNodeContainerID"`
-	DockerNodeID          uint                     `json:"DockerNodeID"`
-    ChallengeID           uint                     `json:"ChallengeID"`
-	RemainingTime         time.Duration            `json:"RemainingTime"`
-    PortMaps              []PortMap                 `json:"PortMaps"`
+	DockerNodeContainerID string            `json:"DockerNodeContainerID"`
+	DockerNodeID          uint              `json:"DockerNodeID"`
+    ChallengeID           uint              `json:"ChallengeID"`
+	RemainingTime         time.Duration    `json:"RemainingTime"`
+    PortMaps              []PortMap         `json:"PortMaps"`
+    Flag                  string            `json:"Flag"`
 }
 
 func GetUserContainers(username string) ([]ContainerInfo, error) {
@@ -82,19 +83,25 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
             return nil, err
         }
 
+		flag, err := database.GetRedis().HGet(ctx, containerKey, "Flag").Result()
+		if err != nil {
+			return nil, err
+		}
+
 		containers = append(containers, ContainerInfo{
 			DockerNodeContainerID: dockerNodeContainerID,
 			DockerNodeID:          uint(dockerNodeID),
             ChallengeID:           uint(challengeID),
 			RemainingTime:         ttl,
             PortMaps:              portMaps,
+            Flag:                  flag,
 		})
 	}
 
 	return containers, nil
 }
 
-func AddUserContainer(username string, dockerNodeContainerID string, portMaps []PortMap, dockerNodeID uint, challengeID uint) error {
+func AddUserContainer(username string, dockerNodeContainerID string, portMaps []PortMap, dockerNodeID uint, challengeID uint, flag string) error {
 	ctx := context.Background()
 	userKey := "user:" + username + ":containers"
 	containerKey := "container:" + dockerNodeContainerID
@@ -119,6 +126,10 @@ func AddUserContainer(username string, dockerNodeContainerID string, portMaps []
     if err := database.GetRedis().HSet(ctx, containerKey, "PortMaps", string(portMapsBytes)).Err(); err != nil {
         return err
     }
+
+	if err := database.GetRedis().HSet(ctx, containerKey, "Flag", flag).Err(); err != nil {
+		return err
+	}
 
 	if err := database.GetRedis().Expire(ctx, containerKey, time.Hour).Err(); err != nil {
 		return err

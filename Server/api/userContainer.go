@@ -3,7 +3,8 @@ package api
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -133,7 +134,9 @@ func CreateContainerByUser(c *gin.Context) {
 		}
 	}
 
-	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID)
+    userFlag := flag.GenerateFlag()
+
+	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID, userFlag)
 	if err != nil {
 		response.Fail(err, "Add user container fail", c)
 		return
