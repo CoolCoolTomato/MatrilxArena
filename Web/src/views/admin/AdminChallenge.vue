@@ -15,6 +15,7 @@
         <el-table-column prop="Attachment" label="Attachment"/>
         <el-table-column prop="SpecifiedPorts" label="SpecifiedPorts"/>
         <el-table-column prop="Commands" label="Commands"/>
+        <el-table-column prop="Flag" label="Flag"/>
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
             <el-button
@@ -132,6 +133,25 @@
               </div>
             </div>
           </el-form-item>
+          <el-form-item label="Flag">
+            <div style="display: flex">
+              <el-input
+                style="width: 230px"
+                v-if="createChallengeFlagType === 'auto'"
+                placeholder="auto"
+                disabled
+              />
+              <el-input
+                style="width: 230px"
+                v-if="createChallengeFlagType === 'specify'"
+                v-model="createChallengeData.Flag"
+              />
+              <el-radio-group v-model="createChallengeFlagType">
+                <el-radio value="auto" style="margin: 0" border>auto</el-radio>
+                <el-radio value="specify" style="margin: 0" border>specify</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="createChallengeFormVisible = false">Cancel</el-button>
@@ -240,6 +260,25 @@
               </div>
             </div>
           </el-form-item>
+          <el-form-item label="Flag">
+            <div style="display: flex">
+              <el-input
+                style="width: 230px"
+                v-if="updateChallengeFlagType === 'auto'"
+                placeholder="auto"
+                disabled
+              />
+              <el-input
+                style="width: 230px"
+                v-if="updateChallengeFlagType === 'specify'"
+                v-model="updateChallengeData.Flag"
+              />
+              <el-radio-group v-model="updateChallengeFlagType">
+                <el-radio value="auto" style="margin: 0" border>auto</el-radio>
+                <el-radio value="specify" style="margin: 0" border>specify</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
         </el-form>
         <template #footer>
           <el-button @click="updateChallengeFormVisible = false">Cancel</el-button>
@@ -254,8 +293,8 @@
         >
         <el-text>Are you confirm to delete the challenge?</el-text>
         <template #footer>
-        <el-button @click="deleteChallengeFormVisible = false">Cancel</el-button>
-        <el-button @click="DeleteChallenge">Confirm</el-button>
+          <el-button @click="deleteChallengeFormVisible = false">Cancel</el-button>
+          <el-button @click="DeleteChallenge">Confirm</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -278,11 +317,13 @@ export default {
         "Description": "",
         "Attachment": "",
         "SpecifiedPorts": [],
-        "Commands": []
+        "Commands": [],
+        "Flag": ""
       },
       createChallengePort: "",
       createChallengeProtocol: "",
       createChallengeCommand: "",
+      createChallengeFlagType: "",
       updateChallengeFormVisible: false,
       updateChallengeData: {
         "ID": 0,
@@ -291,11 +332,13 @@ export default {
         "Description": "",
         "Attachment": "",
         "SpecifiedPorts": [],
-        "Commands": []
+        "Commands": [],
+        "Flag": ""
       },
       updateChallengePort: "",
       updateChallengeProtocol: "",
       updateChallengeCommand: "",
+      updateChallengeFlagType: "",
       deleteChallengeFormVisible: false,
       deleteChallengeData: {
         "ID": 0,
@@ -359,6 +402,9 @@ export default {
       this.createChallengeData.Commands.splice(index, 1);
     },
     CreateChallenge() {
+      if (this.createChallengeFlagType === "auto") {
+        this.createChallengeData.Flag = "auto"
+      }
       challengeApi.CreateChallenge(this.createChallengeData).then(res => {
         if (res.code === 0) {
           this.createChallengeFormVisible = false
@@ -381,11 +427,13 @@ export default {
         "Description": "",
         "Attachment": "",
         "SpecifiedPorts": [],
-        "Commands": []
+        "Commands": [],
+        "Flag": ""
       }
       this.createChallengePort = ""
       this.createChallengeProtocol = ""
       this.createChallengeCommand = ""
+      this.createChallengeFlagType = ""
     },
     AddUpdateChallengeSpecifiedPort() {
       if (this.updateChallengePort === "") {
@@ -421,6 +469,9 @@ export default {
       this.updateChallengeData.Commands.splice(index, 1);
     },
     UpdateChallenge() {
+      if (this.updateChallengeFlagType === "auto") {
+        this.updateChallengeData.Flag = "auto"
+      }
       challengeApi.UpdateChallenge(this.updateChallengeData).then(res => {
         if (res.code === 0) {
           this.updateChallengeFormVisible = false
@@ -444,7 +495,8 @@ export default {
         "Description": row.Description,
         "Attachment": row.Attachment,
         "SpecifiedPorts": row.SpecifiedPorts === null ? [] : row.SpecifiedPorts,
-        "Commands": row.Commands === null ? [] : row.Commands
+        "Commands": row.Commands === null ? [] : row.Commands,
+        "Flag": row.Flag
       }
       this.updateChallengeFormVisible = true
     },
@@ -456,11 +508,13 @@ export default {
         "Description": "",
         "Attachment": "",
         "SpecifiedPorts": [],
-        "Commands": []
+        "Commands": [],
+        "Flag": ""
       }
       this.updateChallengePort = ""
       this.updateChallengeProtocol = ""
       this.updateChallengeCommand = ""
+      this.updateChallengeFlagType = ""
     },
     DeleteChallenge() {
       challengeApi.DeleteChallenge(this.deleteChallengeData).then(res => {
