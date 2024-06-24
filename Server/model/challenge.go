@@ -2,8 +2,8 @@ package model
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/database"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/gormType"
-    "gorm.io/gorm"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/gormType"
+	"gorm.io/gorm"
 )
 
 type Challenge struct {
@@ -15,6 +15,7 @@ type Challenge struct {
 	Attachment     string
 	SpecifiedPorts gormType.StringSlice `gorm:"type:json"`
 	Commands       gormType.StringSlice `gorm:"type:json"`
+	Flag           string
 }
 
 func GetChallengeList() ([]Challenge, error) {

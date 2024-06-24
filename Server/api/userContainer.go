@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -134,7 +134,12 @@ func CreateContainerByUser(c *gin.Context) {
 		}
 	}
 
-    userFlag := flag.GenerateFlag()
+	var userFlag string
+	if challenge.Flag == "auto" {
+		userFlag = flag.GenerateFlag()
+	} else {
+		userFlag = challenge.Flag
+	}
 
 	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID, userFlag)
 	if err != nil {
