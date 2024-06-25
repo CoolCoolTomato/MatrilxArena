@@ -59,4 +59,5 @@ func init() {
 	route.SetChallengeRoute(route.Route)
 	route.SetDockerNodeRoute(route.Route)
 	route.SetUserContainerRoute(route.Route)
+	route.SetUserChallengeRoute(route.Route)
 }

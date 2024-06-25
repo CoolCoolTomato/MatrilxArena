@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
@@ -153,6 +154,7 @@ func CreateContainerByUser(c *gin.Context) {
 		return
 	}
 
+	challenge.Commands = append(challenge.Commands, fmt.Sprintf("echo %s > /flag", userFlag))
 	for _, command := range challenge.Commands {
 		res, err = docker.ExecuteCommand(dockerNode, containerID, []string{"/bin/sh", "-c", command})
 		if err != nil || res["code"].(float64) != 0 {
