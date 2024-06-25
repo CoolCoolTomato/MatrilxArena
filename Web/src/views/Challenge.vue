@@ -76,6 +76,10 @@
             Delay
           </el-button>
         </div>
+        <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID)">
+          <el-input v-model="checkFlagData.Flag"/>
+          <el-button @click="CheckFlag">Submit</el-button>
+        </div>
       </el-dialog>
     </el-main>
   </el-container>
@@ -84,7 +88,8 @@
 <script>
 import {Aim, Menu} from '@element-plus/icons-vue'
 import challengeApi from "@/api/challenge.js"
-import challengeContainerApi from "@/api/challengeContainer.js";
+import userContainerApi from "@/api/userContainer.js";
+import userChallengeApi from "@/api/userChallenge.js";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -94,8 +99,8 @@ export default {
       isMenuOpen: false,
       userContainerList: [],
       userContainer: {
-        "DockerNodeContainerID": "",
         "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
         "ChallengeID": 0,
         "RemainingTime": 0,
         "PortMaps": []
@@ -119,6 +124,11 @@ export default {
         "DockerNodeID": 0,
         "DockerNodeContainerID": ""
       },
+      checkFlagData: {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+        "Flag": "",
+      },
       intervalId: null
     }
   },
@@ -127,7 +137,7 @@ export default {
       this.isMenuOpen = !this.isMenuOpen;
     },
     async GetContainerListByUser() {
-      return challengeContainerApi.GetContainerListByUser().then(res => {
+      return userContainerApi.GetContainerListByUser().then(res => {
         if (res.code === 0) {
           this.userContainerList = res.data == null ? [] : res.data
         } else {
@@ -169,6 +179,10 @@ export default {
           "DockerNodeID": this.userContainer.DockerNodeID,
           "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
         }
+        this.checkFlagData = {
+          "DockerNodeID": this.userContainer.DockerNodeID,
+          "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+        }
       }
     },
     ClearChallengeDetail() {
@@ -190,15 +204,20 @@ export default {
         "DockerNodeContainerID": ""
       }
       this.userContainer = {
-        "DockerNodeContainerID": "",
         "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
         "ChallengeID": 0,
         "RemainingTime": 0,
         "PortMaps": []
       }
+      this.checkFlagData = {
+        "DockerNodeID": 0,
+        "DockerNodeContainerID": "",
+        "Flag": "",
+      }
     },
     CreateContainerByUser() {
-      challengeContainerApi.CreateContainerByUser(this.createContainerByUserData).then(async res => {
+      userContainerApi.CreateContainerByUser(this.createContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -218,13 +237,17 @@ export default {
             "DockerNodeID": this.userContainer.DockerNodeID,
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }
+          this.checkFlagData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
         }
       }).catch(error => {
         console.log(error)
       })
     },
     DestroyContainerByUser() {
-      challengeContainerApi.DestroyContainerByUser(this.destroyContainerByUserData).then(async res => {
+      userContainerApi.DestroyContainerByUser(this.destroyContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -249,12 +272,17 @@ export default {
           "RemainingTime": 0,
           "PortMaps": []
         }
+        this.checkFlagData = {
+          "DockerNodeID": 0,
+          "DockerNodeContainerID": "",
+          "Flag": "",
+        }
       }).catch(error => {
         console.log(error)
       })
     },
     DelayContainerByUser() {
-      challengeContainerApi.DelayContainerByUser(this.delayContainerByUserData).then(async res => {
+      userContainerApi.DelayContainerByUser(this.delayContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -274,6 +302,24 @@ export default {
             "DockerNodeID": this.userContainer.DockerNodeID,
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }
+          this.checkFlagData = {
+            "DockerNodeID": this.userContainer.DockerNodeID,
+            "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
+          }
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    CheckFlag() {
+      userChallengeApi.CheckFlag(this.checkFlagData).then(res => {
+        if (res.code === 0) {
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+        } else {
+          ElMessage.error(res.msg)
         }
       }).catch(error => {
         console.log(error)
