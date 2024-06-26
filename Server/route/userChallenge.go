@@ -10,6 +10,7 @@ func SetUserChallengeRoute(r *gin.Engine) {
 	userChallenge := r.Group("/userChallenge")
 	userChallenge.Use(middleware.JWTAuthMiddleware())
 	{
+		userChallenge.POST("GetUserChallenge", api.GetUserChallenge)
 		userChallenge.POST("CheckFlag", api.CheckFlag)
 	}
 }

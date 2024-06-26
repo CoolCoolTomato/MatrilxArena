@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
@@ -12,15 +13,47 @@ type CheckFlagRequest struct {
 	Flag                  string
 }
 
+func GetUserChallenge(c *gin.Context) {
+	username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
+		response.Fail(nil, "User not found", c)
+		return
+	}
+
+	challengeList, err := user.GetChallengeList()
+	if err != nil {
+		response.Fail(nil, "Get challenge list fail", c)
+		return
+	}
+
+	response.OK(challengeList, "Get challenge list success", c)
+}
+
 func CheckFlag(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
 		response.Fail(nil, "User not found", c)
 		return
 	}
 
 	var checkFlagRequest CheckFlagRequest
-	err := c.ShouldBindJSON(&checkFlagRequest)
+	err = c.ShouldBindJSON(&checkFlagRequest)
 	if err != nil || checkFlagRequest.DockerNodeID == 0 || checkFlagRequest.DockerNodeContainerID == "" {
 		response.Fail(err, "Invalid argument", c)
 		return

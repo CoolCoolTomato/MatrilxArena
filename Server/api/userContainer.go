@@ -34,6 +34,14 @@ type ContainerResponse struct {
 func GetContainerListByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
 		response.Fail(nil, "User not found", c)
 		return
 	}
@@ -50,6 +58,14 @@ func GetContainerListByUser(c *gin.Context) {
 func CreateContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
 		response.Fail(nil, "User not found", c)
 		return
 	}
@@ -169,12 +185,20 @@ func CreateContainerByUser(c *gin.Context) {
 func DestroyContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
 		response.Fail(nil, "User not found", c)
 		return
 	}
 
 	var containerRequest ContainerRequest
-	err := c.ShouldBindJSON(&containerRequest)
+	err = c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
 		response.Fail(err, "Invalid argument", c)
 		return
@@ -215,12 +239,20 @@ func DestroyContainerByUser(c *gin.Context) {
 func DelayContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
 		response.Fail(nil, "User not found", c)
 		return
 	}
 
 	var containerRequest ContainerRequest
-	err := c.ShouldBindJSON(&containerRequest)
+	err = c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
 		response.Fail(err, "Invalid argument", c)
 		return
