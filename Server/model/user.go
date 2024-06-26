@@ -8,10 +8,11 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string
-	Password string
-	Email    string
-	Role     int
+	Username   string
+	Password   string
+	Email      string
+	Role       int
+	Challenges []Challenge `gorm:"many2many:challenge_user"`
 }
 
 func GetUserList() ([]User, error) {
@@ -60,4 +61,21 @@ func (user *User) SetPassword(password string) error {
 
 func (user *User) CheckPassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+}
+
+func (user *User) GetChallengeList() ([]Challenge, error) {
+	var challengeList []Challenge
+	err := database.GetDatabase().Model(user).Association("Challenges").Find(&challengeList)
+	if err != nil {
+		return nil, err
+	}
+	return challengeList, nil
+}
+
+func (user *User) AddChallenge(challenge *Challenge) error {
+	return database.GetDatabase().Model(user).Association("Challenges").Append(challenge)
+}
+
+func (user *User) DeleteChallenge(challenge *Challenge) error {
+	return database.GetDatabase().Model(user).Association("Challenges").Delete(challenge)
 }

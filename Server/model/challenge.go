@@ -16,6 +16,7 @@ type Challenge struct {
 	SpecifiedPorts gormType.StringSlice `gorm:"type:json"`
 	Commands       gormType.StringSlice `gorm:"type:json"`
 	Flag           string
+	Users          []User `gorm:"many2many:challenge_user"`
 }
 
 func GetChallengeList() ([]Challenge, error) {
