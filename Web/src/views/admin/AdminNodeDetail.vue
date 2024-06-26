@@ -148,18 +148,6 @@
         </template>
       </el-dialog>
       <el-dialog
-        v-model="removeImageFormVisible"
-        title="Remove Image"
-        width="500"
-        @close="ClearRemoveImageForm"
-        >
-        <el-text>Are you confirm to remove the image?</el-text>
-        <template #footer>
-          <el-button @click="removeImageFormVisible = false">Cancel</el-button>
-          <el-button @click="RemoveImageFromDockerNode">Confirm</el-button>
-        </template>
-      </el-dialog>
-      <el-dialog
         v-model="imageDetailVisible"
         title="Image Detail"
         width="1000"
@@ -174,6 +162,18 @@
         </el-card>
         <template #footer>
           <el-button @click="imageDetailVisible = false">Close</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="removeImageFormVisible"
+        title="Remove Image"
+        width="500"
+        @close="ClearRemoveImageForm"
+      >
+        <el-text>Are you confirm to remove the image?</el-text>
+        <template #footer>
+          <el-button @click="removeImageFormVisible = false">Cancel</el-button>
+          <el-button @click="RemoveImageFromDockerNode">Confirm</el-button>
         </template>
       </el-dialog>
       <el-dialog

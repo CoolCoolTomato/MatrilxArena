@@ -12,12 +12,13 @@
         <el-table-column prop="Title" label="Title"/>
         <el-table-column prop="Description" label="Description"/>
         <el-table-column prop="Image.RepoTags" label="Image"/>
-        <el-table-column prop="Attachment" label="Attachment"/>
-        <el-table-column prop="SpecifiedPorts" label="SpecifiedPorts"/>
-        <el-table-column prop="Commands" label="Commands"/>
-        <el-table-column prop="Flag" label="Flag"/>
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
+            <el-button
+              @click="OpenChallengeDetail(scope.row)"
+              >
+              Detail
+            </el-button>
             <el-button
               @click="OpenUpdateChallengeForm(scope.row)"
               >
@@ -31,6 +32,25 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-dialog
+        v-model="challengeDetailVisible"
+        title="Challenge Detail"
+        width="500"
+        @close="ClearChallengeDetail"
+        >
+        <el-card>
+          <p style="word-break: break-all;">Title: {{ challengeDetail.Title }}</p>
+          <p style="word-break: break-all;">Description: {{ challengeDetail.Description }}</p>
+          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.RepoTags }}</p>
+          <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment }}</p>
+          <p style="word-break: break-all;">SpecifiedPorts: {{ challengeDetail.SpecifiedPorts }}</p>
+          <p style="word-break: break-all;">Commands: {{ challengeDetail.Commands }}</p>
+          <p style="word-break: break-all;">Flag: {{ challengeDetail.Flag }}</p>
+        </el-card>
+        <template #footer>
+          <el-button @click="challengeDetailVisible = false">Close</el-button>
+        </template>
+      </el-dialog>
       <el-dialog
         v-model="createChallengeFormVisible"
         title="Create Challenge"
@@ -310,11 +330,21 @@ export default {
     return {
       imageList: [],
       challengeList: [],
-      createChallengeFormVisible: false,
-      createChallengeData: {
-        "ImageID": null,
+      challengeDetailVisible: false,
+      challengeDetail: {
         "Title": "",
         "Description": "",
+        "Image": {},
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": [],
+        "Flag": ""
+      },
+      createChallengeFormVisible: false,
+      createChallengeData: {
+        "Title": "",
+        "Description": "",
+        "ImageID": null,
         "Attachment": "",
         "SpecifiedPorts": [],
         "Commands": [],
@@ -327,9 +357,9 @@ export default {
       updateChallengeFormVisible: false,
       updateChallengeData: {
         "ID": 0,
-        "ImageID": null,
         "Title": "",
         "Description": "",
+        "ImageID": null,
         "Attachment": "",
         "SpecifiedPorts": [],
         "Commands": [],
@@ -367,6 +397,21 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    OpenChallengeDetail(row) {
+      this.challengeDetail = row
+      this.challengeDetailVisible = true
+    },
+    ClearChallengeDetail() {
+      this.challengeDetail = {
+        "ImageID": null,
+        "Title": "",
+        "Description": "",
+        "Attachment": "",
+        "SpecifiedPorts": [],
+        "Commands": [],
+        "Flag": ""
+      }
     },
     AddCreateChallengeSpecifiedPort() {
       if (this.createChallengePort === "") {
