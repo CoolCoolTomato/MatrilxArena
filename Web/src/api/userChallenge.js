@@ -1,11 +1,15 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetUserContainer(data) {
-  return apiClient.post("/userChallenge/GetUserContainer", data).then(handleResponse).catch(handleError)
+function GetUserChallengeList() {
+  return apiClient.post("/userChallenge/GetUserChallengeList").then(handleResponse).catch(handleError)
+}
+
+function ResetUserChallenge(data) {
+  return apiClient.post("/userChallenge/ResetUserChallenge", data).then(handleResponse).catch(handleError)
 }
 
 function CheckFlag(data) {
   return apiClient.post("/userChallenge/CheckFlag", data).then(handleResponse).catch(handleError)
 }
 
-export default {CheckFlag}
+export default {GetUserChallengeList, ResetUserChallenge, CheckFlag}

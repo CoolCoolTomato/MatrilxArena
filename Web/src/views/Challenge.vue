@@ -21,7 +21,7 @@
         <el-row>
           <el-col v-for="challenge in challengeList" :span=12>
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
-              <h2>{{ challenge.Title }}</h2>
+              <h2>{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
               <el-text>{{ challenge.Description }}</el-text>
             </div>
           </el-col>
@@ -38,7 +38,7 @@
         width="700"
         @close="ClearChallengeDetail"
         >
-        <h2>{{ challengeDetail.Title }}</h2>
+        <h2>{{ challengeDetail.Title }}<el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <br/>
         <div
@@ -57,6 +57,11 @@
           <el-text>{{ formatTime(userContainer.RemainingTime) }}</el-text>
         </el-progress>
         <div class="operations">
+          <el-button
+            @click="ResetUserChallenge(challengeDetail.ID)"
+            >
+            Reset
+          </el-button>
           <el-button
             @click="CreateContainerByUser"
             v-if="!checkContainerInUse(challengeDetail.ID)"
@@ -124,6 +129,10 @@ export default {
         "DockerNodeID": 0,
         "DockerNodeContainerID": ""
       },
+      userChallengeList: [],
+      resetUserChallengeData: {
+        "ChallengeID": 0
+      },
       checkFlagData: {
         "DockerNodeID": 0,
         "DockerNodeContainerID": "",
@@ -184,6 +193,9 @@ export default {
           "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
         }
       }
+      this.resetUserChallengeData = {
+        "ChallengeID": challenge.ID
+      }
     },
     ClearChallengeDetail() {
       this.challengeDetail = {
@@ -209,6 +221,9 @@ export default {
         "ChallengeID": 0,
         "RemainingTime": 0,
         "PortMaps": []
+      }
+      this.resetUserChallengeData = {
+        "ChallengeID": 0
       }
       this.checkFlagData = {
         "DockerNodeID": 0,
@@ -311,9 +326,36 @@ export default {
         console.log(error)
       })
     },
+    GetUserChallengeList() {
+      userChallengeApi.GetUserChallengeList().then(res => {
+        if (res.code === 0) {
+          this.userChallengeList = res.data == null ? [] : res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    ResetUserChallenge() {
+      userChallengeApi.ResetUserChallenge(this.resetUserChallengeData).then(res => {
+        if (res.code === 0) {
+          this.GetUserChallengeList()
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     CheckFlag() {
       userChallengeApi.CheckFlag(this.checkFlagData).then(res => {
         if (res.code === 0) {
+          this.GetUserChallengeList()
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -330,6 +372,9 @@ export default {
     },
     getContainerInUse(challengeID) {
       this.userContainer = this.userContainerList.find(container => container.ChallengeID === challengeID)
+    },
+    checkChallengeSolved(challengeID) {
+      return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID);
     },
     formatTime(time) {
       const oneHour = 3600000000000;
@@ -349,6 +394,7 @@ export default {
   mounted() {
     this.GetContainerListByUser()
     this.GetChallengeList()
+    this.GetUserChallengeList()
     this.intervalId = setInterval(this.calculateTime, 1000);
   },
   beforeDestroy() {
