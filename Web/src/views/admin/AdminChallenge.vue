@@ -58,13 +58,13 @@
         @close="ClearCreateChallengeForm"
         >
         <el-form :model=createChallengeData>
-          <el-form-item label="Title">
+          <el-form-item label="Title" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Title"/>
           </el-form-item>
-          <el-form-item label="Description">
+          <el-form-item label="Description" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="Image">
+          <el-form-item label="Image" :label-width="labelWidth">
             <el-select
               v-model="createChallengeData.ImageID"
               filterable
@@ -79,10 +79,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Attachment">
+          <el-form-item label="Attachment" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Attachment"/>
           </el-form-item>
-          <el-form-item label="SpecifiedPorts">
+          <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 v-model="createChallengePort"
@@ -105,26 +105,28 @@
                 Add
               </el-button>
             </div>
-          </el-form-item>
-          <el-form-item>
-            <div style="position: relative; width: 100%;">
+            <div
+              v-if="createChallengeData.SpecifiedPorts.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+              >
               <div
                 v-for="(port, index) in createChallengeData.SpecifiedPorts"
                 :key="index"
                 style="display: flex; align-items: center; width: 100%; position: relative"
-                >
-                <el-text>{{ port }}</el-text>
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
                 <div style="flex-grow: 1"></div>
                 <el-button
                   size="small"
                   @click="RemoveCreateChallengeSpecifiedPort(index)"
+                  style="margin: 3px 10px 3px 3px;"
                 >
                   Delete
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Commands">
+          <el-form-item label="Commands" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input v-model="this.createChallengeCommand" />
               <el-button
@@ -134,38 +136,41 @@
                 Add
               </el-button>
             </div>
-          </el-form-item>
-          <el-form-item>
-            <div style="position: relative; width: 100%;">
+            <div
+              v-if="createChallengeData.Commands.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+            >
               <div
                 v-for="(command, index) in createChallengeData.Commands"
                 :key="index"
                 style="display: flex; align-items: center; width: 100%; position: relative"
-                >
-                <el-text>{{ command }}</el-text>
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
                 <div style="flex-grow: 1"></div>
                 <el-button
                   size="small"
                   @click="RemoveCreateChallengeCommand(index)"
+                  style="margin: 3px 10px 3px 3px;"
                 >
                   Delete
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Flag">
-            <div style="display: flex">
+          <el-form-item label="Flag" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 230px"
+                style="width: 180px"
                 v-if="createChallengeFlagType === 'auto'"
                 placeholder="auto"
                 disabled
               />
               <el-input
-                style="width: 230px"
+                style="width: 180px"
                 v-if="createChallengeFlagType === 'specify'"
                 v-model="createChallengeData.Flag"
               />
+              <div style="flex-grow: 1" v-if="createChallengeFlagType !== ''"></div>
               <el-radio-group v-model="createChallengeFlagType">
                 <el-radio value="auto" style="margin: 0" border>auto</el-radio>
                 <el-radio value="specify" style="margin: 0" border>specify</el-radio>
@@ -185,13 +190,13 @@
         @close="ClearUpdateChallengeForm"
         >
         <el-form :model=updateChallengeData>
-          <el-form-item label="Title">
+          <el-form-item label="Title" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Title"/>
           </el-form-item>
-          <el-form-item label="Description">
+          <el-form-item label="Description" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="Image">
+          <el-form-item label="Image" :label-width="labelWidth">
             <el-select
               v-model="updateChallengeData.ImageID"
               filterable
@@ -206,10 +211,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Attachment">
+          <el-form-item label="Attachment" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Attachment"/>
           </el-form-item>
-          <el-form-item label="SpecifiedPorts">
+          <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 v-model="updateChallengePort"
@@ -232,26 +237,28 @@
                 Add
               </el-button>
             </div>
-          </el-form-item>
-          <el-form-item>
-            <div style="position: relative; width: 100%;">
+            <div
+              v-if="updateChallengeData.SpecifiedPorts.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+              >
               <div
                 v-for="(port, index) in updateChallengeData.SpecifiedPorts"
                 :key="index"
                 style="display: flex; align-items: center; width: 100%; position: relative"
-                >
-                <el-text>{{ port }}</el-text>
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
                 <div style="flex-grow: 1"></div>
                 <el-button
                   size="small"
                   @click="RemoveUpdateChallengeSpecifiedPort(index)"
+                  style="margin: 3px 10px 3px 3px;"
                 >
                   Delete
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Commands">
+          <el-form-item label="Commands" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input v-model="this.updateChallengeCommand" />
               <el-button
@@ -261,38 +268,41 @@
                 Add
               </el-button>
             </div>
-          </el-form-item>
-          <el-form-item>
-            <div style="position: relative; width: 100%;">
+            <div
+              v-if="updateChallengeData.Commands.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+            >
               <div
                 v-for="(command, index) in updateChallengeData.Commands"
                 :key="index"
                 style="display: flex; align-items: center; width: 100%; position: relative"
-                >
-                <el-text>{{ command }}</el-text>
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
                 <div style="flex-grow: 1"></div>
                 <el-button
                   size="small"
                   @click="RemoveUpdateChallengeCommand(index)"
+                  style="margin: 3px 10px 3px 3px;"
                 >
                   Delete
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Flag">
-            <div style="display: flex">
+          <el-form-item label="Flag" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 230px"
+                style="width: 180px"
                 v-if="updateChallengeFlagType === 'auto'"
                 placeholder="auto"
                 disabled
               />
               <el-input
-                style="width: 230px"
+                style="width: 180px"
                 v-if="updateChallengeFlagType === 'specify'"
                 v-model="updateChallengeData.Flag"
               />
+              <div style="flex-grow: 1" v-if="updateChallengeFlagType !== ''"></div>
               <el-radio-group v-model="updateChallengeFlagType">
                 <el-radio value="auto" style="margin: 0" border>auto</el-radio>
                 <el-radio value="specify" style="margin: 0" border>specify</el-radio>
@@ -328,6 +338,7 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
+      labelWidth: 100,
       imageList: [],
       challengeList: [],
       challengeDetailVisible: false,
@@ -539,8 +550,8 @@ export default {
         "Title": row.Title,
         "Description": row.Description,
         "Attachment": row.Attachment,
-        "SpecifiedPorts": row.SpecifiedPorts === null ? [] : row.SpecifiedPorts,
-        "Commands": row.Commands === null ? [] : row.Commands,
+        "SpecifiedPorts": row.SpecifiedPorts === null ? [] : [...row.SpecifiedPorts],
+        "Commands": row.Commands === null ? [] : [...row.Commands],
         "Flag": row.Flag
       }
       this.updateChallengeFormVisible = true

@@ -38,18 +38,18 @@
         @close="ClearCreateUserForm"
         >
         <el-form :model=createUserData>
-          <el-form-item label="Username">
+          <el-form-item label="Username" :label-width="labelWidth">
             <el-input v-model="createUserData.Username"/>
           </el-form-item>
-          <el-form-item label="Email">
+          <el-form-item label="Email" :label-width="labelWidth">
             <el-input v-model="createUserData.Email"/>
           </el-form-item>
-          <el-form-item label="Role">
+          <el-form-item label="Role" :label-width="labelWidth">
             <el-select v-model="createUserData.Role">
               <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="Password">
+          <el-form-item label="Password" :label-width="labelWidth">
             <el-input v-model="createUserData.Password"/>
           </el-form-item>
         </el-form>
@@ -65,18 +65,18 @@
         @close="ClearUpdateUserForm"
         >
         <el-form :model=updateUserData>
-          <el-form-item label="Username">
+          <el-form-item label="Username" :label-width="labelWidth">
             <el-input v-model="updateUserData.Username"/>
           </el-form-item>
-          <el-form-item label="Email">
+          <el-form-item label="Email" :label-width="labelWidth">
             <el-input v-model="updateUserData.Email"/>
           </el-form-item>
-          <el-form-item label="Role">
+          <el-form-item label="Role" :label-width="labelWidth">
             <el-select v-model="updateUserData.Role">
               <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="Password">
+          <el-form-item label="Password" :label-width="labelWidth">
             <el-input v-model="updateUserData.Password"/>
           </el-form-item>
         </el-form>
@@ -107,6 +107,7 @@ import { ElMessage } from 'element-plus'
 export default {
   data() {
     return {
+      labelWidth: 100,
       userList: [],
       createUserFormVisible: false,
       createUserData: {

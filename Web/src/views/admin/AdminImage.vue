@@ -38,13 +38,13 @@
         @close="ClearCreateImageForm"
         >
         <el-form :model=createImageData>
-          <el-form-item label="Remark">
+          <el-form-item label="Remark" :label-width="labelWidth">
             <el-input v-model="createImageData.Remark"/>
             </el-form-item>
-          <el-form-item label="RepoTags">
+          <el-form-item label="RepoTags" :label-width="labelWidth">
             <el-input v-model="createImageData.RepoTags"/>
           </el-form-item>
-          <el-form-item label="Repository">
+          <el-form-item label="Repository" :label-width="labelWidth">
             <el-input v-model="createImageData.Repository"/>
           </el-form-item>
         </el-form>
@@ -60,13 +60,13 @@
         @close="ClearUpdateImageForm"
         >
         <el-form :model=updateImageData>
-          <el-form-item label="Remark">
+          <el-form-item label="Remark" :label-width="labelWidth">
             <el-input v-model="updateImageData.Remark"/>
           </el-form-item>
-          <el-form-item label="RepoTags">
+          <el-form-item label="RepoTags" :label-width="labelWidth">
             <el-input v-model="updateImageData.RepoTags"/>
           </el-form-item>
-          <el-form-item label="Repository">
+          <el-form-item label="Repository" :label-width="labelWidth">
             <el-input v-model="updateImageData.Repository"/>
           </el-form-item>
         </el-form>
@@ -97,6 +97,7 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
+      labelWidth: 100,
       imageList: [],
       createImageFormVisible: false,
       createImageData: {

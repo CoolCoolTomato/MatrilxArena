@@ -38,10 +38,10 @@
         @close="ClearCreateDockerNodeForm"
         >
         <el-form :model=createDockerNodeData>
-          <el-form-item label="Host">
+          <el-form-item label="Host" :label-width="labelWidth">
             <el-input v-model="createDockerNodeData.Host"/>
           </el-form-item>
-          <el-form-item label="Port">
+          <el-form-item label="Port" :label-width="labelWidth">
             <el-input v-model="createDockerNodeData.Port"/>
           </el-form-item>
         </el-form>
@@ -57,10 +57,10 @@
         @close="ClearUpdateDockerNodeForm"
         >
         <el-form :model=updateDockerNodeData>
-          <el-form-item label="Host">
+          <el-form-item label="Host" :label-width="labelWidth">
             <el-input v-model="updateDockerNodeData.Host"/>
           </el-form-item>
-          <el-form-item label="Port">
+          <el-form-item label="Port" :label-width="labelWidth">
             <el-input v-model="updateDockerNodeData.Port"/>
           </el-form-item>
         </el-form>
@@ -91,6 +91,7 @@ import { ElMessage } from 'element-plus'
 export default {
   data() {
     return {
+      labelWidth: 100,
       dockerNodeList: [],
       createDockerNodeFormVisible: false,
       createDockerNodeData: {
