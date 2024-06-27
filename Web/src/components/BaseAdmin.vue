@@ -52,7 +52,7 @@ import Copyright from "@/components/Copyright.vue";
               </el-menu-item>
               <el-menu-item index="/admin/image">
                 <el-icon>
-                  <UploadFilled/>
+                  <Shop/>
                 </el-icon>
                 <template #title>Image</template>
               </el-menu-item>
@@ -61,6 +61,12 @@ import Copyright from "@/components/Copyright.vue";
                   <List/>
                 </el-icon>
                 <template #title>Challenge</template>
+              </el-menu-item>
+              <el-menu-item index="/admin/attachment">
+                <el-icon>
+                  <UploadFilled/>
+                </el-icon>
+                <template #title>Attachment</template>
               </el-menu-item>
               <el-menu-item index="/admin/user">
                 <el-icon>
@@ -82,10 +88,10 @@ import Copyright from "@/components/Copyright.vue";
   </div>
 </template>
 <script>
-import {Menu, Briefcase, UploadFilled, HomeFilled, List,  UserFilled} from '@element-plus/icons-vue'
+import {Menu, Briefcase, Shop, HomeFilled, List, UploadFilled, UserFilled} from '@element-plus/icons-vue'
 
 export default {
-  components: {Menu, Briefcase, UploadFilled, HomeFilled, List, UserFilled},
+  components: {Menu, Briefcase, Shop, HomeFilled, List, UploadFilled, UserFilled},
   data() {
     return {
       isMenuOpen: false,

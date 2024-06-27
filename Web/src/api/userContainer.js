@@ -16,4 +16,11 @@ function DelayContainerByUser(data) {
   return apiClient.post("/userContainer/DelayContainerByUser", data).then(handleResponse).catch(handleError)
 }
 
-export default {GetContainerListByUser, CreateContainerByUser, DestroyContainerByUser, DelayContainerByUser}
+const userContainerApi = {
+  GetContainerListByUser,
+  CreateContainerByUser,
+  DestroyContainerByUser,
+  DelayContainerByUser
+}
+
+export default userContainerApi

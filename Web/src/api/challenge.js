@@ -22,4 +22,12 @@ function DeleteChallenge(data) {
 
 }
 
-export default {GetChallengeList, GetChallenge, CreateChallenge, UpdateChallenge, DeleteChallenge}
+const challengeApi = {
+  GetChallengeList,
+  GetChallenge,
+  CreateChallenge,
+  UpdateChallenge,
+  DeleteChallenge
+}
+
+export default challengeApi

@@ -11,6 +11,7 @@ import AdminNodeDetail from "@/views/admin/AdminNodeDetail.vue"
 import AdminImage from "@/views/admin/AdminImage.vue";
 import AdminChallenge from "@/views/admin/AdminChallenge.vue";
 import AdminUser from "@/views/admin/AdminUser.vue";
+import AdminAttachment from "@/views/admin/AdminAttachment.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,7 @@ const router = createRouter({
       {path: "node/:id(\\d+)", component: AdminNodeDetail},
       {path: "image", component: AdminImage},
       {path: "challenge", component: AdminChallenge},
+      {path: "attachment", component: AdminAttachment},
       {path: "user", component: AdminUser},
     ]},
   ]

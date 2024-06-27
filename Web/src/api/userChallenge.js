@@ -12,4 +12,10 @@ function CheckFlag(data) {
   return apiClient.post("/userChallenge/CheckFlag", data).then(handleResponse).catch(handleError)
 }
 
-export default {GetUserChallengeList, ResetUserChallenge, CheckFlag}
+const userChallengeApi = {
+  GetUserChallengeList,
+  ResetUserChallenge,
+  CheckFlag
+}
+
+export default userChallengeApi
