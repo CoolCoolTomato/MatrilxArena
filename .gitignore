@@ -3,6 +3,7 @@ DockerNode/.fleet/
 DockerNode/tmp/
 Server/.fleet/
 Server/tmp/
+Server/attachment/
 Web/.fleet/
 Web/node_modules/
 .editorconfig
