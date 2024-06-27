@@ -12,7 +12,8 @@ type Challenge struct {
 	Image          Image
 	Title          string
 	Description    string
-	Attachment     string
+	AttachmentID   uint
+	Attachment     Attachment
 	SpecifiedPorts gormType.StringSlice `gorm:"type:json"`
 	Commands       gormType.StringSlice `gorm:"type:json"`
 	Flag           string
@@ -29,17 +30,17 @@ func GetChallengeList() ([]Challenge, error) {
 }
 
 func (challenge *Challenge) GetChallenge() error {
-	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
+	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
 }
 
 func (challenge *Challenge) CreateChallenge() error {
-	return database.GetDatabase().Preload("Image").Create(&challenge).Error
+	return database.GetDatabase().Preload("Image").Preload("Attachment").Create(&challenge).Error
 }
 
 func (challenge *Challenge) UpdateChallenge() error {
-	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
+	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
 }
 
 func (challenge *Challenge) DeleteChallenge() error {
-	return database.GetDatabase().Preload("Image").Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
+	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
 }
