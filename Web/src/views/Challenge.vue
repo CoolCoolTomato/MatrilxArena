@@ -41,6 +41,8 @@
         <h2>{{ challengeDetail.Title }}<el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <br/>
+        <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: {{ challengeDetail.Attachment.FileName }}</el-text>
+        <br/>
         <div
           v-if="checkContainerInUse(challengeDetail.ID)"
           v-for="portMap in userContainer.PortMaps"
@@ -64,7 +66,7 @@
           </el-button>
           <el-button
             @click="CreateContainerByUser"
-            v-if="!checkContainerInUse(challengeDetail.ID)"
+            v-if="!checkContainerInUse(challengeDetail.ID) && challengeDetail.ImageID !== 0"
             >
             Create
           </el-button>
@@ -81,7 +83,7 @@
             Delay
           </el-button>
         </div>
-        <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID)">
+        <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID) || challengeDetail.ImageID === 0">
           <el-input v-model="checkFlagData.Flag"/>
           <el-button @click="CheckFlag">Submit</el-button>
         </div>
@@ -116,7 +118,8 @@ export default {
         "ID": 0,
         "Title": "",
         "Description": "",
-        "Attachment": ""
+        "ImageID": 0,
+        "Attachment": {}
       },
       createContainerByUserData: {
         "ID": 0,
@@ -134,6 +137,7 @@ export default {
         "ChallengeID": 0
       },
       checkFlagData: {
+        "ChallengeID": 0,
         "DockerNodeID": 0,
         "DockerNodeContainerID": "",
         "Flag": "",
@@ -173,10 +177,14 @@ export default {
         "ID": challenge.ID,
         "Title": challenge.Title,
         "Description": challenge.Description,
+        "ImageID": challenge.ImageID,
         "Attachment": challenge.Attachment
       }
       this.createContainerByUserData = {
         "ID": challenge.ID,
+      }
+      this.checkFlagData = {
+        "ChallengeID": challenge.ID,
       }
       if (this.checkContainerInUse(challenge.ID)) {
         this.getContainerInUse(challenge.ID)
@@ -189,6 +197,7 @@ export default {
           "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
         }
         this.checkFlagData = {
+          "ChallengeID": this.challengeDetail.ID,
           "DockerNodeID": this.userContainer.DockerNodeID,
           "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
         }
@@ -202,7 +211,8 @@ export default {
         "ID": 0,
         "Title": "",
         "Description": "",
-        "Attachment": ""
+        "ImageID": 0,
+        "Attachment": {}
       }
       this.createContainerByUserData = {
         "ID": 0,
@@ -226,6 +236,7 @@ export default {
         "ChallengeID": 0
       }
       this.checkFlagData = {
+        "ChallengeID": 0,
         "DockerNodeID": 0,
         "DockerNodeContainerID": "",
         "Flag": "",
@@ -253,6 +264,7 @@ export default {
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }
           this.checkFlagData = {
+            "ChallengeID": this.challengeDetail.ID,
             "DockerNodeID": this.userContainer.DockerNodeID,
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }
@@ -288,6 +300,7 @@ export default {
           "PortMaps": []
         }
         this.checkFlagData = {
+          "ChallengeID": 0,
           "DockerNodeID": 0,
           "DockerNodeContainerID": "",
           "Flag": "",
@@ -318,6 +331,7 @@ export default {
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }
           this.checkFlagData = {
+            "ChallengeID": this.challengeDetail.ID,
             "DockerNodeID": this.userContainer.DockerNodeID,
             "DockerNodeContainerID": this.userContainer.DockerNodeContainerID
           }

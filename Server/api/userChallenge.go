@@ -94,37 +94,71 @@ func CheckFlag(c *gin.Context) {
 
 	var userChallengeRequest UserChallengeRequest
 	err = c.ShouldBindJSON(&userChallengeRequest)
-	if err != nil || userChallengeRequest.DockerNodeID == 0 || userChallengeRequest.DockerNodeContainerID == "" {
+	if err != nil || userChallengeRequest.Flag == ""{
 		response.Fail(err, "Invalid argument", c)
 		return
 	}
 
-	userContainers, err := manager.GetUserContainers(username.(string))
-	if err != nil {
-		response.Fail(nil, "Get user containers fail", c)
+    var challenge model.Challenge
+    challenge.ID = userChallengeRequest.ChallengeID
+    err = challenge.GetChallenge()
+    if err != nil {
+        response.Fail(err, "Get challenge fail", c)
 		return
+    }
+
+    if challenge.ImageID == 0 {
+        ok, err := checkFlagFromChallenge(user, userChallengeRequest, challenge)
+        if err != nil {
+            response.Fail(err, "Check flag from challenge fail", c)
+		    return
+        }
+        if !ok {
+            response.Fail(err, "Incorrect flag", c)
+		    return
+        }
+    } else {
+        ok, err := checkFlagFromContainer(user, userChallengeRequest, challenge)
+        if err != nil {
+            response.Fail(err, "Check flag from container fail", c)
+		    return
+        }
+        if !ok {
+            response.Fail(err, "Incorrect flag", c)
+		    return
+        }
+    }
+
+	response.OK(nil, "Correct flag", c)
+}
+
+func checkFlagFromContainer(user model.User, userChallengeRequest UserChallengeRequest, challenge model.Challenge) (bool, error) {
+    userContainers, err := manager.GetUserContainers(user.Username)
+	if err != nil {
+		return false, err
 	}
 
 	for _, userContainer := range userContainers {
 		if userContainer.DockerNodeID == userChallengeRequest.DockerNodeID && userContainer.DockerNodeContainerID == userChallengeRequest.DockerNodeContainerID {
 			if userChallengeRequest.Flag == userContainer.Flag {
-				challengeID := userContainer.ChallengeID
-				var challenge model.Challenge
-				challenge.ID = challengeID
-				err = challenge.GetChallenge()
-				if err != nil {
-					response.Fail(nil, "Get challenge fail", c)
-					return
-				}
 				err = user.AddChallenge(&challenge)
 				if err != nil {
-					response.Fail(nil, "Add challenge fail", c)
-					return
+					return false, err
 				}
-				response.OK(nil, "Correct flag", c)
-				return
+				return true, nil
 			}
 		}
 	}
-	response.Fail(nil, "Incorrect flag", c)
+    return false, nil
+}
+
+func checkFlagFromChallenge(user model.User, userChallengeRequest UserChallengeRequest, challenge model.Challenge) (bool, error) {
+    if userChallengeRequest.Flag == challenge.Flag {
+        err := user.AddChallenge(&challenge)
+        if err != nil {
+            return false, err
+        }
+        return true, nil
+    }
+    return false, nil
 }
