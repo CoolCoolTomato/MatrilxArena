@@ -13,7 +13,7 @@ type DockerNode struct {
 
 func GetDockerNodeList() ([]DockerNode, error) {
 	var dockerNodeList []DockerNode
-	err := database.GetDatabase().Find(&dockerNodeList).Error
+	err := database.GetDatabase().Model(&DockerNode{}).Find(&dockerNodeList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func (dockerNode *DockerNode) GetDockerNode() error {
 }
 
 func (dockerNode *DockerNode) CreateDockerNode() error {
-	return database.GetDatabase().Create(&dockerNode).Error
+	return database.GetDatabase().Model(&DockerNode{}).Create(&dockerNode).Error
 }
 
 func (dockerNode *DockerNode) UpdateDockerNode() error {

@@ -22,7 +22,7 @@ type Challenge struct {
 
 func GetChallengeList() ([]Challenge, error) {
 	var challengeList []Challenge
-	err := database.GetDatabase().Preload("Image").Preload("Attachment").Find(&challengeList).Error
+	err := database.GetDatabase().Model(&Challenge{}).Preload("Image").Preload("Attachment").Find(&challengeList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func GetChallengeList() ([]Challenge, error) {
 }
 
 func (challenge *Challenge) GetChallenge() error {
-	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).First(&challenge).Error
+	return database.GetDatabase().Model(&Challenge{}).Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).First(&challenge).Error
 }
 
 func (challenge *Challenge) CreateChallenge() error {
@@ -62,9 +62,9 @@ func (challenge *Challenge) CreateChallenge() error {
         creates["attachment_id"] = nil
     }
 	return database.GetDatabase().
+        Model(&Challenge{}).
         Preload("Image").
         Preload("Attachment").
-        Model(&Challenge{}).
         Select(createFields).
         Create(creates).
         Error
@@ -101,9 +101,9 @@ func (challenge *Challenge) UpdateChallenge() error {
     }
 
 	return database.GetDatabase().
+        Model(&Challenge{}).
         Preload("Image").
         Preload("Attachment").
-        Model(&Challenge{}).
         Where("ID = ?", challenge.ID).
         Select(updateFields).
         Updates(updates).
@@ -111,5 +111,5 @@ func (challenge *Challenge) UpdateChallenge() error {
 }
 
 func (challenge *Challenge) DeleteChallenge() error {
-	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).Delete(&challenge).Error
+	return database.GetDatabase().Model(&Challenge{}).Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).Delete(&challenge).Error
 }

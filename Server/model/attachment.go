@@ -13,7 +13,7 @@ type Attachment struct {
 
 func GetAttachmentList() ([]Attachment, error) {
 	var attachmentList []Attachment
-	err := database.GetDatabase().Find(&attachmentList).Error
+	err := database.GetDatabase().Model(&Attachment{}).Find(&attachmentList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func (attachment *Attachment) GetAttachment() error {
 }
 
 func (attachment *Attachment) CreateAttachment() error {
-	return database.GetDatabase().Create(&attachment).Error
+	return database.GetDatabase().Model(&Attachment{}).Create(&attachment).Error
 }
 
 func (attachment *Attachment) UpdateAttachment() error {

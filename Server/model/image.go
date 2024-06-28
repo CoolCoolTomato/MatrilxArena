@@ -14,7 +14,7 @@ type Image struct {
 
 func GetImageList() ([]Image, error) {
 	var imageList []Image
-	err := database.GetDatabase().Find(&imageList).Error
+	err := database.GetDatabase().Model(&Image{}).Find(&imageList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (image *Image) GetImage() error {
 }
 
 func (image *Image) CreateImage() error {
-	return database.GetDatabase().Create(&image).Error
+	return database.GetDatabase().Model(&Image{}).Create(&image).Error
 }
 
 func (image *Image) UpdateImage() error {
