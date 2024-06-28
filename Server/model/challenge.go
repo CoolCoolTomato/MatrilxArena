@@ -8,12 +8,12 @@ import (
 
 type Challenge struct {
 	gorm.Model
-	ImageID        uint
-	Image          Image
 	Title          string
 	Description    string
+    ImageID        uint
+	Image          Image   `gorm:"foreignKey:ImageID;constraint:OnDelete:SET NULL"`
 	AttachmentID   uint
-	Attachment     Attachment
+	Attachment     Attachment  `gorm:"foreignKey:AttachmentID;constraint:OnDelete:SET NULL"`
 	SpecifiedPorts gormType.StringSlice `gorm:"type:json"`
 	Commands       gormType.StringSlice `gorm:"type:json"`
 	Flag           string
