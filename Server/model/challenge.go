@@ -22,7 +22,7 @@ type Challenge struct {
 
 func GetChallengeList() ([]Challenge, error) {
 	var challengeList []Challenge
-	err := database.GetDatabase().Preload("Image").Find(&challengeList).Error
+	err := database.GetDatabase().Preload("Image").Preload("Attachment").Find(&challengeList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -34,11 +34,80 @@ func (challenge *Challenge) GetChallenge() error {
 }
 
 func (challenge *Challenge) CreateChallenge() error {
-	return database.GetDatabase().Preload("Image").Preload("Attachment").Create(&challenge).Error
+    createFields := []string{
+        "title",
+        "description",
+        "image_id",
+        "attachment_id",
+        "specified_ports",
+        "commands",
+        "flag",
+    }
+
+    creates := map[string]interface{}{
+        "title":           challenge.Title,
+        "description":     challenge.Description,
+        "image_id":        challenge.ImageID,
+        "attachment_id":   challenge.AttachmentID,
+        "specified_ports": challenge.SpecifiedPorts,
+        "commands":        challenge.Commands,
+        "flag":            challenge.Flag,
+    }
+
+    if challenge.ImageID == 0 {
+        creates["image_id"] = nil
+    }
+
+    if challenge.AttachmentID == 0 {
+        creates["attachment_id"] = nil
+    }
+	return database.GetDatabase().
+        Preload("Image").
+        Preload("Attachment").
+        Model(&Challenge{}).
+        Select(createFields).
+        Create(creates).
+        Error
 }
 
 func (challenge *Challenge) UpdateChallenge() error {
-	return database.GetDatabase().Preload("Image").Preload("Attachment").Model(&Challenge{}).Where("ID = ?", challenge.ID).Updates(&challenge).Error
+    updateFields := []string{
+        "title",
+        "description",
+        "image_id",
+        "attachment_id",
+        "specified_ports",
+        "commands",
+        "flag",
+    }
+
+    updates := map[string]interface{}{
+        "ID":              challenge.ID,
+        "title":           challenge.Title,
+        "description":     challenge.Description,
+        "image_id":        challenge.ImageID,
+        "attachment_id":   challenge.AttachmentID,
+        "specified_ports": challenge.SpecifiedPorts,
+        "commands":        challenge.Commands,
+        "flag":            challenge.Flag,
+    }
+
+    if challenge.ImageID == 0 {
+        updates["image_id"] = nil
+    }
+
+    if challenge.AttachmentID == 0 {
+        updates["attachment_id"] = nil
+    }
+
+	return database.GetDatabase().
+        Preload("Image").
+        Preload("Attachment").
+        Model(&Challenge{}).
+        Where("ID = ?", challenge.ID).
+        Select(updateFields).
+        Updates(updates).
+        Error
 }
 
 func (challenge *Challenge) DeleteChallenge() error {
