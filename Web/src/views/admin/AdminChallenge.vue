@@ -284,7 +284,6 @@
                 </div>
               </el-upload>
             </div>
-
           </el-form-item>
           <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
@@ -652,6 +651,7 @@ export default {
         "Commands": row.Commands === null ? [] : [...row.Commands],
         "Flag": row.Flag
       }
+      this.updateChallengeFlagType = row.Flag === "auto" ? "auto" : "specify"
       this.updateChallengeFormVisible = true
     },
     ClearUpdateChallengeForm() {
