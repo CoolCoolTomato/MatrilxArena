@@ -41,7 +41,13 @@
         <h2>{{ challengeDetail.Title }}<el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <br/>
-        <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: {{ challengeDetail.Attachment.FileName }}</el-text>
+        <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: </el-text>
+        <el-link
+          @click="DownloadAttachment(challengeDetail.Attachment.ID)"
+          style="vertical-align: unset"
+        >
+          {{ challengeDetail.Attachment.FileName }}
+        </el-link>
         <br/>
         <div
           v-if="checkContainerInUse(challengeDetail.ID)"
@@ -98,6 +104,7 @@ import challengeApi from "@/api/challenge.js"
 import userContainerApi from "@/api/userContainer.js";
 import userChallengeApi from "@/api/userChallenge.js";
 import { ElMessage } from "element-plus";
+import attachmentApi from "@/api/attachment.js";
 
 export default {
   components: {Aim, Menu},
@@ -376,6 +383,15 @@ export default {
           })
         } else {
           ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    DownloadAttachment(id) {
+      attachmentApi.DownloadAttachment(id).then(ok => {
+        if (!ok) {
+          ElMessage.error("Download attachment fail")
         }
       }).catch(error => {
         console.log(error)

@@ -7,7 +7,9 @@ import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
+	"os"
 	"path/filepath"
+	"strconv"
 )
 
 func GetAttachmentList(c *gin.Context) {
@@ -119,6 +121,34 @@ func UploadAttachment(c *gin.Context) {
 	}
 
 	response.OK(attachment, "Upload attachment success", c)
+}
+
+func DownloadAttachment(c *gin.Context) {
+	ID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		response.Fail(err, "Invalid argument", c)
+		return
+	}
+
+	var attachment model.Attachment
+	attachment.ID = uint(ID)
+	err = attachment.GetAttachment()
+	if err != nil {
+		response.Fail(err, "Get attachment fail", c)
+		return
+	}
+
+	if _, err := os.Stat(attachment.FilePath); os.IsNotExist(err) {
+		response.Fail(err, "File not found", c)
+		return
+	}
+
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", "attachment; filename="+attachment.FileName)
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Access-Control-Expose-Headers", "Content-Disposition")
+	c.File(attachment.FilePath)
 }
 
 func generateRandomFilename() string {

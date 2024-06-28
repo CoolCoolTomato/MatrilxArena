@@ -12,6 +12,7 @@ func SetAttachmentRoute(r *gin.Engine) {
 	{
 		attachment.POST("GetAttachmentList", api.GetAttachmentList)
 		attachment.POST("GetAttachment", api.GetAttachment)
+		attachment.GET("DownloadAttachment/:id", api.DownloadAttachment)
 	}
 	adminAttachment := r.Group("/attachment")
 	adminAttachment.Use(middleware.AdminAuthMiddleware())

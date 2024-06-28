@@ -34,12 +34,44 @@ function UploadAttachment(fileName, file) {
   }).then(handleResponse).catch(handleError);
 }
 
+function DownloadAttachment(id) {
+  return apiClient.get(`/attachment/DownloadAttachment/${id}`, {
+    responseType: 'blob',
+  }).then(response => {
+    if (response.data.type === "application/octet-stream") {
+      const contentDisposition = response.headers['content-disposition'];
+      let fileName = `attachment${id}`;
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+        if (fileNameMatch && fileNameMatch[1]) {
+          fileName = fileNameMatch[1].replace(/['"]/g, '');
+        }
+      }
+      const contentType = response.headers['content-type'] || 'application/octet-stream';
+      const blob = new Blob([response.data], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      return true;
+    } else {
+      return false;
+    }
+  }).catch(handleError);
+}
+
 const attachmentApi = {
-  GetAttachmentList, GetAttachment,
+  GetAttachmentList,
+  GetAttachment,
   CreateAttachment,
   UpdateAttachment,
   DeleteAttachment,
-  UploadAttachment
+  UploadAttachment,
+  DownloadAttachment,
 }
 
 export default attachmentApi

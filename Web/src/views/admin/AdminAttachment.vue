@@ -24,6 +24,11 @@
             >
               Delete
             </el-button>
+            <el-button
+              @click="DownloadAttachment(scope.row.ID)"
+              >
+              Download
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -255,6 +260,15 @@ export default {
         "file": null
       }
       this.$refs.upload.clearFiles();
+    },
+    DownloadAttachment(id) {
+      attachmentApi.DownloadAttachment(id).then(ok => {
+        if (!ok) {
+          ElMessage.error("Download attachment fail")
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     handleFileChange(file) {
       if (file) {
