@@ -118,7 +118,7 @@ func UploadAttachment(c *gin.Context) {
 		return
 	}
 
-	response.OK(nil, "Upload attachment success", c)
+	response.OK(attachment, "Upload attachment success", c)
 }
 
 func generateRandomFilename() string {
