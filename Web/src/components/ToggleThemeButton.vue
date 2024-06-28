@@ -12,10 +12,10 @@ import {Moon, Sunny} from '@element-plus/icons-vue'
 export default {
   name: 'ToggleThemeButton',
   data() {
-  return {
-    theme: 'light',
-    icon: Sunny,
-  };
+    return {
+      theme: 'light',
+      icon: Sunny,
+    }
   },
   methods: {
   toggleTheme(event) {

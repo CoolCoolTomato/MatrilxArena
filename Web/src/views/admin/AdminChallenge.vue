@@ -76,7 +76,7 @@
               >
               <el-option
                 v-for="image in imageList"
-                :key="image.RepoTags"
+                :key="image.ID"
                 :label="image.RepoTags"
                 :value="image.ID"
               >
@@ -93,7 +93,7 @@
                 >
                 <el-option
                   v-for="attachment in attachmentList"
-                  :key="attachment.FileName"
+                  :key="attachment.ID"
                   :label="attachment.FileName"
                   :value="attachment.ID"
                 >
@@ -238,7 +238,7 @@
               >
               <el-option
                 v-for="image in imageList"
-                :key="image.RepoTags"
+                :key="image.ID"
                 :label="image.RepoTags"
                 :value="image.ID"
                 >
@@ -255,11 +255,18 @@
                 >
                 <el-option
                   v-for="attachment in attachmentList"
-                  :key="attachment.FileName"
+                  :key="attachment.ID"
                   :label="attachment.FileName"
                   :value="attachment.ID"
                 >
                 </el-option>
+                <template v-if="!attachmentList.some(attachment => attachment.ID === updateChallengeData.AttachmentID)" slot="empty">
+                  <el-option
+                    label="Deleted file"
+                    :value="updateChallengeData.AttachmentID"
+                    disabled
+                  />
+                </template>
               </el-select>
               <el-upload
                 style="width: 50%;"
