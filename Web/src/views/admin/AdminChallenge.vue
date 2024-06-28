@@ -11,7 +11,11 @@
         >
         <el-table-column prop="Title" label="Title"/>
         <el-table-column prop="Description" label="Description"/>
-        <el-table-column prop="Image.RepoTags" label="Image"/>
+        <el-table-column label="Image">
+          <template  #default=scope>
+            {{ scope.row.Image.RepoTags === "" ? "null" : scope.row.Image.RepoTags}}
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
             <el-button
@@ -41,8 +45,8 @@
         <el-card>
           <p style="word-break: break-all;">Title: {{ challengeDetail.Title }}</p>
           <p style="word-break: break-all;">Description: {{ challengeDetail.Description }}</p>
-          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.RepoTags }}</p>
-          <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment }}</p>
+          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.RepoTags === "" ? "null" : challengeDetail.Image.RepoTags }}</p>
+          <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment.FileName === "" ? "null" : challengeDetail.Attachment.FileName }}</p>
           <p style="word-break: break-all;">SpecifiedPorts: {{ challengeDetail.SpecifiedPorts }}</p>
           <p style="word-break: break-all;">Commands: {{ challengeDetail.Commands }}</p>
           <p style="word-break: break-all;">Flag: {{ challengeDetail.Flag }}</p>
@@ -80,7 +84,37 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Attachment" :label-width="labelWidth">
-            <el-input v-model="createChallengeData.Attachment"/>
+            <div style="display: flex; width: 100%;">
+              <el-select
+                style="width: 50%"
+                v-model="createChallengeData.AttachmentID"
+                filterable
+                placeholder="Select"
+                >
+                <el-option
+                  v-for="attachment in attachmentList"
+                  :key="attachment.FileName"
+                  :label="attachment.FileName"
+                  :value="attachment.ID"
+                >
+                </el-option>
+              </el-select>
+              <el-upload
+                style="width: 50%;"
+                ref="upload"
+                :limit="1"
+                :auto-upload="false"
+                :on-change="handleFileChange"
+                :on-exceed="handleExceed"
+              >
+                <template #trigger>
+                  <el-button style="margin-left: 20px">Select</el-button>
+                </template>
+                <div style="display: inline-flex">
+                  <el-button @click="UploadAttachment" style="margin-left: 10px">Upload</el-button>
+                </div>
+              </el-upload>
+            </div>
           </el-form-item>
           <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
@@ -212,7 +246,38 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Attachment" :label-width="labelWidth">
-            <el-input v-model="updateChallengeData.Attachment"/>
+            <div style="display: flex; width: 100%;">
+              <el-select
+                style="width: 50%"
+                v-model="updateChallengeData.AttachmentID"
+                filterable
+                placeholder="Select"
+                >
+                <el-option
+                  v-for="attachment in attachmentList"
+                  :key="attachment.FileName"
+                  :label="attachment.FileName"
+                  :value="attachment.ID"
+                >
+                </el-option>
+              </el-select>
+              <el-upload
+                style="width: 50%;"
+                ref="upload"
+                :limit="1"
+                :auto-upload="false"
+                :on-change="handleFileChange"
+                :on-exceed="handleExceed"
+              >
+                <template #trigger>
+                  <el-button style="margin-left: 20px">Select</el-button>
+                </template>
+                <div style="display: inline-flex">
+                  <el-button @click="UploadAttachment" style="margin-left: 10px">Upload</el-button>
+                </div>
+              </el-upload>
+            </div>
+
           </el-form-item>
           <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
@@ -332,6 +397,7 @@
 </template>
 <script>
 import challengeApi from "@/api/challenge.js"
+import attachmentApi from "@/api/attachment.js";
 import imageApi from "@/api/image.js";
 import { ElMessage } from "element-plus";
 
@@ -340,13 +406,14 @@ export default {
     return {
       labelWidth: 100,
       imageList: [],
+      attachmentList: [],
       challengeList: [],
       challengeDetailVisible: false,
       challengeDetail: {
         "Title": "",
         "Description": "",
         "Image": {},
-        "Attachment": "",
+        "Attachment": {},
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -355,8 +422,8 @@ export default {
       createChallengeData: {
         "Title": "",
         "Description": "",
-        "ImageID": null,
-        "Attachment": "",
+        "ImageID": 0,
+        "AttachmentID": 0,
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -370,8 +437,8 @@ export default {
         "ID": 0,
         "Title": "",
         "Description": "",
-        "ImageID": null,
-        "Attachment": "",
+        "ImageID": 0,
+        "AttachmentID": 0,
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -383,6 +450,10 @@ export default {
       deleteChallengeFormVisible: false,
       deleteChallengeData: {
         "ID": 0,
+      },
+      uploadAttachmentData: {
+        "fileName": "",
+        "file": null
       }
     }
   },
@@ -391,6 +462,25 @@ export default {
       imageApi.GetImageList().then(res => {
         if (res.code === 0) {
           this.imageList = res.data
+          this.imageList.push({
+            "ID": 0,
+            "RepoTags": "null"
+          })
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    GetAttachmentList() {
+      attachmentApi.GetAttachmentList().then(res => {
+        if (res.code === 0) {
+          this.attachmentList = res.data
+          this.attachmentList.push({
+            "ID": 0,
+            "FileName": "null"
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -415,10 +505,10 @@ export default {
     },
     ClearChallengeDetail() {
       this.challengeDetail = {
-        "ImageID": null,
         "Title": "",
         "Description": "",
-        "Attachment": "",
+        "Image": {},
+        "Attachment": {},
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -478,10 +568,10 @@ export default {
     },
     ClearCreateChallengeForm() {
       this.createChallengeData = {
-        "ImageID": null,
+        "ImageID": 0,
         "Title": "",
         "Description": "",
-        "Attachment": "",
+        "AttachmentID": 0,
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -490,6 +580,7 @@ export default {
       this.createChallengeProtocol = ""
       this.createChallengeCommand = ""
       this.createChallengeFlagType = ""
+      this.ClearUploadAttachmentForm()
     },
     AddUpdateChallengeSpecifiedPort() {
       if (this.updateChallengePort === "") {
@@ -546,10 +637,10 @@ export default {
     OpenUpdateChallengeForm(row) {
       this.updateChallengeData = {
         "ID": row.ID,
-        "ImageID": row.ImageID,
         "Title": row.Title,
         "Description": row.Description,
-        "Attachment": row.Attachment,
+        "ImageID": row.ImageID,
+        "AttachmentID": row.AttachmentID,
         "SpecifiedPorts": row.SpecifiedPorts === null ? [] : [...row.SpecifiedPorts],
         "Commands": row.Commands === null ? [] : [...row.Commands],
         "Flag": row.Flag
@@ -559,10 +650,10 @@ export default {
     ClearUpdateChallengeForm() {
       this.updateChallengeData = {
         "ID": 0,
-        "ImageID": null,
+        "ImageID": 0,
         "Title": "",
         "Description": "",
-        "Attachment": "",
+        "AttachmentID": 0,
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": ""
@@ -571,6 +662,7 @@ export default {
       this.updateChallengeProtocol = ""
       this.updateChallengeCommand = ""
       this.updateChallengeFlagType = ""
+      this.ClearUploadAttachmentForm()
     },
     DeleteChallenge() {
       challengeApi.DeleteChallenge(this.deleteChallengeData).then(res => {
@@ -599,9 +691,52 @@ export default {
         "ID": 0,
       }
     },
+    UploadAttachment() {
+      attachmentApi.UploadAttachment(this.uploadAttachmentData.fileName, this.uploadAttachmentData.file).then(res => {
+        if (res.code === 0) {
+          if (this.createChallengeFormVisible) {
+            this.createChallengeData.AttachmentID = res.data.ID
+          } else if (this.updateChallengeFormVisible) {
+            this.updateChallengeData.AttachmentID = res.data.ID
+          }
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+          this.GetAttachmentList()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    ClearUploadAttachmentForm() {
+      this.uploadAttachmentData = {
+        "fileName": "",
+        "file": null
+      }
+      this.$refs.upload.clearFiles();
+    },
+    handleFileChange(file) {
+      if (file) {
+        this.uploadAttachmentData.fileName = file.name;
+        this.uploadAttachmentData.file = file.raw;
+      } else {
+        this.uploadAttachmentData.fileName = '';
+        this.uploadAttachmentData.file = null;
+      }
+    },
+    handleExceed(files) {
+      const uploadInstance = this.$refs.upload;
+      uploadInstance.clearFiles();
+      const file = files[0];
+      uploadInstance.handleStart(file);
+    }
   },
   mounted() {
     this.GetImageList()
+    this.GetAttachmentList()
     this.GetChallengeList()
   }
 }

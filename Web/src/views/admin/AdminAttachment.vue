@@ -89,7 +89,7 @@
           </el-form-item>
           <el-form-item label="File" :label-width="labelWidth">
             <el-upload
-              style="width: 100%"
+              style="width: 100%;"
               ref="upload"
               :limit="1"
               :auto-upload="false"
