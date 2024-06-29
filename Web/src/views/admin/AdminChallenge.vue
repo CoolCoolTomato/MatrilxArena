@@ -243,6 +243,13 @@
                 :value="image.ID"
                 >
               </el-option>
+              <template v-if="!imageList.some(image => image.ID === updateChallengeData.ImageID)" slot="empty">
+                <el-option
+                  label="Deleted image"
+                  :value="updateChallengeData.ImageID"
+                  disabled
+                />
+              </template>
             </el-select>
           </el-form-item>
           <el-form-item label="Attachment" :label-width="labelWidth">

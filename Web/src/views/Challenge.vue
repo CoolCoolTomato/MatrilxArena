@@ -38,17 +38,17 @@
         width="700"
         @close="ClearChallengeDetail"
         >
-        <h2>{{ challengeDetail.Title }}<el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
+        <h2>{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
-        <br/>
-        <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: </el-text>
-        <el-link
-          @click="DownloadAttachment(challengeDetail.Attachment.ID)"
-          style="vertical-align: unset"
-        >
-          {{ challengeDetail.Attachment.FileName }}
-        </el-link>
-        <br/>
+        <div style="margin-top: 5px;">
+          <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: </el-text>
+          <el-link
+            @click="DownloadAttachment(challengeDetail.Attachment.ID)"
+            style="vertical-align: unset"
+          >
+            {{ challengeDetail.Attachment.FileName }}
+          </el-link>
+        </div>
         <div
           v-if="checkContainerInUse(challengeDetail.ID)"
           v-for="portMap in userContainer.PortMaps"
