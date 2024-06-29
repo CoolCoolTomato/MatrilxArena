@@ -59,10 +59,14 @@
         </div>
         <el-progress
           v-if="checkContainerInUse(challengeDetail.ID)"
-          :percentage="userContainer.RemainingTime / 36000000000"
+          :percentage="(userContainer.RemainingTime - Date.now()) / 36000"
           style="margin-top: 15px"
           >
-          <el-text>{{ formatTime(userContainer.RemainingTime) }}</el-text>
+          <el-countdown
+            :value="userContainer.RemainingTime"
+            :finish="this.GetContainerListByUser"
+            value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+          />
         </el-progress>
         <div class="operations">
           <el-button
@@ -160,6 +164,11 @@ export default {
       return userContainerApi.GetContainerListByUser().then(res => {
         if (res.code === 0) {
           this.userContainerList = res.data == null ? [] : res.data
+          this.userContainerList = this.userContainerList.map(container => {
+            const newContainer = {...container}
+            newContainer.RemainingTime = Math.trunc(newContainer.RemainingTime / 1000000 + Date.now())
+            return newContainer
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -404,35 +413,15 @@ export default {
       this.userContainer = this.userContainerList.find(container => container.ChallengeID === challengeID)
     },
     checkChallengeSolved(challengeID) {
-      return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID);
-    },
-    formatTime(time) {
-      const oneHour = 3600000000000;
-      let minutes = Math.floor(time / (oneHour / 60))
-      let remaining = time % (oneHour / 60)
-      let seconds = Math.floor(remaining / (oneHour / 3600))
-      return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-    },
-    calculateTime() {
-      this.userContainerList.forEach(user => {
-        if (user.RemainingTime > 0) {
-          user.RemainingTime -= 1000000000;
-        }
-      })
+      return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID)
     },
   },
   mounted() {
     this.GetContainerListByUser()
     this.GetChallengeList()
     this.GetUserChallengeList()
-    this.intervalId = setInterval(this.calculateTime, 1000);
   },
-  beforeDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
-};
+}
 </script>
 
 <style scoped>
