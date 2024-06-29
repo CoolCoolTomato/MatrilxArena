@@ -56,7 +56,7 @@ import Copyright from "@/components/Copyright.vue";
 .flex-grow {
   flex-grow: 1;
 }
-::v-deep .el-menu-item-no-style > .el-button > [class^="el-icon"] {
+::v-deep(.el-menu-item-no-style > .el-button > [class^="el-icon"]) {
   margin-right: 0;
 }
 .el-container{

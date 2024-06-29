@@ -7,7 +7,8 @@ import (
 
 type ChallengeClass struct {
 	gorm.Model
-	Name string
+	Name  string
+	Order uint
 }
 
 func GetChallengeClassList() ([]ChallengeClass, error) {
