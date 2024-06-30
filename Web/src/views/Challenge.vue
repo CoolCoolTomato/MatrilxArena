@@ -1,18 +1,28 @@
 <template>
   <el-container>
-    <el-aside :width="isMenuOpen ? '150px' : '64px'">
-      <el-menu :collapse="!isMenuOpen" style="border: none;">
-        <el-menu-item index="1" @click="toggleSidebar">
+    <el-aside :width="isMenuOpen ? '190px' : '64px'">
+      <el-menu :collapse="!isMenuOpen" style="border: none;" router>
+        <el-menu-item @click="toggleSidebar">
           <el-icon>
             <Menu />
           </el-icon>
             <template #title>Menu</template>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="/challenge">
           <el-icon>
-            <Aim />
+            <Flag />
           </el-icon>
-          <template #title>Web</template>
+            <template #title>All</template>
+        </el-menu-item>
+        <el-menu-item
+          v-for="challengeClass in challengeClassList"
+          :key="challengeClass.ID"
+          :index="'/challenge/' + challengeClass.Name"
+          >
+          <el-icon>
+            <Flag />
+          </el-icon>
+          <template #title>{{ challengeClass.Name }}</template>
         </el-menu-item>
       </el-menu>
     </el-aside>
@@ -26,11 +36,6 @@
             </div>
           </el-col>
         </el-row>
-        <el-pagination
-          layout="prev, pager, next"
-          :pager-count="11"
-          :total="200"
-          />
       </el-scrollbar>
       <el-dialog
         v-model="challengeDetailVisible"
@@ -103,7 +108,8 @@
 </template>
 
 <script>
-import {Aim, Menu} from '@element-plus/icons-vue'
+import {Flag, Menu} from '@element-plus/icons-vue'
+import challengeClassApi from "@/api/challengeClass.js";
 import challengeApi from "@/api/challenge.js"
 import userContainerApi from "@/api/userContainer.js";
 import userChallengeApi from "@/api/userChallenge.js";
@@ -111,7 +117,7 @@ import { ElMessage } from "element-plus";
 import attachmentApi from "@/api/attachment.js";
 
 export default {
-  components: {Aim, Menu},
+  components: {Flag, Menu},
   data() {
     return {
       isMenuOpen: false,
@@ -123,6 +129,8 @@ export default {
         "RemainingTime": 0,
         "PortMaps": []
       },
+      challengeClass: null,
+      challengeClassList: [],
       challengeList: [],
       challengeDetailVisible: false,
       challengeDetail: {
@@ -160,6 +168,18 @@ export default {
     toggleSidebar() {
       this.isMenuOpen = !this.isMenuOpen;
     },
+    async GetChallengeClassList() {
+      return challengeClassApi.GetChallengeClassList().then(res => {
+        if (res.code === 0) {
+          this.challengeClassList = res.data
+          this.challengeClassList.sort((a, b) => a.Order - b.Order)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     async GetContainerListByUser() {
       return userContainerApi.GetContainerListByUser().then(res => {
         if (res.code === 0) {
@@ -177,15 +197,28 @@ export default {
       })
     },
     GetChallengeList() {
-      challengeApi.GetChallengeList().then(res => {
-        if (res.code === 0) {
-          this.challengeList = res.data
-        } else {
-          ElMessage.error(res.msg)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === this.challengeClass)
+      if (challengeClass) {
+        challengeApi.GetChallengeListByClass(challengeClass).then(res => {
+          if (res.code === 0) {
+            this.challengeList = res.data
+          } else {
+            ElMessage.error(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      } else {
+        challengeApi.GetChallengeList().then(res => {
+          if (res.code === 0) {
+            this.challengeList = res.data
+          } else {
+            ElMessage.error(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     OpenChallengeDetail(challenge) {
       this.challengeDetailVisible = true
@@ -416,10 +449,17 @@ export default {
       return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID)
     },
   },
-  mounted() {
-    this.GetContainerListByUser()
+  async mounted() {
+    this.challengeClass = this.$route.params.challengeClass
+    await this.GetContainerListByUser()
+    await this.GetChallengeClassList()
     this.GetChallengeList()
     this.GetUserChallengeList()
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.challengeClass = to.params.challengeClass;
+    this.GetChallengeList();
+    next();
   },
 }
 </script>

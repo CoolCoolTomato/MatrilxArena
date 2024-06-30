@@ -20,7 +20,7 @@ const router = createRouter({
     { path: "/login", component: Login },
     {path: "/", component: Base, children: [
       {path: "", component: Index},
-      {path: "challenge", component: Challenge},
+      {path: "challenge/:challengeClass?", component: Challenge},
     ]},
     {path: "/admin", component: BaseAdmin, children: [
       {path: "", component: AdminIndex},
