@@ -13,6 +13,7 @@ import AdminChallenge from "@/views/admin/AdminChallenge.vue";
 import AdminUser from "@/views/admin/AdminUser.vue";
 import AdminAttachment from "@/views/admin/AdminAttachment.vue";
 import AdminChallengeClass from "@/views/admin/AdminChallengeClass.vue";
+import authApi from "@/api/auth.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,13 +37,26 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token");
-  if (!token && to.path !== "/login") {
-    next("/login");
-  } else {
-    next();
-  }
-});
+  authApi.CheckAuth().then(res => {
+    if (res.code !== 0 && to.path !== "/login") {
+      next("/login")
+    } else {
+      const role = res.data
+      if (to.path.startsWith('/admin')) {
+        if (role !== 1) {
+          next("/login")
+        } else {
+          next()
+        }
+      } else {
+          next()
+      }
+    }
+  }).catch(error => {
+    console.log(error)
+    next("/login")
+  })
+})
 
 
 export default router

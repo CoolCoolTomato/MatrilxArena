@@ -36,3 +36,21 @@ func Login(c *gin.Context) {
 
 	response.OK(token, "Login success", c)
 }
+
+func CheckAuth(c *gin.Context) {
+    username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, "Invalid token", c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
+		response.Fail(nil, "User not found", c)
+		return
+	}
+
+    response.OK(user.Role, "Authorized", c)
+}

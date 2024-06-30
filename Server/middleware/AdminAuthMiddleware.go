@@ -12,7 +12,7 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
-			response.Fail("", "Authorization header required", c)
+			response.Fail("Unauthorized", "Authorization header required", c)
 			c.Abort()
 			return
 		}
@@ -23,7 +23,7 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 
 		claims, err := jwt.ValidateJWT(tokenString)
 		if err != nil {
-			response.Fail("", "Invalid token", c)
+			response.Fail("Unauthorized", "Invalid token", c)
 			c.Abort()
 			return
 		}
@@ -32,13 +32,13 @@ func AdminAuthMiddleware() gin.HandlerFunc {
 		user.Username = claims.Username
 		err = user.GetUserByUsernameOrEmail()
 		if err != nil {
-			response.Fail("", "Get user fail", c)
+			response.Fail("Unauthorized", "Get user fail", c)
 			c.Abort()
 			return
 		}
 
 		if user.Role != 1 {
-			response.Fail("", "Permission denied", c)
+			response.Fail("Unauthorized", "Permission denied", c)
 			c.Abort()
 			return
 		}
