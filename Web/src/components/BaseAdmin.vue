@@ -26,7 +26,7 @@ import Copyright from "@/components/Copyright.vue";
       </el-header>
       <el-main>
         <el-container>
-          <el-aside :width="isMenuOpen ? '150px' : '64px'">
+          <el-aside :width="isMenuOpen ? '190px' : '64px'">
             <el-menu
               :collapse="!isMenuOpen"
               style="border: none;"

@@ -15,6 +15,22 @@ func GetChallengeList(c *gin.Context) {
 	response.OK(challengeList, "Get challenge list success", c)
 }
 
+func GetChallengeListByClass(c *gin.Context) {
+    var challengeClass model.ChallengeClass
+    err := c.ShouldBindJSON(&challengeClass)
+    if err != nil || challengeClass.ID == 0 {
+        response.Fail(err, "Invalid argument", c)
+		return
+    }
+
+    challengeList, err := model.GetChallengeListByClass(challengeClass.ID)
+	if err != nil {
+		response.Fail(err, "Get challenge list fail", c)
+		return
+	}
+    response.OK(challengeList, "Get challenge list success", c)
+}
+
 func GetChallenge(c *gin.Context) {
 	var challenge model.Challenge
 	err := c.ShouldBindJSON(&challenge)

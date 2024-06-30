@@ -31,6 +31,20 @@ func GetChallengeList() ([]Challenge, error) {
 	return challengeList, nil
 }
 
+func GetChallengeListByClass(challengeClassID uint) ([]Challenge, error) {
+    var challengeList []Challenge
+    err := database.GetDatabase().Model(&Challenge{}).
+        Where("challenge_class_id = ?", challengeClassID).
+        Preload("ChallengeClass").
+        Preload("Image").
+        Preload("Attachment").
+        Find(&challengeList).Error
+    if err != nil {
+        return nil, err
+    }
+    return challengeList, nil
+}
+
 func (challenge *Challenge) GetChallenge() error {
 	return database.GetDatabase().Model(&Challenge{}).Preload("ChallengeClass").Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).First(&challenge).Error
 }
