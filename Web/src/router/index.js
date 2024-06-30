@@ -3,7 +3,6 @@ import Base from "@/components/Base.vue";
 import Login from "@/views/Login.vue";
 import Index from "@/views/Index.vue";
 import Challenge from "@/views/Challenge.vue";
-
 import BaseAdmin from "@/components/BaseAdmin.vue";
 import AdminIndex from "@/views/admin/AdminIndex.vue"
 import AdminNode from "@/views/admin/AdminNode.vue";
@@ -19,28 +18,30 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "/login", component: Login },
-    {path: "/", component: Base, children: [
-      {path: "", component: Index},
-      {path: "challenge/:challengeClass?", component: Challenge},
+    { path: "/", component: Base, children: [
+      { path: "", component: Index },
+      { path: "challenge/:challengeClass?", component: Challenge },
     ]},
-    {path: "/admin", component: BaseAdmin, children: [
-      {path: "", component: AdminIndex},
-      {path: "node", component: AdminNode},
-      {path: "node/:id(\\d+)", component: AdminNodeDetail},
-      {path: "image", component: AdminImage},
-      {path: "challengeClass", component: AdminChallengeClass},
-      {path: "challenge", component: AdminChallenge},
-      {path: "attachment", component: AdminAttachment},
-      {path: "user", component: AdminUser},
+    { path: "/admin", component: BaseAdmin, children: [
+      { path: "", component: AdminIndex },
+      { path: "node", component: AdminNode },
+      { path: "node/:id(\\d+)", component: AdminNodeDetail },
+      { path: "image", component: AdminImage},
+      { path: "challengeClass", component: AdminChallengeClass },
+      {  path: "challenge", component: AdminChallenge },
+      { path: "attachment", component: AdminAttachment },
+      { path: "user", component: AdminUser },
     ]},
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.path === "/login") {
+    next()
+    return
+  }
   authApi.CheckAuth().then(res => {
-    if (res.code !== 0 && to.path !== "/login") {
-      next("/login")
-    } else {
+    if (res.code === 0) {
       const role = res.data
       if (to.path.startsWith('/admin')) {
         if (role !== 1) {
@@ -49,14 +50,15 @@ router.beforeEach((to, from, next) => {
           next()
         }
       } else {
-          next()
+        next()
       }
+    } else {
+      next("/login")
     }
   }).catch(error => {
     console.log(error)
     next("/login")
   })
 })
-
 
 export default router
