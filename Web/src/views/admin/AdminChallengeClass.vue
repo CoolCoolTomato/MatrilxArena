@@ -248,6 +248,9 @@ export default {
           updatePromises.push(updatePromise)
         }
       })
+      if (total === 0) {
+        return
+      }
       Promise.all(updatePromises).then(() => {
         if (fail === 0) {
           ElMessage({
