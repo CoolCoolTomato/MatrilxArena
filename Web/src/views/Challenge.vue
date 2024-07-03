@@ -28,10 +28,24 @@
     </el-aside>
     <el-main>
       <el-scrollbar style="width: 80%; left: 10%;">
+        <el-affix :offset="100">
+        <div style="display: flex; margin: 0 20px 20px 20px;">
+          <el-input v-model="challengeQueryTitle" placeholder="Find challenge"/>
+          <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
+            Find
+            <el-icon style="margin-left: 10px">
+              <Search />
+            </el-icon>
+          </el-button>
+          <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
+            Containers
+          </el-button>
+        </div>
+        </el-affix>
         <el-row>
-          <el-col v-for="challenge in challengeList" :span=12>
+          <el-col v-for="challenge in challengeQueryList" :span=12>
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
-              <h2>{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
+              <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
               <el-text>{{ challenge.Description }}</el-text>
             </div>
           </el-col>
@@ -40,10 +54,10 @@
       <el-dialog
         v-model="challengeDetailVisible"
         title="Challenge Detail"
-        width="700"
+        width="600"
         @close="ClearChallengeDetail"
         >
-        <h2>{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
+        <h2 style="color: var(--el-text-color-primary)">{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <div style="margin-top: 5px;">
           <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: </el-text>
@@ -80,35 +94,77 @@
             Reset
           </el-button>
           <el-button
-            @click="CreateContainerByUser"
+            @click="CreateContainerByUser(createContainerByUserData)"
             v-if="!checkContainerInUse(challengeDetail.ID) && challengeDetail.ImageID !== 0"
             >
             Create
           </el-button>
           <el-button
-            @click="DestroyContainerByUser"
+            @click="DestroyContainerByUser(destroyContainerByUserData)"
             v-if="checkContainerInUse(challengeDetail.ID)"
             >
             Destroy
           </el-button>
           <el-button
-            @click="DelayContainerByUser"
+            @click="DelayContainerByUser(delayContainerByUserData)"
             v-if="checkContainerInUse(challengeDetail.ID)"
             >
             Delay
           </el-button>
         </div>
         <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID) || challengeDetail.ImageID === 0">
-          <el-input v-model="checkFlagData.Flag"/>
+          <el-input v-model="checkFlagData.Flag" placeholder="Input flag"/>
           <el-button @click="CheckFlag">Submit</el-button>
         </div>
+      </el-dialog>
+      <el-dialog
+        v-model="userContainerListVisible"
+        title="Container List"
+        width="600"
+        >
+        <el-text v-if="userContainerList.length === 0" size="large">No container is running</el-text>
+        <el-card
+          v-for="userContainer in userContainerList"
+          style="margin: 20px 0 20px 0;"
+          >
+          <h2 style="color: var(--el-text-color-primary)">{{ getContainerChallenge(userContainer.ChallengeID) === undefined ? "" : getContainerChallenge(userContainer.ChallengeID).Title }}</h2>
+          <div
+            v-for="portMap in userContainer.PortMaps"
+            style="margin-top: 15px">
+            <el-text>
+              {{ portMap.PortProtocol }} -> {{ portMap.Link }}
+            </el-text>
+          </div>
+          <el-progress
+            :percentage="(userContainer.RemainingTime - Date.now()) / 36000"
+            style="margin-top: 15px"
+            >
+            <el-countdown
+              :value="userContainer.RemainingTime"
+              :finish="this.GetContainerListByUser"
+              value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+            />
+          </el-progress>
+          <div class="operations">
+            <el-button
+              @click="DestroyContainerByUser(userContainer)"
+              >
+              Destroy
+            </el-button>
+            <el-button
+              @click="DelayContainerByUser(userContainer)"
+              >
+              Delay
+            </el-button>
+          </div>
+        </el-card>
       </el-dialog>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import {Flag, Menu} from '@element-plus/icons-vue'
+import {Flag, Menu, Search} from '@element-plus/icons-vue'
 import challengeClassApi from "@/api/challengeClass.js";
 import challengeApi from "@/api/challenge.js"
 import userContainerApi from "@/api/userContainer.js";
@@ -117,11 +173,12 @@ import { ElMessage } from "element-plus";
 import attachmentApi from "@/api/attachment.js";
 
 export default {
-  components: {Flag, Menu},
+  components: {Flag, Menu, Search},
   data() {
     return {
       isMenuOpen: false,
       userContainerList: [],
+      userContainerListVisible: false,
       userContainer: {
         "DockerNodeID": 0,
         "DockerNodeContainerID": "",
@@ -129,9 +186,11 @@ export default {
         "RemainingTime": 0,
         "PortMaps": []
       },
-      challengeClass: null,
       challengeClassList: [],
       challengeList: [],
+      challengeQueryClassID: 0,
+      challengeQueryTitle: "",
+      challengeQueryList: [],
       challengeDetailVisible: false,
       challengeDetail: {
         "ID": 0,
@@ -197,21 +256,25 @@ export default {
       })
     },
     GetChallengeList() {
-      const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === this.challengeClass)
-      if (challengeClass) {
-        challengeApi.GetChallengeListByClass(challengeClass).then(res => {
-          if (res.code === 0) {
-            this.challengeList = res.data
-          } else {
-            ElMessage.error(res.msg)
+      challengeApi.GetChallengeList().then(res => {
+        if (res.code === 0) {
+          this.challengeList = res.data
+          if (this.challengeQueryClassID === 0 && this.challengeQueryTitle === "") {
+            this.challengeQueryList = res.data
           }
-        }).catch(error => {
-          console.log(error)
-        })
-      } else {
-        challengeApi.GetChallengeList().then(res => {
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+      if (this.challengeQueryClassID !== 0 || this.challengeQueryTitle !== "") {
+        challengeApi.GetChallengeListByQuery({
+          "ChallengeClassID": this.challengeQueryClassID,
+          "Title": this.challengeQueryTitle
+        }).then(res => {
           if (res.code === 0) {
-            this.challengeList = res.data
+            this.challengeQueryList = res.data
           } else {
             ElMessage.error(res.msg)
           }
@@ -291,8 +354,8 @@ export default {
         "Flag": "",
       }
     },
-    CreateContainerByUser() {
-      userContainerApi.CreateContainerByUser(this.createContainerByUserData).then(async res => {
+    CreateContainerByUser(createContainerByUserData) {
+      userContainerApi.CreateContainerByUser(createContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -322,8 +385,8 @@ export default {
         console.log(error)
       })
     },
-    DestroyContainerByUser() {
-      userContainerApi.DestroyContainerByUser(this.destroyContainerByUserData).then(async res => {
+    DestroyContainerByUser(destroyContainerByUserData) {
+      userContainerApi.DestroyContainerByUser(destroyContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -358,8 +421,8 @@ export default {
         console.log(error)
       })
     },
-    DelayContainerByUser() {
-      userContainerApi.DelayContainerByUser(this.delayContainerByUserData).then(async res => {
+    DelayContainerByUser(delayContainerByUserData) {
+      userContainerApi.DelayContainerByUser(delayContainerByUserData).then(async res => {
         if (res.code === 0) {
           ElMessage({
             message: res.msg,
@@ -445,20 +508,29 @@ export default {
     getContainerInUse(challengeID) {
       this.userContainer = this.userContainerList.find(container => container.ChallengeID === challengeID)
     },
+    getContainerChallenge(challengeID) {
+      return this.challengeList.find(challenge => challenge.ID === challengeID)
+    },
     checkChallengeSolved(challengeID) {
       return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID)
     },
   },
   async mounted() {
-    this.challengeClass = this.$route.params.challengeClass
     await this.GetContainerListByUser()
     await this.GetChallengeClassList()
+    const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === this.$route.params.challengeClass)
+    this.challengeQueryClassID = challengeClass === undefined ? 0 : challengeClass.ID
     this.GetChallengeList()
     this.GetUserChallengeList()
   },
-  beforeRouteUpdate(to, from, next) {
-    this.challengeClass = to.params.challengeClass;
-    this.GetChallengeList();
+  async beforeRouteUpdate(to, from, next) {
+    await this.GetContainerListByUser()
+    await this.GetChallengeClassList()
+    const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === to.params.challengeClass)
+    this.challengeQueryClassID = challengeClass === undefined ? 0 : challengeClass.ID
+    this.challengeQueryTitle = ""
+    this.GetChallengeList()
+    this.GetUserChallengeList()
     next();
   },
 }
