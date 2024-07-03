@@ -31,10 +31,16 @@ func GetChallengeList() ([]Challenge, error) {
 	return challengeList, nil
 }
 
-func GetChallengeListByClass(challengeClassID uint) ([]Challenge, error) {
+func GetChallengeListByQuery(challenge Challenge) ([]Challenge, error) {
     var challengeList []Challenge
-    err := database.GetDatabase().Model(&Challenge{}).
-        Where("challenge_class_id = ?", challengeClassID).
+    query := database.GetDatabase().Model(&Challenge{})
+    if challenge.ChallengeClassID != 0 {
+        query = query.Where("challenge_class_id = ?", challenge.ChallengeClassID)
+    }
+    if challenge.Title != "" {
+        query = query.Where("title LIKE ?", "%"+challenge.Title+"%")
+    }
+    err := query.
         Preload("ChallengeClass").
         Preload("Image").
         Preload("Attachment").

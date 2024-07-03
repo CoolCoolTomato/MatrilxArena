@@ -4,8 +4,8 @@ function GetChallengeList() {
     return apiClient.post("/challenge/GetChallengeList").then(handleResponse).catch(handleError)
 }
 
-function GetChallengeListByClass(data) {
-    return apiClient.post("/challenge/GetChallengeListByClass", data).then(handleResponse).catch(handleError)
+function GetChallengeListByQuery(data) {
+    return apiClient.post("/challenge/GetChallengeListByQuery", data).then(handleResponse).catch(handleError)
 }
 
 function GetChallenge(data) {
@@ -28,7 +28,7 @@ function DeleteChallenge(data) {
 
 const challengeApi = {
   GetChallengeList,
-  GetChallengeListByClass,
+  GetChallengeListByQuery,
   GetChallenge,
   CreateChallenge,
   UpdateChallenge,
