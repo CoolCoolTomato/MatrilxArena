@@ -13,16 +13,19 @@ import Copyright from "@/components/Copyright.vue";
           :ellipsis="false"
           router
           >
-          <el-menu-item class="el-menu-item-no-style">
+          <el-menu-item index="/">
             <el-image src="/image/svg/matrilx.svg" style="width: 40px; margin-bottom: 16px; margin-right: 5px;" />
             <h2 style="color: var(--el-text-color-primary);">MatrilxArena</h2>
           </el-menu-item>
           <div class="flex-grow" />
-          <el-menu-item index="/">
-            <el-text class="mx-1" size="large">Index</el-text>
-          </el-menu-item>
           <el-menu-item index="/challenge">
-            <el-text class="mx-1" size="large">Challenge</el-text>
+            <el-text size="large" tag="b">Challenge</el-text>
+          </el-menu-item>
+          <el-menu-item index="/group">
+            <el-text size="large" tag="b">Group</el-text>
+          </el-menu-item>
+          <el-menu-item index="/awd">
+            <el-text size="large" tag="b">AWD</el-text>
           </el-menu-item>
           <el-menu-item class="el-menu-item-no-style">
             <ToggleThemeButton />

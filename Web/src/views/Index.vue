@@ -5,8 +5,8 @@
         <el-row>
           <el-col :span="12">
             <div style="display: flex; flex-direction: column; justify-items: center; align-items: center;">
-              <p style="font-size: 60px; margin: 60px 0 10px 50px; color: var(--el-text-color-primary);"><b>Advanced Cybersecurity Learning Platform</b></p>
-              <p style="font-size: 20px; margin: 10px 0 10px 50px; color: var(--el-text-color-primary);">MatrilxArena is an advanced cybersecurity learning platform, it uses multiple nodes to manage docker servers and provides flexible challenge, image, container management.</p>
+              <el-text style="font-size: 60px; margin: 60px 0 10px 50px; color: var(--el-text-color-primary);" tag="b">Advanced Cybersecurity Learning Platform</el-text>
+              <el-text style="font-size: 20px; margin: 10px 0 10px 50px; color: var(--el-text-color-primary);">MatrilxArena is an advanced cybersecurity learning platform, it uses multiple nodes to manage docker servers and provides flexible challenge, image, container management.</el-text>
             </div>
             <div style="margin: 20px 0 0 50px;">
               <el-button size="large"><b style="color: var(--el-text-color-primary);">Try it now</b></el-button>
@@ -28,7 +28,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-card style="margin: 30px; border-radius: 10px; color: var(--el-text-color-primary);">
-                    <p><b>Flexible topic and management</b></p>
+                    <p><b>Flexible topic management</b></p>
                   </el-card>
                 </el-col>
                 <el-col :span="12">

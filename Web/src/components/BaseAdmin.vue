@@ -13,9 +13,8 @@ import Copyright from "@/components/Copyright.vue";
           :ellipsis="false"
           router
         >
-          <el-menu-item class="el-menu-item-no-style">
-            <el-image src="/image/svg/matrilx.svg"
-                  style="width: 40px; margin-bottom: 16px; margin-right: 5px;"/>
+          <el-menu-item index="/">
+            <el-image src="/image/svg/matrilx.svg" style="width: 40px; margin-bottom: 16px; margin-right: 5px;"/>
             <h2 style="color: var(--el-text-color-primary);">MatrilxArena</h2>
           </el-menu-item>
           <div class="flex-grow"/>
