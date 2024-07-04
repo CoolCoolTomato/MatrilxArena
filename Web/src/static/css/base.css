@@ -5,6 +5,9 @@
 input {
     font-weight: 600;
 }
+span {
+    font-weight: 600;
+}
 body{
     margin: 0;
     padding: 0;

@@ -29,24 +29,24 @@
     <el-main>
       <el-scrollbar style="width: 80%; left: 10%;">
         <el-affix :offset="100">
-        <div style="display: flex; margin: 0 20px 20px 20px;">
-          <el-input v-model="challengeQueryTitle" placeholder="Find challenge"/>
-          <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
-            Find
-            <el-icon style="margin-left: 10px">
-              <Search />
-            </el-icon>
-          </el-button>
-          <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
-            Containers
-          </el-button>
-        </div>
+          <div style="display: flex; margin: 0 20px 20px 20px;">
+            <el-input v-model="challengeQueryTitle" placeholder="Find challenge"/>
+            <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
+              Find
+              <el-icon style="margin-left: 10px">
+                <Search />
+              </el-icon>
+            </el-button>
+            <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
+              Containers
+            </el-button>
+          </div>
         </el-affix>
         <el-row>
           <el-col v-for="challenge in challengeQueryList" :span="12">
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
               <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
-              <el-text>{{ challenge.Description }}</el-text>
+              <el-text truncated>{{ challenge.Description }}</el-text>
             </div>
           </el-col>
         </el-row>
@@ -554,6 +554,7 @@ export default {
 }
 .challenge .el-text{
   margin: 20px;
+  width: calc(100% - 40px);
 }
 .operations{
   margin-top: 15px;
