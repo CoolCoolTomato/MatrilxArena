@@ -13,7 +13,7 @@
         <el-table-column prop="Description" label="Description"/>
         <el-table-column label="Image">
           <template  #default=scope>
-            {{ scope.row.Image.RepoTags === "" ? "null" : scope.row.Image.RepoTags}}
+            {{ scope.row.Image.Remark === "" ? "null" : scope.row.Image.Remark}}
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="300px">
@@ -46,7 +46,8 @@
           <p style="word-break: break-all;">Title: {{ challengeDetail.Title }}</p>
           <p style="word-break: break-all;">Description: {{ challengeDetail.Description }}</p>
           <p style="word-break: break-all;">ChallengeClass: {{ challengeDetail.ChallengeClass.Name === "" ? "null" : challengeDetail.ChallengeClass.Name }}</p>
-          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.RepoTags === "" ? "null" : challengeDetail.Image.RepoTags }}</p>
+          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.Remark === "" ? "null" : challengeDetail.Image.Remark }}</p>
+          <p style="word-break: break-all;">RepoTags: {{ challengeDetail.Image.RepoTags === "" ? "null" : challengeDetail.Image.RepoTags }}</p>
           <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment.FileName === "" ? "null" : challengeDetail.Attachment.FileName }}</p>
           <p style="word-break: break-all;">SpecifiedPorts: {{ challengeDetail.SpecifiedPorts }}</p>
           <p style="word-break: break-all;">Commands: {{ challengeDetail.Commands }}</p>
@@ -92,7 +93,7 @@
               <el-option
                 v-for="image in imageList"
                 :key="image.ID"
-                :label="image.RepoTags"
+                :label="image.Remark"
                 :value="image.ID"
               >
               </el-option>
@@ -275,7 +276,7 @@
               <el-option
                 v-for="image in imageList"
                 :key="image.ID"
-                :label="image.RepoTags"
+                :label="image.Remark"
                 :value="image.ID"
                 >
               </el-option>
@@ -535,7 +536,7 @@ export default {
           this.imageList = res.data
           this.imageList.push({
             "ID": 0,
-            "RepoTags": "null"
+            "Remark": "null"
           })
         } else {
           ElMessage.error(res.msg)
