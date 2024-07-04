@@ -43,7 +43,7 @@
         </div>
         </el-affix>
         <el-row>
-          <el-col v-for="challenge in challengeQueryList" :span=12>
+          <el-col v-for="challenge in challengeQueryList" :span="12">
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
               <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
               <el-text>{{ challenge.Description }}</el-text>

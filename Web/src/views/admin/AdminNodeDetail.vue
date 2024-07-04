@@ -124,7 +124,7 @@
               </el-table-column>
             </el-table>
           </el-col>
-          <el-col :span=9>
+          <el-col :span="9">
             <el-table
               :data="pullImageDataList"
               max-height="500px"
