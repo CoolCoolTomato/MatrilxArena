@@ -1,3 +1,10 @@
+:root {
+    --el-font-weight-primary: 600 !important;
+    font-weight: 600;
+}
+input {
+    font-weight: 600;
+}
 body{
     margin: 0;
     padding: 0;
