@@ -11,19 +11,19 @@
         <el-sub-menu index="challenge">
           <template #title>
             <el-icon>
-              <Class/>
+              <Category/>
             </el-icon>
-            <el-text style="color: var(--el-text-color-primary);">Class</el-text>
+            <el-text style="color: var(--el-text-color-primary);">Category</el-text>
           </template>
           <el-menu-item index="/challenge">
             <template #title>All</template>
           </el-menu-item>
           <el-menu-item
-            v-for="challengeClass in challengeClassList"
-            :key="challengeClass.ID"
-            :index="'/challenge/' + challengeClass.Name"
+            v-for="category in categoryList"
+            :key="category.ID"
+            :index="'/challenge/' + category.Name"
           >
-            <template #title>{{ challengeClass.Name }}</template>
+            <template #title>{{ category.Name }}</template>
           </el-menu-item>
         </el-sub-menu>
       </el-menu>
@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import challengeClassApi from "@/api/challengeClass.js";
+import categoryApi from "@/api/category.js";
 import challengeApi from "@/api/challenge.js"
 import userContainerApi from "@/api/userContainer.js";
 import userChallengeApi from "@/api/userChallenge.js";
@@ -176,10 +176,10 @@ import attachmentApi from "@/api/attachment.js";
 
 import Menu from "@/components/icon/Menu.vue";
 import Search from "@/components/icon/Search.vue";
-import Class from "@/components/icon/Class.vue";
+import Category from "@/components/icon/Category.vue";
 
 export default {
-  components: {Menu, Search, Class},
+  components: {Menu, Search, Category},
   data() {
     return {
       isMenuOpen: false,
@@ -192,9 +192,9 @@ export default {
         "RemainingTime": 0,
         "PortMaps": []
       },
-      challengeClassList: [],
+      categoryList: [],
       challengeList: [],
-      challengeQueryClassID: 0,
+      challengeQueryCategoryID: 0,
       challengeQueryTitle: "",
       challengeQueryList: [],
       challengeDetailVisible: false,
@@ -233,11 +233,11 @@ export default {
     toggleSidebar() {
       this.isMenuOpen = !this.isMenuOpen;
     },
-    async GetChallengeClassList() {
-      return challengeClassApi.GetChallengeClassList().then(res => {
+    async GetCategoryList() {
+      return categoryApi.GetCategoryList().then(res => {
         if (res.code === 0) {
-          this.challengeClassList = res.data
-          this.challengeClassList.sort((a, b) => a.Order - b.Order)
+          this.categoryList = res.data
+          this.categoryList.sort((a, b) => a.Order - b.Order)
         } else {
           ElMessage.error(res.msg)
         }
@@ -265,7 +265,7 @@ export default {
       challengeApi.GetChallengeList().then(res => {
         if (res.code === 0) {
           this.challengeList = res.data
-          if (this.challengeQueryClassID === 0 && this.challengeQueryTitle === "") {
+          if (this.challengeQueryCategoryID === 0 && this.challengeQueryTitle === "") {
             this.challengeQueryList = res.data
           }
         } else {
@@ -274,9 +274,9 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-      if (this.challengeQueryClassID !== 0 || this.challengeQueryTitle !== "") {
+      if (this.challengeQueryCategoryID !== 0 || this.challengeQueryTitle !== "") {
         challengeApi.GetChallengeListByQuery({
-          "ChallengeClassID": this.challengeQueryClassID,
+          "CategoryID": this.challengeQueryCategoryID,
           "Title": this.challengeQueryTitle
         }).then(res => {
           if (res.code === 0) {
@@ -523,17 +523,17 @@ export default {
   },
   async mounted() {
     await this.GetContainerListByUser()
-    await this.GetChallengeClassList()
-    const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === this.$route.params.challengeClass)
-    this.challengeQueryClassID = challengeClass === undefined ? 0 : challengeClass.ID
+    await this.GetCategoryList()
+    const category = this.categoryList.find(category => category.Name === this.$route.params.category)
+    this.challengeQueryCategoryID = category === undefined ? 0 : category.ID
     this.GetChallengeList()
     this.GetUserChallengeList()
   },
   async beforeRouteUpdate(to, from, next) {
     await this.GetContainerListByUser()
-    await this.GetChallengeClassList()
-    const challengeClass = this.challengeClassList.find(challengeClass => challengeClass.Name === to.params.challengeClass)
-    this.challengeQueryClassID = challengeClass === undefined ? 0 : challengeClass.ID
+    await this.GetCategoryList()
+    const category = this.categoryList.find(category => category.Name === to.params.category)
+    this.challengeQueryCategoryID = category === undefined ? 0 : category.ID
     this.challengeQueryTitle = ""
     this.GetChallengeList()
     this.GetUserChallengeList()

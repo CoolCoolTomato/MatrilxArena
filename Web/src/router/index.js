@@ -11,7 +11,7 @@ import AdminImage from "@/views/admin/AdminImage.vue";
 import AdminChallenge from "@/views/admin/AdminChallenge.vue";
 import AdminUser from "@/views/admin/AdminUser.vue";
 import AdminAttachment from "@/views/admin/AdminAttachment.vue";
-import AdminChallengeClass from "@/views/admin/AdminChallengeClass.vue";
+import AdminCategory from "@/views/admin/AdminCategory.vue";
 import authApi from "@/api/auth.js";
 
 const router = createRouter({
@@ -20,14 +20,14 @@ const router = createRouter({
     { path: "/login", component: Login },
     { path: "/", component: Base, children: [
       { path: "", component: Index },
-      { path: "challenge/:challengeClass?", component: Challenge },
+      { path: "challenge/:category?", component: Challenge },
     ]},
     { path: "/admin", component: BaseAdmin, children: [
       { path: "", component: AdminIndex },
       { path: "node", component: AdminNode },
       { path: "node/:id(\\d+)", component: AdminNodeDetail },
       { path: "image", component: AdminImage},
-      { path: "challengeClass", component: AdminChallengeClass },
+      { path: "category", component: AdminCategory },
       {  path: "challenge", component: AdminChallenge },
       { path: "attachment", component: AdminAttachment },
       { path: "user", component: AdminUser },

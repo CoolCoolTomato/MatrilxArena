@@ -64,8 +64,8 @@ import Copyright from "@/components/Copyright.vue";
                   </el-icon>
                   <el-text style="color: var(--el-text-color-primary);">Challenge</el-text>
                 </template>
-                <el-menu-item index="/admin/challengeCLass">
-                  <template #title>Class</template>
+                <el-menu-item index="/admin/category">
+                  <template #title>Category</template>
                 </el-menu-item>
                 <el-menu-item index="/admin/challenge">
                   <template #title>Challenge</template>

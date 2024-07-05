@@ -1,10 +1,10 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">ChallengeClass Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">Category Manager</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createChallengeClassFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createCategoryFormVisible = true">Add</el-button>
       <el-switch
         style="margin: 10px"
         @change="switchAllowSort"
@@ -12,8 +12,8 @@
         active-text="Allow sort"
       />
       <el-table
-        id="challengeClassListTable"
-        :data="challengeClassList"
+        id="categoryListTable"
+        :data="categoryList"
         table-layout="fixed"
         row-key="ID"
       >
@@ -22,12 +22,12 @@
         <el-table-column fixed="right" label="Operations" width="300px">
           <template #default=scope>
             <el-button
-              @click="OpenUpdateChallengeClassForm(scope.row)"
+              @click="OpenUpdateCategoryForm(scope.row)"
             >
               Update
             </el-button>
             <el-button
-              @click="OpenDeleteChallengeClassForm(scope.row)"
+              @click="OpenDeleteCategoryForm(scope.row)"
             >
               Delete
             </el-button>
@@ -35,60 +35,60 @@
         </el-table-column>
       </el-table>
       <el-dialog
-        v-model="createChallengeClassFormVisible"
-        title="Create ChallengeClass"
+        v-model="createCategoryFormVisible"
+        title="Create Category"
         width="500"
-        @close="ClearCreateChallengeClassForm"
+        @close="ClearCreateCategoryForm"
       >
-        <el-form :model=createChallengeClassData>
+        <el-form :model=createCategoryData>
           <el-form-item label="Name" :label-width="labelWidth">
-            <el-input v-model="createChallengeClassData.Name"/>
+            <el-input v-model="createCategoryData.Name"/>
           </el-form-item>
           <el-form-item label="Order" :label-width="labelWidth">
-            <el-input v-model.number="createChallengeClassData.Order" type="number"/>
+            <el-input v-model.number="createCategoryData.Order" type="number"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createChallengeClassFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateChallengeClass">Submit</el-button>
+          <el-button @click="createCategoryFormVisible = false">Cancel</el-button>
+          <el-button @click="CreateCategory">Submit</el-button>
         </template>
       </el-dialog>
       <el-dialog
-        v-model="updateChallengeClassFormVisible"
-        title="Update ChallengeClass"
+        v-model="updateCategoryFormVisible"
+        title="Update Category"
         width="500"
-        @close="ClearUpdateChallengeClassForm"
+        @close="ClearUpdateCategoryForm"
       >
-        <el-form :model=updateChallengeClassData>
+        <el-form :model=updateCategoryData>
           <el-form-item label="Name" :label-width="labelWidth">
-            <el-input v-model="updateChallengeClassData.Name"/>
+            <el-input v-model="updateCategoryData.Name"/>
           </el-form-item>
           <el-form-item label="Order" :label-width="labelWidth">
-            <el-input v-model.number="updateChallengeClassData.Order" type="number"/>
+            <el-input v-model.number="updateCategoryData.Order" type="number"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateChallengeClassFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateChallengeClass">Submit</el-button>
+          <el-button @click="updateCategoryFormVisible = false">Cancel</el-button>
+          <el-button @click="UpdateCategory">Submit</el-button>
         </template>
       </el-dialog>
       <el-dialog
-        v-model="deleteChallengeClassFormVisible"
-        title="Delete ChallengeClass"
+        v-model="deleteCategoryFormVisible"
+        title="Delete Category"
         width="500"
-        @close="ClearDeleteChallengeClassForm"
+        @close="ClearDeleteCategoryForm"
       >
-        <el-text>Are you confirm to delete the challengeClass?</el-text>
+        <el-text>Are you confirm to delete the category?</el-text>
         <template #footer>
-          <el-button @click="deleteChallengeClassFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteChallengeClass">Confirm</el-button>
+          <el-button @click="deleteCategoryFormVisible = false">Cancel</el-button>
+          <el-button @click="DeleteCategory">Confirm</el-button>
         </template>
       </el-dialog>
     </el-main>
   </el-container>
 </template>
 <script>
-import challengeClassApi from "@/api/challengeClass.js"
+import categoryApi from "@/api/category.js"
 import { ElMessage } from "element-plus";
 import Sortable from 'sortablejs';
 
@@ -96,19 +96,19 @@ export default {
   data() {
     return {
       labelWidth: 100,
-      challengeClassList: [],
-      createChallengeClassFormVisible: false,
-      createChallengeClassData: {
+      categoryList: [],
+      createCategoryFormVisible: false,
+      createCategoryData: {
         "Name": "",
         "Order": 0,
       },
-      updateChallengeClassFormVisible: false,
-      updateChallengeClassData: {
+      updateCategoryFormVisible: false,
+      updateCategoryData: {
         "Name": "",
         "Order": 0,
       },
-      deleteChallengeClassFormVisible: false,
-      deleteChallengeClassData: {
+      deleteCategoryFormVisible: false,
+      deleteCategoryData: {
         "ID": 0,
       },
       sortable: null,
@@ -116,11 +116,11 @@ export default {
     }
   },
   methods: {
-    GetChallengeClassList() {
-      challengeClassApi.GetChallengeClassList().then(res => {
+    GetCategoryList() {
+      categoryApi.GetCategoryList().then(res => {
         if (res.code === 0) {
-          this.challengeClassList = res.data
-          this.challengeClassList.sort((a, b) => a.Order - b.Order)
+          this.categoryList = res.data
+          this.categoryList.sort((a, b) => a.Order - b.Order)
         } else {
           ElMessage.error(res.msg)
         }
@@ -128,15 +128,15 @@ export default {
         console.log(error)
       })
     },
-    CreateChallengeClass() {
-      challengeClassApi.CreateChallengeClass(this.createChallengeClassData).then(res => {
+    CreateCategory() {
+      categoryApi.CreateCategory(this.createCategoryData).then(res => {
         if (res.code === 0) {
-          this.createChallengeClassFormVisible = false
+          this.createCategoryFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
           })
-          this.GetChallengeClassList()
+          this.GetCategoryList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -144,21 +144,21 @@ export default {
         console.log(error)
       })
     },
-    ClearCreateChallengeClassForm() {
-      this.createChallengeClassData = {
+    ClearCreateCategoryForm() {
+      this.createCategoryData = {
         "Name": "",
         "Order": 0,
       }
     },
-    UpdateChallengeClass() {
-      challengeClassApi.UpdateChallengeClass(this.updateChallengeClassData).then(res => {
+    UpdateCategory() {
+      categoryApi.UpdateCategory(this.updateCategoryData).then(res => {
         if (res.code === 0) {
-          this.updateChallengeClassFormVisible = false
+          this.updateCategoryFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
           })
-          this.GetChallengeClassList()
+          this.GetCategoryList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -166,30 +166,30 @@ export default {
         console.log(error)
       })
     },
-    OpenUpdateChallengeClassForm(row) {
-      this.updateChallengeClassData = {
+    OpenUpdateCategoryForm(row) {
+      this.updateCategoryData = {
         "ID": row.ID,
         "Name": row.Name,
         "Order": row.Order,
       }
-      this.updateChallengeClassFormVisible = true
+      this.updateCategoryFormVisible = true
     },
-    ClearUpdateChallengeClassForm() {
-      this.updateChallengeClassData = {
+    ClearUpdateCategoryForm() {
+      this.updateCategoryData = {
         "ID": 0,
         "Name": "",
         "Order": 0,
       }
     },
-    DeleteChallengeClass() {
-      challengeClassApi.DeleteChallengeClass(this.deleteChallengeClassData).then(res => {
+    DeleteCategory() {
+      categoryApi.DeleteCategory(this.deleteCategoryData).then(res => {
         if (res.code === 0) {
-          this.deleteChallengeClassFormVisible = false
+          this.deleteCategoryFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
           })
-          this.GetChallengeClassList()
+          this.GetCategoryList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -197,27 +197,27 @@ export default {
         console.log(error)
       })
     },
-    OpenDeleteChallengeClassForm(row) {
-      this.deleteChallengeClassData = {
+    OpenDeleteCategoryForm(row) {
+      this.deleteCategoryData = {
         "ID": row.ID,
       }
-      this.deleteChallengeClassFormVisible = true
+      this.deleteCategoryFormVisible = true
     },
-    ClearDeleteChallengeClassForm() {
-      this.deleteChallengeClassData = {
+    ClearDeleteCategoryForm() {
+      this.deleteCategoryData = {
         "ID": 0,
       }
     },
     initSortable() {
-      const challengeClassListTable = document.querySelector("#challengeClassListTable tbody")
-      this.sortable = new Sortable(challengeClassListTable, {
+      const categoryListTable = document.querySelector("#categoryListTable tbody")
+      this.sortable = new Sortable(categoryListTable, {
         disabled: !this.allowSort,
         animation: 100,
         onEnd: (evt) => {
           const newIndex = evt.newIndex
           const oldIndex = evt.oldIndex
-          const movedItem = this.challengeClassList.splice(oldIndex, 1)[0]
-          this.challengeClassList.splice(newIndex, 0, movedItem)
+          const movedItem = this.categoryList.splice(oldIndex, 1)[0]
+          this.categoryList.splice(newIndex, 0, movedItem)
           this.updateOrder()
         }
       })
@@ -230,11 +230,11 @@ export default {
       let total = 0
       let success = 0
       let fail = 0
-      this.challengeClassList.forEach((challengeClass, index) => {
-        if (challengeClass.Order !== index + 1) {
+      this.categoryList.forEach((category, index) => {
+        if (category.Order !== index + 1) {
           total += 1
-          challengeClass.Order = index + 1
-          const updatePromise = challengeClassApi.UpdateChallengeClass(challengeClass).then(res => {
+          category.Order = index + 1
+          const updatePromise = categoryApi.UpdateCategory(category).then(res => {
               if (res.code === 0) {
                 success += 1
               } else {
@@ -263,20 +263,20 @@ export default {
             type: 'warning',
           })
         }
-        this.GetChallengeClassList()
+        this.GetCategoryList()
       }).catch(error => {
         console.log(error)
       })
     },
   },
   mounted() {
-    this.GetChallengeClassList()
+    this.GetCategoryList()
     this.initSortable()
   }
 }
 </script>
 <style scoped>
-::v-deep(#challengeClassListTable .el-table__row:hover) {
+::v-deep(#categoryListTable .el-table__row:hover) {
   cursor: pointer;
 }
 </style>

@@ -45,7 +45,7 @@
         <el-card>
           <p style="word-break: break-all;">Title: {{ challengeDetail.Title }}</p>
           <p style="word-break: break-all;">Description: {{ challengeDetail.Description }}</p>
-          <p style="word-break: break-all;">ChallengeClass: {{ challengeDetail.ChallengeClass.Name === "" ? "null" : challengeDetail.ChallengeClass.Name }}</p>
+          <p style="word-break: break-all;">Category: {{ challengeDetail.Category.Name === "" ? "null" : challengeDetail.Category.Name }}</p>
           <p style="word-break: break-all;">Image: {{ challengeDetail.Image.Remark === "" ? "null" : challengeDetail.Image.Remark }}</p>
           <p style="word-break: break-all;">RepoTags: {{ challengeDetail.Image.RepoTags === "" ? "null" : challengeDetail.Image.RepoTags }}</p>
           <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment.FileName === "" ? "null" : challengeDetail.Attachment.FileName }}</p>
@@ -70,17 +70,17 @@
           <el-form-item label="Description" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="ChallengeClass" :label-width="labelWidth">
+          <el-form-item label="Category" :label-width="labelWidth">
             <el-select
-              v-model="createChallengeData.ChallengeClassID"
+              v-model="createChallengeData.CategoryID"
               filterable
               placeholder="Select"
               >
               <el-option
-                v-for="challengeClass in challengeClassList"
-                :key="challengeClass.ID"
-                :label="challengeClass.Name"
-                :value="challengeClass.ID"
+                v-for="category in categoryList"
+                :key="category.ID"
+                :label="category.Name"
+                :value="category.ID"
                 ></el-option>
             </el-select>
           </el-form-item>
@@ -246,22 +246,22 @@
           <el-form-item label="Description" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="ChallengeClass" :label-width="labelWidth">
+          <el-form-item label="Category" :label-width="labelWidth">
             <el-select
-              v-model="updateChallengeData.ChallengeClassID"
+              v-model="updateChallengeData.CategoryID"
               filterable
               placeholder="Select"
               >
               <el-option
-                v-for="challengeClass in challengeClassList"
-                :key="challengeClass.ID"
-                :label="challengeClass.Name"
-                :value="challengeClass.ID"
+                v-for="category in categoryList"
+                :key="category.ID"
+                :label="category.Name"
+                :value="category.ID"
                 ></el-option>
-              <template v-if="!challengeClassList.some(challengeClass => challengeClass.ID === updateChallengeData.ChallengeClassID)" slot="empty">
+              <template v-if="!categoryList.some(category => category.ID === updateChallengeData.CategoryID)" slot="empty">
                 <el-option
-                  label="Deleted challengeClass"
-                  :value="updateChallengeData.ChallengeClassID"
+                  label="Deleted category"
+                  :value="updateChallengeData.CategoryID"
                   disabled
                 />
               </template>
@@ -447,7 +447,7 @@
 </template>
 <script>
 import challengeApi from "@/api/challenge.js"
-import challengeClassApi from "@/api/challengeClass.js";
+import categoryApi from "@/api/category.js";
 import imageApi from "@/api/image.js";
 import attachmentApi from "@/api/attachment.js";
 import { ElMessage } from "element-plus";
@@ -456,7 +456,7 @@ export default {
   data() {
     return {
       labelWidth: 120,
-      challengeClassList: [],
+      categoryList: [],
       imageList: [],
       attachmentList: [],
       challengeList: [],
@@ -464,7 +464,7 @@ export default {
       challengeDetail: {
         "Title": "",
         "Description": "",
-        "ChallengeClass": {},
+        "Category": {},
         "Image": {},
         "Attachment": {},
         "SpecifiedPorts": [],
@@ -475,7 +475,7 @@ export default {
       createChallengeData: {
         "Title": "",
         "Description": "",
-        "ChallengeClassID": 0,
+        "CategoryID": 0,
         "ImageID": 0,
         "AttachmentID": 0,
         "SpecifiedPorts": [],
@@ -491,7 +491,7 @@ export default {
         "ID": 0,
         "Title": "",
         "Description": "",
-        "ChallengeClassID": 0,
+        "CategoryID": 0,
         "ImageID": 0,
         "AttachmentID": 0,
         "SpecifiedPorts": [],
@@ -513,16 +513,16 @@ export default {
     }
   },
   methods: {
-    GetChallengeCLassList() {
-      challengeClassApi.GetChallengeClassList().then(res => {
+    GetChallengeCategoryList() {
+      categoryApi.GetCategoryList().then(res => {
         if (res.code === 0) {
-          this.challengeClassList = res.data
-          this.challengeClassList.push({
+          this.categoryList = res.data
+          this.categoryList.push({
             "ID": 0,
             "Name": "null",
             "Order": 0
           })
-          this.challengeClassList.sort((a, b) => a.Order - b.Order)
+          this.categoryList.sort((a, b) => a.Order - b.Order)
         } else {
           ElMessage.error(res.msg)
         }
@@ -579,7 +579,7 @@ export default {
       this.challengeDetail = {
         "Title": "",
         "Description": "",
-        "ChallengeClass": {},
+        "Category": {},
         "Image": {},
         "Attachment": {},
         "SpecifiedPorts": [],
@@ -643,7 +643,7 @@ export default {
       this.createChallengeData = {
         "Title": "",
         "Description": "",
-        "ChallengeClassID": 0,
+        "CategoryID": 0,
         "ImageID": 0,
         "AttachmentID": 0,
         "SpecifiedPorts": [],
@@ -713,7 +713,7 @@ export default {
         "ID": row.ID,
         "Title": row.Title,
         "Description": row.Description,
-        "ChallengeClassID": row.ChallengeClassID,
+        "CategoryID": row.CategoryID,
         "ImageID": row.ImageID,
         "AttachmentID": row.AttachmentID,
         "SpecifiedPorts": row.SpecifiedPorts === null ? [] : [...row.SpecifiedPorts],
@@ -729,7 +729,7 @@ export default {
         "ImageID": 0,
         "Title": "",
         "Description": "",
-        "ChallengeClassID": 0,
+        "CategoryID": 0,
         "AttachmentID": 0,
         "SpecifiedPorts": [],
         "Commands": [],
@@ -812,7 +812,7 @@ export default {
     }
   },
   mounted() {
-    this.GetChallengeCLassList()
+    this.GetChallengeCategoryList()
     this.GetImageList()
     this.GetAttachmentList()
     this.GetChallengeList()
