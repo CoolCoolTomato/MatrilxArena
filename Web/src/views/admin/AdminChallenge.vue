@@ -60,7 +60,7 @@
       <el-dialog
         v-model="createChallengeFormVisible"
         title="Create Challenge"
-        width="500"
+        width="600"
         @close="ClearCreateChallengeForm"
         >
         <el-form :model=createChallengeData>
@@ -210,13 +210,13 @@
           <el-form-item label="Flag" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 180px"
+                style="width: 270px"
                 v-if="createChallengeFlagType === 'auto'"
                 placeholder="auto"
                 disabled
               />
               <el-input
-                style="width: 180px"
+                style="width: 270px"
                 v-if="createChallengeFlagType === 'specify'"
                 v-model="createChallengeData.Flag"
               />
@@ -236,7 +236,7 @@
       <el-dialog
         v-model="updateChallengeFormVisible"
         title="Update Challenge"
-        width="500"
+        width="600"
         @close="ClearUpdateChallengeForm"
         >
         <el-form :model=updateChallengeData>
@@ -407,13 +407,13 @@
           <el-form-item label="Flag" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 180px"
+                style="width: 270px"
                 v-if="updateChallengeFlagType === 'auto'"
                 placeholder="auto"
                 disabled
               />
               <el-input
-                style="width: 180px"
+                style="width: 270px"
                 v-if="updateChallengeFlagType === 'specify'"
                 v-model="updateChallengeData.Flag"
               />
@@ -455,7 +455,7 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
-      labelWidth: 100,
+      labelWidth: 120,
       challengeClassList: [],
       imageList: [],
       attachmentList: [],

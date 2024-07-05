@@ -8,22 +8,24 @@
           </el-icon>
             <template #title>Menu</template>
         </el-menu-item>
-        <el-menu-item index="/challenge">
-          <el-icon>
-            <Flag />
-          </el-icon>
+        <el-sub-menu index="challenge">
+          <template #title>
+            <el-icon>
+              <Class/>
+            </el-icon>
+            <el-text style="color: var(--el-text-color-primary);">Class</el-text>
+          </template>
+          <el-menu-item index="/challenge">
             <template #title>All</template>
-        </el-menu-item>
-        <el-menu-item
-          v-for="challengeClass in challengeClassList"
-          :key="challengeClass.ID"
-          :index="'/challenge/' + challengeClass.Name"
+          </el-menu-item>
+          <el-menu-item
+            v-for="challengeClass in challengeClassList"
+            :key="challengeClass.ID"
+            :index="'/challenge/' + challengeClass.Name"
           >
-          <el-icon>
-            <Flag />
-          </el-icon>
-          <template #title>{{ challengeClass.Name }}</template>
-        </el-menu-item>
+            <template #title>{{ challengeClass.Name }}</template>
+          </el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
     <el-main>
@@ -34,7 +36,7 @@
             <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
               Find
               <el-icon style="margin-left: 10px">
-                <Search />
+                <Search fill="var(var(--el-button-text-color))"/>
               </el-icon>
             </el-button>
             <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
@@ -64,6 +66,7 @@
           <el-link
             @click="DownloadAttachment(challengeDetail.Attachment.ID)"
             style="vertical-align: unset"
+            :underline="false"
           >
             {{ challengeDetail.Attachment.FileName }}
           </el-link>
@@ -164,7 +167,6 @@
 </template>
 
 <script>
-import {Flag, Menu, Search} from '@element-plus/icons-vue'
 import challengeClassApi from "@/api/challengeClass.js";
 import challengeApi from "@/api/challenge.js"
 import userContainerApi from "@/api/userContainer.js";
@@ -172,8 +174,12 @@ import userChallengeApi from "@/api/userChallenge.js";
 import { ElMessage } from "element-plus";
 import attachmentApi from "@/api/attachment.js";
 
+import Menu from "@/components/icon/Menu.vue";
+import Search from "@/components/icon/Search.vue";
+import Class from "@/components/icon/Class.vue";
+
 export default {
-  components: {Flag, Menu, Search},
+  components: {Menu, Search, Class},
   data() {
     return {
       isMenuOpen: false,

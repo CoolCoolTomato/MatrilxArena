@@ -12,7 +12,7 @@
       >
         <el-table-column prop="FileName" label="FileName"/>
         <el-table-column prop="FilePath" label="FilePath"/>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column fixed="right" label="Operations" width="320px">
           <template #default=scope>
             <el-button
               @click="OpenUpdateAttachmentForm(scope.row)"

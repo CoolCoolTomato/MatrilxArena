@@ -39,43 +39,47 @@ import Copyright from "@/components/Copyright.vue";
               </el-menu-item>
               <el-menu-item index="/admin">
                 <el-icon>
-                  <HomeFilled/>
+                  <Home/>
                 </el-icon>
                 <template #title>Index</template>
               </el-menu-item>
-              <el-menu-item index="/admin/node">
-                <el-icon>
-                  <Briefcase/>
-                </el-icon>
-                <template #title>Node</template>
-              </el-menu-item>
-              <el-menu-item index="/admin/image">
-                <el-icon>
-                  <Shop/>
-                </el-icon>
-                <template #title>Image</template>
-              </el-menu-item>
-              <el-menu-item index="/admin/challengeCLass">
-                <el-icon>
-                  <HelpFilled/>
-                </el-icon>
-                <template #title>ChallengeClass</template>
-              </el-menu-item>
-              <el-menu-item index="/admin/challenge">
-                <el-icon>
-                  <List/>
-                </el-icon>
-                <template #title>Challenge</template>
-              </el-menu-item>
+              <el-sub-menu index="docker">
+                <template #title>
+                  <el-icon>
+                    <Docker/>
+                  </el-icon>
+                  <el-text style="color: var(--el-text-color-primary);">Docker</el-text>
+                </template>
+                <el-menu-item index="/admin/node">
+                  <template #title>Node</template>
+                </el-menu-item>
+                <el-menu-item index="/admin/image">
+                  <template #title>Image</template>
+                </el-menu-item>
+              </el-sub-menu>
+              <el-sub-menu index="challenge">
+                <template #title>
+                  <el-icon>
+                    <Challenge/>
+                  </el-icon>
+                  <el-text style="color: var(--el-text-color-primary);">Challenge</el-text>
+                </template>
+                <el-menu-item index="/admin/challengeCLass">
+                  <template #title>Class</template>
+                </el-menu-item>
+                <el-menu-item index="/admin/challenge">
+                  <template #title>Challenge</template>
+                </el-menu-item>
+              </el-sub-menu>
               <el-menu-item index="/admin/attachment">
                 <el-icon>
-                  <UploadFilled/>
+                  <Attachment/>
                 </el-icon>
                 <template #title>Attachment</template>
               </el-menu-item>
               <el-menu-item index="/admin/user">
                 <el-icon>
-                  <UserFilled/>
+                  <User/>
                 </el-icon>
                 <template #title>User</template>
               </el-menu-item>
@@ -93,10 +97,15 @@ import Copyright from "@/components/Copyright.vue";
   </div>
 </template>
 <script>
-import {Menu, Briefcase, Shop, HomeFilled, HelpFilled, List, UploadFilled, UserFilled} from '@element-plus/icons-vue'
+import Menu from "@/components/icon/Menu.vue"
+import Home from "@/components/icon/Home.vue"
+import Docker from "@/components/icon/Docker.vue"
+import Challenge from "@/components/icon/Challenge.vue"
+import Attachment from "@/components/icon/Attachment.vue"
+import User from "@/components/icon/User.vue"
 
 export default {
-  components: {Menu, Briefcase, Shop, HomeFilled, HelpFilled, List, UploadFilled, UserFilled},
+  components: {Menu, Home, Docker, Challenge, Attachment, User},
   data() {
     return {
       isMenuOpen: false,
