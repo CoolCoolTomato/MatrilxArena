@@ -115,5 +115,22 @@ export default {
     "Submit": "Submit",
     "Confirm": "Confirm",
     "NotSpecified": "Not Specified"
+  },
+  "AdminNode": {
+    "DockerNodeManager": "Docker Node Manager",
+    "Add": "Add",
+    "Host": "Host",
+    "Port": "Port",
+    "Operations": "Operations",
+    "Detail": "Detail",
+    "Update": "Update",
+    "Delete": "Delete",
+    "CreateNode": "Create Node",
+    "UpdateNode": "Update Node",
+    "DeleteNode": "Delete Node",
+    "AreYouConfirmToDeleteTheDockerNode": "Are you confirm to delete the docker node?",
+    "Cancel": "Cancel",
+    "Submit": "Submit",
+    "Confirm": "Confirm"
   }
 }

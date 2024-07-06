@@ -1,84 +1,84 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">Docker Node Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminNode.DockerNodeManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createDockerNodeFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createDockerNodeFormVisible = true">{{ $t('AdminNode.Add') }}</el-button>
       <el-table
         :data="dockerNodeList"
         table-layout="fixed"
       >
-        <el-table-column prop="Host" label="Host"/>
-        <el-table-column prop="Port" label="Port"/>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column prop="Host" :label="$t('AdminNode.Host')"/>
+        <el-table-column prop="Port" :label="$t('AdminNode.Port')"/>
+        <el-table-column fixed="right" :label="$t('AdminNode.Operations')" width="300px">
           <template #default=scope>
             <el-button
               @click="OpenDockerNodeDetail(scope.row)"
               >
-              Detail
+              {{ $t('AdminNode.Detail') }}
             </el-button>
             <el-button
               @click="OpenUpdateDockerNodeForm(scope.row)"
               >
-              Update
+              {{ $t('AdminNode.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteDockerNodeForm(scope.row)"
               >
-              Delete
+              {{ $t('AdminNode.Delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="createDockerNodeFormVisible"
-        title="Create Node"
+        :title="$t('AdminNode.CreateNode')"
         width="500"
         @close="ClearCreateDockerNodeForm"
         >
         <el-form :model=createDockerNodeData>
-          <el-form-item label="Host" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminNode.Host')" :label-width="labelWidth">
             <el-input v-model="createDockerNodeData.Host"/>
           </el-form-item>
-          <el-form-item label="Port" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminNode.Port')" :label-width="labelWidth">
             <el-input v-model="createDockerNodeData.Port"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createDockerNodeFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateDockerNode">Submit</el-button>
+          <el-button @click="createDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
+          <el-button @click="CreateDockerNode">{{ $t('AdminNode.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateDockerNodeFormVisible"
-        title="Update Node"
+        :title="$t('AdminNode.UpdateNode')"
         width="500"
         @close="ClearUpdateDockerNodeForm"
         >
         <el-form :model=updateDockerNodeData>
-          <el-form-item label="Host" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminNode.Host')" :label-width="labelWidth">
             <el-input v-model="updateDockerNodeData.Host"/>
           </el-form-item>
-          <el-form-item label="Port" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminNode.Port')" :label-width="labelWidth">
             <el-input v-model="updateDockerNodeData.Port"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateDockerNodeFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateDockerNode">Submit</el-button>
+          <el-button @click="updateDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
+          <el-button @click="UpdateDockerNode">{{ $t('AdminNode.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteDockerNodeFormVisible"
-        title="Delete Node"
+        :title="$t('AdminNode.DeleteNode')"
         width="500"
         @close="ClearDeleteDockerNodeForm"
         >
-        <el-text>Are you confirm to delete the docker node?</el-text>
+        <el-text>{{ $t('AdminNode.AreYouConfirmToDeleteTheDockerNode') }}</el-text>
         <template #footer>
-          <el-button @click="deleteDockerNodeFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteDockerNode">Confirm</el-button>
+          <el-button @click="deleteDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
+          <el-button @click="DeleteDockerNode">{{ $t('AdminNode.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -87,8 +87,13 @@
 <script>
 import dockerNodeApi from "@/api/dockerNode.js"
 import { ElMessage } from 'element-plus'
+import {useI18n} from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 100,
