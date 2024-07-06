@@ -1,98 +1,98 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">Attachment Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createAttachmentFormVisible = true">Add</el-button>
-      <el-button style="margin: 10px" @click="uploadAttachmentFormVisible = true">Upload</el-button>
+      <el-button style="margin: 10px" @click="createAttachmentFormVisible = true">{{ $t('AdminAttachment.Add') }}</el-button>
+      <el-button style="margin: 10px" @click="uploadAttachmentFormVisible = true">{{ $t('AdminAttachment.Upload') }}</el-button>
       <el-table
         :data="attachmentList"
         table-layout="fixed"
       >
-        <el-table-column prop="FileName" label="FileName"/>
-        <el-table-column prop="FilePath" label="FilePath"/>
-        <el-table-column fixed="right" label="Operations" width="320px">
+        <el-table-column prop="FileName" :label="$t('AdminAttachment.FileName')"/>
+        <el-table-column prop="FilePath" :label="$t('AdminAttachment.FilePath')"/>
+        <el-table-column fixed="right" :label="$t('AdminAttachment.Operations')" width="320px">
           <template #default=scope>
             <el-button
               @click="OpenUpdateAttachmentForm(scope.row)"
             >
-              Update
+              {{ $t('AdminAttachment.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteAttachmentForm(scope.row)"
             >
-              Delete
+              {{ $t('AdminAttachment.Delete') }}
             </el-button>
             <el-button
               @click="DownloadAttachment(scope.row.ID)"
               >
-              Download
+              {{ $t('AdminAttachment.Download') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="createAttachmentFormVisible"
-        title="Create Attachment"
+        :title="$t('AdminAttachment.CreateAttachment')"
         width="500"
         @close="ClearCreateAttachmentForm"
       >
         <el-form :model=createAttachmentData>
-          <el-form-item label="FileName" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.FileName')" :label-width="labelWidth">
             <el-input v-model="createAttachmentData.FileName"/>
           </el-form-item>
-          <el-form-item label="FilePath" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.FilePath')" :label-width="labelWidth">
             <el-input v-model="createAttachmentData.FilePath"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createAttachmentFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateAttachment">Submit</el-button>
+          <el-button @click="createAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
+          <el-button @click="CreateAttachment">{{ $t('AdminAttachment.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateAttachmentFormVisible"
-        title="Update Attachment"
+        :title="$t('AdminAttachment.UpdateAttachment')"
         width="500"
         @close="ClearUpdateAttachmentForm"
       >
         <el-form :model=updateAttachmentData>
-          <el-form-item label="FileName" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.FileName')" :label-width="labelWidth">
             <el-input v-model="updateAttachmentData.FileName"/>
           </el-form-item>
-          <el-form-item label="FilePath" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.FilePath')" :label-width="labelWidth">
             <el-input v-model="updateAttachmentData.FilePath"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateAttachmentFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateAttachment">Submit</el-button>
+          <el-button @click="updateAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
+          <el-button @click="UpdateAttachment">{{ $t('AdminAttachment.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteAttachmentFormVisible"
-        title="Delete Attachment"
+        :title="$t('AdminAttachment.DeleteAttachment')"
         width="500"
         @close="ClearDeleteAttachmentForm"
       >
-        <el-text>Are you confirm to delete the attachment?</el-text>
+        <el-text>{{ $t('AdminAttachment.AreYouConfirmToDeleteTheAttachment') }}</el-text>
         <template #footer>
-          <el-button @click="deleteAttachmentFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteAttachment">Confirm</el-button>
+          <el-button @click="deleteAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
+          <el-button @click="DeleteAttachment">{{ $t('AdminAttachment.Confirm') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="uploadAttachmentFormVisible"
-        title="Upload Attachment"
+        :title="$t('AdminAttachment.UploadAttachment')"
         width="500"
         @close="ClearUploadAttachmentForm"
         >
         <el-form :model="uploadAttachmentData">
-          <el-form-item label="FileName" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.FileName')" :label-width="labelWidth">
             <el-input v-model="uploadAttachmentData.fileName"/>
           </el-form-item>
-          <el-form-item label="File" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminAttachment.File')" :label-width="labelWidth">
             <el-upload
               style="width: 100%;"
               ref="upload"
@@ -102,14 +102,14 @@
               :on-exceed="handleExceed"
             >
               <template #trigger>
-                <el-button>Select</el-button>
+                <el-button>{{ $t('AdminAttachment.Select') }}</el-button>
               </template>
             </el-upload>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="uploadAttachmentFormVisible = false">Cancel</el-button>
-          <el-button @click="UploadAttachment">Confirm</el-button>
+          <el-button @click="uploadAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
+          <el-button @click="UploadAttachment">{{ $t('AdminAttachment.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -117,9 +117,14 @@
 </template>
 <script>
 import attachmentApi from "@/api/attachment.js"
-import { ElMessage } from "element-plus";
+import { ElMessage } from "element-plus"
+import {useI18n} from "vue-i18n"
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 100,
@@ -264,7 +269,7 @@ export default {
     DownloadAttachment(id) {
       attachmentApi.DownloadAttachment(id).then(ok => {
         if (!ok) {
-          ElMessage.error("Download attachment fail")
+          ElMessage.error(this.t('AdminAttachment.DownloadAttachmentFail'))
         }
       }).catch(error => {
         console.log(error)
@@ -291,6 +296,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>

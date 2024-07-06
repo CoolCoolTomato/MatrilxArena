@@ -1,80 +1,80 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">Challenge Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminChallenge.ChallengeManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createChallengeFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createChallengeFormVisible = true">{{ $t('AdminChallenge.Add') }}</el-button>
       <el-table
         :data="challengeList"
         table-layout="fixed"
         >
-        <el-table-column prop="Title" label="Title"/>
-        <el-table-column prop="Description" label="Description"/>
-        <el-table-column label="Image">
+        <el-table-column prop="Title" :label="$t('AdminChallenge.Title')"/>
+        <el-table-column prop="Description" :label="$t('AdminChallenge.Description')"/>
+        <el-table-column :label="$t('AdminChallenge.Image')">
           <template  #default=scope>
-            {{ scope.row.Image.Remark === "" ? "null" : scope.row.Image.Remark}}
+            {{ scope.row.Image.Remark === "" ? $t('AdminChallenge.Null') : scope.row.Image.Remark}}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column fixed="right" :label="$t('AdminChallenge.Operations')" width="300px">
           <template #default=scope>
             <el-button
               @click="OpenChallengeDetail(scope.row)"
               >
-              Detail
+              {{ $t('AdminChallenge.Detail') }}
             </el-button>
             <el-button
               @click="OpenUpdateChallengeForm(scope.row)"
               >
-              Update
+              {{ $t('AdminChallenge.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteChallengeForm(scope.row)"
               >
-              Delete
+              {{ $t('AdminChallenge.Delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="challengeDetailVisible"
-        title="Challenge Detail"
+        :title="$t('AdminChallenge.ChallengeDetail')"
         width="500"
         @close="ClearChallengeDetail"
         >
         <el-card>
-          <p style="word-break: break-all;">Title: {{ challengeDetail.Title }}</p>
-          <p style="word-break: break-all;">Description: {{ challengeDetail.Description }}</p>
-          <p style="word-break: break-all;">Category: {{ challengeDetail.Category.Name === "" ? "null" : challengeDetail.Category.Name }}</p>
-          <p style="word-break: break-all;">Image: {{ challengeDetail.Image.Remark === "" ? "null" : challengeDetail.Image.Remark }}</p>
-          <p style="word-break: break-all;">RepoTags: {{ challengeDetail.Image.RepoTags === "" ? "null" : challengeDetail.Image.RepoTags }}</p>
-          <p style="word-break: break-all;">Attachment: {{ challengeDetail.Attachment.FileName === "" ? "null" : challengeDetail.Attachment.FileName }}</p>
-          <p style="word-break: break-all;">SpecifiedPorts: {{ challengeDetail.SpecifiedPorts }}</p>
-          <p style="word-break: break-all;">Commands: {{ challengeDetail.Commands }}</p>
-          <p style="word-break: break-all;">Flag: {{ challengeDetail.Flag }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Title') }}: {{ challengeDetail.Title }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Description') }}: {{ challengeDetail.Description }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Category') }}: {{ challengeDetail.Category.Name === "" ? $t('AdminChallenge.Null') : challengeDetail.Category.Name }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Image') }}: {{ challengeDetail.Image.Remark === "" ? $t('AdminChallenge.Null') : challengeDetail.Image.Remark }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.RepoTags') }}: {{ challengeDetail.Image.RepoTags === "" ? $t('AdminChallenge.Null') : challengeDetail.Image.RepoTags }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Attachment') }}: {{ challengeDetail.Attachment.FileName === "" ? $t('AdminChallenge.Null') : challengeDetail.Attachment.FileName }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.SpecifiedPorts') }}: {{ challengeDetail.SpecifiedPorts }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Commands') }}: {{ challengeDetail.Commands }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminChallenge.Flag') }}: {{ challengeDetail.Flag }}</p>
         </el-card>
         <template #footer>
-          <el-button @click="challengeDetailVisible = false">Close</el-button>
+          <el-button @click="challengeDetailVisible = false">{{ $t('AdminChallenge.Close') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="createChallengeFormVisible"
-        title="Create Challenge"
+        :title="$t('AdminChallenge.CreateChallenge')"
         width="600"
         @close="ClearCreateChallengeForm"
         >
         <el-form :model=createChallengeData>
-          <el-form-item label="Title" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Title')" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Title"/>
           </el-form-item>
-          <el-form-item label="Description" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Description')" :label-width="labelWidth">
             <el-input v-model="createChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="Category" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Category')" :label-width="labelWidth">
             <el-select
               v-model="createChallengeData.CategoryID"
               filterable
-              placeholder="Select"
+              :placeholder="$t('AdminChallenge.Select')"
               >
               <el-option
                 v-for="category in categoryList"
@@ -84,11 +84,11 @@
                 ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Image" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Image')" :label-width="labelWidth">
             <el-select
               v-model="createChallengeData.ImageID"
               filterable
-              placeholder="Select"
+              :placeholder="$t('AdminChallenge.Select')"
               >
               <el-option
                 v-for="image in imageList"
@@ -99,13 +99,13 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="Attachment" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Attachment')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-select
                 style="width: 50%"
                 v-model="createChallengeData.AttachmentID"
                 filterable
-                placeholder="Select"
+                :placeholder="$t('AdminChallenge.Select')"
                 >
                 <el-option
                   v-for="attachment in attachmentList"
@@ -124,15 +124,15 @@
                 :on-exceed="handleExceed"
               >
                 <template #trigger>
-                  <el-button style="margin-left: 20px">Select</el-button>
+                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.Select') }}</el-button>
                 </template>
                 <div style="display: inline-flex">
-                  <el-button @click="UploadAttachment" style="margin-left: 10px">Upload</el-button>
+                  <el-button @click="UploadAttachment" style="margin-left: 10px">{{ $t('AdminChallenge.Upload') }}</el-button>
                 </div>
               </el-upload>
             </div>
           </el-form-item>
-          <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.SpecifiedPorts')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 v-model="createChallengePort"
@@ -140,7 +140,7 @@
                 <template #append>
                   <el-select
                     v-model="createChallengeProtocol"
-                    placeholder="Select"
+                    :placeholder="$t('AdminChallenge.Select')"
                     style="width: 100px"
                   >
                     <el-option label="tcp" value="tcp"/>
@@ -152,7 +152,7 @@
                 style="margin-left: 20px;"
                 @click="AddCreateChallengeSpecifiedPort"
               >
-                Add
+                {{ $t('AdminChallenge.Add') }}
               </el-button>
             </div>
             <div
@@ -171,19 +171,19 @@
                   @click="RemoveCreateChallengeSpecifiedPort(index)"
                   style="margin: 3px 10px 3px 3px;"
                 >
-                  Delete
+                  {{ $t('AdminChallenge.Delete') }}
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Commands" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Commands')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input v-model="this.createChallengeCommand" />
               <el-button
                 style="margin-left: 20px;"
                 @click="AddCreateChallengeCommand"
               >
-                Add
+                {{ $t('AdminChallenge.Add') }}
               </el-button>
             </div>
             <div
@@ -202,17 +202,17 @@
                   @click="RemoveCreateChallengeCommand(index)"
                   style="margin: 3px 10px 3px 3px;"
                 >
-                  Delete
+                  {{ $t('AdminChallenge.Delete') }}
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Flag" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Flag')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 style="width: 270px"
                 v-if="createChallengeFlagType === 'auto'"
-                placeholder="auto"
+                :placeholder="$t('AdminChallenge.Auto')"
                 disabled
               />
               <el-input
@@ -222,35 +222,35 @@
               />
               <div style="flex-grow: 1" v-if="createChallengeFlagType !== ''"></div>
               <el-radio-group v-model="createChallengeFlagType">
-                <el-radio value="auto" style="margin: 0" border>auto</el-radio>
-                <el-radio value="specify" style="margin: 0" border>specify</el-radio>
+                <el-radio value="auto" style="margin: 0" border>{{ $t('AdminChallenge.Auto') }}</el-radio>
+                <el-radio value="specify" style="margin: 0" border>{{ $t('AdminChallenge.Specify') }}</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createChallengeFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateChallenge">Submit</el-button>
+          <el-button @click="createChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
+          <el-button @click="CreateChallenge">{{ $t('AdminChallenge.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateChallengeFormVisible"
-        title="Update Challenge"
+        :title="$t('AdminChallenge.UpdateChallenge')"
         width="600"
         @close="ClearUpdateChallengeForm"
         >
         <el-form :model=updateChallengeData>
-          <el-form-item label="Title" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Title')" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Title"/>
           </el-form-item>
-          <el-form-item label="Description" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Description')" :label-width="labelWidth">
             <el-input v-model="updateChallengeData.Description"/>
           </el-form-item>
-          <el-form-item label="Category" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Category')" :label-width="labelWidth">
             <el-select
               v-model="updateChallengeData.CategoryID"
               filterable
-              placeholder="Select"
+              :placeholder="$t('AdminChallenge.Select')"
               >
               <el-option
                 v-for="category in categoryList"
@@ -260,18 +260,18 @@
                 ></el-option>
               <template v-if="!categoryList.some(category => category.ID === updateChallengeData.CategoryID)" slot="empty">
                 <el-option
-                  label="Deleted category"
+                  :label="$t('AdminChallenge.DeletedCategory')"
                   :value="updateChallengeData.CategoryID"
                   disabled
                 />
               </template>
             </el-select>
           </el-form-item>
-          <el-form-item label="Image" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Image')" :label-width="labelWidth">
             <el-select
               v-model="updateChallengeData.ImageID"
               filterable
-              placeholder="Select"
+              :placeholder="$t('AdminChallenge.Select')"
               >
               <el-option
                 v-for="image in imageList"
@@ -282,20 +282,20 @@
               </el-option>
               <template v-if="!imageList.some(image => image.ID === updateChallengeData.ImageID)" slot="empty">
                 <el-option
-                  label="Deleted image"
+                  :label="$t('AdminChallenge.DeletedImage')"
                   :value="updateChallengeData.ImageID"
                   disabled
                 />
               </template>
             </el-select>
           </el-form-item>
-          <el-form-item label="Attachment" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Attachment')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-select
                 style="width: 50%"
                 v-model="updateChallengeData.AttachmentID"
                 filterable
-                placeholder="Select"
+                :placeholder="$t('AdminChallenge.Select')"
                 >
                 <el-option
                   v-for="attachment in attachmentList"
@@ -306,7 +306,7 @@
                 </el-option>
                 <template v-if="!attachmentList.some(attachment => attachment.ID === updateChallengeData.AttachmentID)" slot="empty">
                   <el-option
-                    label="Deleted file"
+                    :label="$t('AdminChallenge.DeletedFile')"
                     :value="updateChallengeData.AttachmentID"
                     disabled
                   />
@@ -321,15 +321,15 @@
                 :on-exceed="handleExceed"
               >
                 <template #trigger>
-                  <el-button style="margin-left: 20px">Select</el-button>
+                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.Select') }}</el-button>
                 </template>
                 <div style="display: inline-flex">
-                  <el-button @click="UploadAttachment" style="margin-left: 10px">Upload</el-button>
+                  <el-button @click="UploadAttachment" style="margin-left: 10px">{{ $t('AdminChallenge.Upload') }}</el-button>
                 </div>
               </el-upload>
             </div>
           </el-form-item>
-          <el-form-item label="SpecifiedPorts" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.SpecifiedPorts')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 v-model="updateChallengePort"
@@ -337,7 +337,7 @@
                 <template #append>
                   <el-select
                     v-model="updateChallengeProtocol"
-                    placeholder="Select"
+                    :placeholder="$t('AdminChallenge.Select')"
                     style="width: 100px"
                   >
                     <el-option label="tcp" value="tcp"/>
@@ -349,7 +349,7 @@
                 style="margin-left: 20px;"
                 @click="AddUpdateChallengeSpecifiedPort"
               >
-                Add
+                {{ $t('AdminChallenge.Add') }}
               </el-button>
             </div>
             <div
@@ -368,19 +368,19 @@
                   @click="RemoveUpdateChallengeSpecifiedPort(index)"
                   style="margin: 3px 10px 3px 3px;"
                 >
-                  Delete
+                  {{ $t('AdminChallenge.Delete') }}
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Commands" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Commands')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input v-model="this.updateChallengeCommand" />
               <el-button
                 style="margin-left: 20px;"
                 @click="AddUpdateChallengeCommand"
               >
-                Add
+                {{ $t('AdminChallenge.Add') }}
               </el-button>
             </div>
             <div
@@ -399,17 +399,17 @@
                   @click="RemoveUpdateChallengeCommand(index)"
                   style="margin: 3px 10px 3px 3px;"
                 >
-                  Delete
+                  {{ $t('AdminChallenge.Delete') }}
                 </el-button>
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="Flag" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminChallenge.Flag')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
                 style="width: 270px"
                 v-if="updateChallengeFlagType === 'auto'"
-                placeholder="auto"
+                :placeholder="$t('AdminChallenge.Auto')"
                 disabled
               />
               <el-input
@@ -419,27 +419,27 @@
               />
               <div style="flex-grow: 1" v-if="updateChallengeFlagType !== ''"></div>
               <el-radio-group v-model="updateChallengeFlagType">
-                <el-radio value="auto" style="margin: 0" border>auto</el-radio>
-                <el-radio value="specify" style="margin: 0" border>specify</el-radio>
+                <el-radio value="auto" style="margin: 0" border>{{ $t('AdminChallenge.Auto') }}</el-radio>
+                <el-radio value="specify" style="margin: 0" border>{{ $t('AdminChallenge.Specify') }}</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateChallengeFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateChallenge">Submit</el-button>
+          <el-button @click="updateChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
+          <el-button @click="UpdateChallenge">{{ $t('AdminChallenge.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteChallengeFormVisible"
-        title="Delete Challenge"
+        :title="$t('AdminChallenge.DeleteChallenge')"
         width="500"
         @close="ClearDeleteChallengeForm"
         >
-        <el-text>Are you confirm to delete the challenge?</el-text>
+        <el-text>{{ $t('AdminChallenge.AreYouConfirmToDeleteTheChallenge') }}</el-text>
         <template #footer>
-          <el-button @click="deleteChallengeFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteChallenge">Confirm</el-button>
+          <el-button @click="deleteChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
+          <el-button @click="DeleteChallenge">{{ $t('AdminChallenge.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -451,8 +451,13 @@ import categoryApi from "@/api/category.js";
 import imageApi from "@/api/image.js";
 import attachmentApi from "@/api/attachment.js";
 import { ElMessage } from "element-plus";
+import {useI18n} from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 120,
@@ -589,16 +594,16 @@ export default {
     },
     AddCreateChallengeSpecifiedPort() {
       if (this.createChallengePort === "") {
-        ElMessage.error("Please input port")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputPort'))
         return
       }
       if (this.createChallengeProtocol === "") {
-        ElMessage.error("Please input protocol")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputProtocol'))
         return
       }
       let portProtocol = this.createChallengePort + "/" + this.createChallengeProtocol
       if (this.createChallengeData.SpecifiedPorts.includes(portProtocol)) {
-        ElMessage.error("Duplicate specifiedPort")
+        ElMessage.error(this.t('AdminChallenge.DuplicateSpecifiedPort'))
         return
       }
       this.createChallengeData.SpecifiedPorts.push(portProtocol)
@@ -608,11 +613,11 @@ export default {
     },
     AddCreateChallengeCommand() {
       if (this.createChallengeCommand === "") {
-        ElMessage.error("Please input command")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputCommand'))
         return
       }
       if (this.createChallengeData.Commands.includes(this.createChallengeCommand)) {
-        ElMessage.error("Duplicate command")
+        ElMessage.error(this.t('AdminChallenge.DuplicateCommand'))
         return
       }
       this.createChallengeData.Commands.push(this.createChallengeCommand)
@@ -658,16 +663,16 @@ export default {
     },
     AddUpdateChallengeSpecifiedPort() {
       if (this.updateChallengePort === "") {
-        ElMessage.error("Please input port")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputPort'))
         return
       }
       if (this.updateChallengeProtocol === "") {
-        ElMessage.error("Please input protocol")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputProtocol'))
         return
       }
       let portProtocol = this.updateChallengePort + "/" + this.updateChallengeProtocol
       if (this.updateChallengeData.SpecifiedPorts.includes(portProtocol)) {
-        ElMessage.error("Duplicate specifiedPort")
+        ElMessage.error(this.t('AdminChallenge.DuplicateSpecifiedPort'))
         return
       }
       this.updateChallengeData.SpecifiedPorts.push(portProtocol)
@@ -677,11 +682,11 @@ export default {
     },
     AddUpdateChallengeCommand() {
       if (this.updateChallengeCommand === "") {
-        ElMessage.error("Please input command")
+        ElMessage.error(this.t('AdminChallenge.PleaseInputCommand'))
         return
       }
       if (this.updateChallengeData.Commands.includes(this.updateChallengeCommand)) {
-        ElMessage.error("Duplicate command")
+        ElMessage.error(this.t('AdminChallenge.DuplicateCommand'))
         return
       }
       this.updateChallengeData.Commands.push(this.updateChallengeCommand)

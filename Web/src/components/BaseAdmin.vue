@@ -1,5 +1,5 @@
 <script setup>
-import {RouterLink, RouterView} from 'vue-router'
+import { RouterView } from 'vue-router'
 import ToggleThemeButton from "@/components/ToggleThemeButton.vue";
 import Copyright from "@/components/Copyright.vue";
 </script>
@@ -15,7 +15,7 @@ import Copyright from "@/components/Copyright.vue";
         >
           <el-menu-item index="/">
             <el-image src="/image/svg/matrilx.svg" style="width: 40px; margin-bottom: 16px; margin-right: 5px;"/>
-            <h2 style="color: var(--el-text-color-primary);">MatrilxArena</h2>
+            <h2 style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.MatrilxArena') }}</h2>
           </el-menu-item>
           <div class="flex-grow"/>
           <el-menu-item class="el-menu-item-no-style">
@@ -35,26 +35,26 @@ import Copyright from "@/components/Copyright.vue";
                 <el-icon>
                   <Menu/>
                 </el-icon>
-                <template #title>Menu</template>
+                <template #title>{{ $t('BaseAdmin.Menu') }}</template>
               </el-menu-item>
               <el-menu-item index="/admin">
                 <el-icon>
                   <Home/>
                 </el-icon>
-                <template #title>Index</template>
+                <template #title>{{ $t('BaseAdmin.Index') }}</template>
               </el-menu-item>
               <el-sub-menu index="docker">
                 <template #title>
                   <el-icon>
                     <Docker/>
                   </el-icon>
-                  <el-text style="color: var(--el-text-color-primary);">Docker</el-text>
+                  <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Docker') }}</el-text>
                 </template>
                 <el-menu-item index="/admin/node">
-                  <template #title>Node</template>
+                  <template #title>{{ $t('BaseAdmin.Node') }}</template>
                 </el-menu-item>
                 <el-menu-item index="/admin/image">
-                  <template #title>Image</template>
+                  <template #title>{{ $t('BaseAdmin.Image') }}</template>
                 </el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="challenge">
@@ -62,26 +62,26 @@ import Copyright from "@/components/Copyright.vue";
                   <el-icon>
                     <Challenge/>
                   </el-icon>
-                  <el-text style="color: var(--el-text-color-primary);">Challenge</el-text>
+                  <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Challenge') }}</el-text>
                 </template>
                 <el-menu-item index="/admin/category">
-                  <template #title>Category</template>
+                  <template #title>{{ $t('BaseAdmin.Category') }}</template>
                 </el-menu-item>
                 <el-menu-item index="/admin/challenge">
-                  <template #title>Challenge</template>
+                  <template #title>{{ $t('BaseAdmin.Challenge') }}</template>
                 </el-menu-item>
               </el-sub-menu>
               <el-menu-item index="/admin/attachment">
                 <el-icon>
                   <Attachment/>
                 </el-icon>
-                <template #title>Attachment</template>
+                <template #title>{{ $t('BaseAdmin.Attachment') }}</template>
               </el-menu-item>
               <el-menu-item index="/admin/user">
                 <el-icon>
                   <User/>
                 </el-icon>
-                <template #title>User</template>
+                <template #title>{{ $t('BaseAdmin.User') }}</template>
               </el-menu-item>
             </el-menu>
           </el-aside>
@@ -103,8 +103,13 @@ import Docker from "@/components/icon/Docker.vue"
 import Challenge from "@/components/icon/Challenge.vue"
 import Attachment from "@/components/icon/Attachment.vue"
 import User from "@/components/icon/User.vue"
+import { useI18n } from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   components: {Menu, Home, Docker, Challenge, Attachment, User},
   data() {
     return {

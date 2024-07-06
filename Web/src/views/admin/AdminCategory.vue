@@ -1,15 +1,15 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">Category Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminCategory.CategoryManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createCategoryFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createCategoryFormVisible = true">{{ $t('AdminCategory.Add') }}</el-button>
       <el-switch
         style="margin: 10px"
         @change="switchAllowSort"
         v-model="allowSort"
-        active-text="Allow sort"
+        :active-text="$t('AdminCategory.AllowSort')"
       />
       <el-table
         id="categoryListTable"
@@ -17,71 +17,71 @@
         table-layout="fixed"
         row-key="ID"
       >
-        <el-table-column prop="Name" label="Name"/>
-        <el-table-column prop="Order" label="Order"/>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
+        <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
+        <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="300px">
           <template #default=scope>
             <el-button
               @click="OpenUpdateCategoryForm(scope.row)"
             >
-              Update
+              {{ $t('AdminCategory.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteCategoryForm(scope.row)"
             >
-              Delete
+              {{ $t('AdminCategory.Delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="createCategoryFormVisible"
-        title="Create Category"
+        :title="$t('AdminCategory.CreateCategory')"
         width="500"
         @close="ClearCreateCategoryForm"
       >
         <el-form :model=createCategoryData>
-          <el-form-item label="Name" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminCategory.Name')" :label-width="labelWidth">
             <el-input v-model="createCategoryData.Name"/>
           </el-form-item>
-          <el-form-item label="Order" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminCategory.Order')" :label-width="labelWidth">
             <el-input v-model.number="createCategoryData.Order" type="number"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createCategoryFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateCategory">Submit</el-button>
+          <el-button @click="createCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
+          <el-button @click="CreateCategory">{{ $t('AdminCategory.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateCategoryFormVisible"
-        title="Update Category"
+        :title="$t('AdminCategory.UpdateCategory')"
         width="500"
         @close="ClearUpdateCategoryForm"
       >
         <el-form :model=updateCategoryData>
-          <el-form-item label="Name" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminCategory.Name')" :label-width="labelWidth">
             <el-input v-model="updateCategoryData.Name"/>
           </el-form-item>
-          <el-form-item label="Order" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminCategory.Order')" :label-width="labelWidth">
             <el-input v-model.number="updateCategoryData.Order" type="number"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateCategoryFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateCategory">Submit</el-button>
+          <el-button @click="updateCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
+          <el-button @click="UpdateCategory">{{ $t('AdminCategory.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteCategoryFormVisible"
-        title="Delete Category"
+        :title="$t('AdminCategory.DeleteCategory')"
         width="500"
         @close="ClearDeleteCategoryForm"
       >
-        <el-text>Are you confirm to delete the category?</el-text>
+        <el-text>{{ $t('AdminCategory.AreYouConfirmToDeleteTheCategory') }}</el-text>
         <template #footer>
-          <el-button @click="deleteCategoryFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteCategory">Confirm</el-button>
+          <el-button @click="deleteCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
+          <el-button @click="DeleteCategory">{{ $t('AdminCategory.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -91,8 +91,13 @@
 import categoryApi from "@/api/category.js"
 import { ElMessage } from "element-plus";
 import Sortable from 'sortablejs';
+import {useI18n} from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 100,
@@ -254,12 +259,12 @@ export default {
       Promise.all(updatePromises).then(() => {
         if (fail === 0) {
           ElMessage({
-            message: `Update ${total} items, ${success} success, ${fail} fail`,
+            message: `${this.t('AdminCategory.Update')} ${total} ${this.t('AdminCategory.items')}, ${success} ${this.t('AdminCategory.success')}, ${fail} ${this.t('AdminCategory.fail')}`,
             type: 'success',
           })
         } else {
           ElMessage({
-            message: `Update ${total} items, ${success} success, ${fail} fail`,
+            message: `${this.t('AdminCategory.Update')} ${total} ${this.t('AdminCategory.items')}, ${success} ${this.t('AdminCategory.success')}, ${fail} ${this.t('AdminCategory.fail')}`,
             type: 'warning',
           })
         }
