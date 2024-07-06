@@ -97,5 +97,23 @@ export default {
     "DuplicateSpecifiedPort": "Duplicate specifiedPort",
     "PleaseInputCommand": "Please input command",
     "DuplicateCommand": "Duplicate command"
+  },
+  "AdminImage": {
+    "ImageManager": "Image Manager",
+    "Add": "Add",
+    "Remark": "Remark",
+    "RepoTags": "RepoTags",
+    "Repository": "Repository",
+    "Operations": "Operations",
+    "Update": "Update",
+    "Delete": "Delete",
+    "CreateImage": "Create Image",
+    "UpdateImage": "Update Image",
+    "DeleteImage": "Delete Image",
+    "AreYouConfirmToDeleteTheImage": "Are you confirm to delete the image?",
+    "Cancel": "Cancel",
+    "Submit": "Submit",
+    "Confirm": "Confirm",
+    "NotSpecified": "Not Specified"
   }
 }

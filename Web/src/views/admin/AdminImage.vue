@@ -1,90 +1,90 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">Image Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ t('AdminImage.ImageManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createImageFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createImageFormVisible = true">{{ t('AdminImage.Add') }}</el-button>
       <el-table
         :data="imageList"
         table-layout="fixed"
         >
-        <el-table-column prop="Remark" label="Remark"/>
-        <el-table-column prop="RepoTags" label="RepoTags"/>
-        <el-table-column label="Repository">
+        <el-table-column prop="Remark" :label="t('AdminImage.Remark')"/>
+        <el-table-column prop="RepoTags" :label="t('AdminImage.RepoTags')"/>
+        <el-table-column :label="t('AdminImage.Repository')">
           <template #default="scope">
             {{ formatRepository(scope.row.Repository) }}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column fixed="right" :label="t('AdminImage.Operations')" width="300px">
           <template #default=scope>
             <el-button
               @click="OpenUpdateImageForm(scope.row)"
               >
-              Update
+              {{ t('AdminImage.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteImageForm(scope.row)"
               >
-              Delete
+              {{ t('AdminImage.Delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="createImageFormVisible"
-        title="Create Image"
+        :title="t('AdminImage.CreateImage')"
         width="500"
         @close="ClearCreateImageForm"
         >
         <el-form :model=createImageData>
-          <el-form-item label="Remark" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.Remark')" :label-width="labelWidth">
             <el-input v-model="createImageData.Remark"/>
             </el-form-item>
-          <el-form-item label="RepoTags" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.RepoTags')" :label-width="labelWidth">
             <el-input v-model="createImageData.RepoTags"/>
           </el-form-item>
-          <el-form-item label="Repository" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.Repository')" :label-width="labelWidth">
             <el-input v-model="createImageData.Repository"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createImageFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateImage">Submit</el-button>
+          <el-button @click="createImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
+          <el-button @click="CreateImage">{{ t('AdminImage.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateImageFormVisible"
-        title="Update Image"
+        :title="t('AdminImage.UpdateImage')"
         width="500"
         @close="ClearUpdateImageForm"
         >
         <el-form :model=updateImageData>
-          <el-form-item label="Remark" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.Remark')" :label-width="labelWidth">
             <el-input v-model="updateImageData.Remark"/>
           </el-form-item>
-          <el-form-item label="RepoTags" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.RepoTags')" :label-width="labelWidth">
             <el-input v-model="updateImageData.RepoTags"/>
           </el-form-item>
-          <el-form-item label="Repository" :label-width="labelWidth">
+          <el-form-item :label="t('AdminImage.Repository')" :label-width="labelWidth">
             <el-input v-model="updateImageData.Repository"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateImageFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateImage">Submit</el-button>
+          <el-button @click="updateImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
+          <el-button @click="UpdateImage">{{ t('AdminImage.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteImageFormVisible"
-        title="Delete Image"
+        :title="t('AdminImage.DeleteImage')"
         width="500"
         @close="ClearDeleteImageForm"
         >
-        <el-text>Are you confirm to delete the image?</el-text>
+        <el-text>{{ t('AdminImage.AreYouConfirmToDeleteTheImage') }}</el-text>
         <template #footer>
-        <el-button @click="deleteImageFormVisible = false">Cancel</el-button>
-        <el-button @click="DeleteImage">Confirm</el-button>
+        <el-button @click="deleteImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
+        <el-button @click="DeleteImage">{{ t('AdminImage.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -93,8 +93,13 @@
 <script>
 import imageApi from "@/api/image.js"
 import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 100,
@@ -214,7 +219,7 @@ export default {
       }
     },
     formatRepository(repository) {
-      return repository === '' ? 'Not Specified' : repository;
+      return repository === '' ? this.t('AdminImage.NotSpecified') : repository;
     },
   },
   mounted() {
