@@ -23,7 +23,7 @@ type ContainerInfo struct {
     Flag                  string            `json:"Flag"`
 }
 
-func GetUserContainers(username string) ([]ContainerInfo, error) {
+func GetUserContainerList(username string) ([]ContainerInfo, error) {
 	ctx := context.Background()
 	userKey := "user:" + username + ":containers"
 
@@ -32,7 +32,7 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 		return nil, err
 	}
 
-	var containers []ContainerInfo
+	var containerList []ContainerInfo
 	for _, dockerNodeContainerID := range dockerNodeContainerIDs {
 		containerKey := "container:" + dockerNodeContainerID
 
@@ -88,7 +88,7 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 			return nil, err
 		}
 
-		containers = append(containers, ContainerInfo{
+		containerList = append(containerList, ContainerInfo{
 			DockerNodeContainerID: dockerNodeContainerID,
 			DockerNodeID:          uint(dockerNodeID),
             ChallengeID:           uint(challengeID),
@@ -98,7 +98,7 @@ func GetUserContainers(username string) ([]ContainerInfo, error) {
 		})
 	}
 
-	return containers, nil
+	return containerList, nil
 }
 
 func AddUserContainer(username string, dockerNodeContainerID string, portMaps []PortMap, dockerNodeID uint, challengeID uint, flag string) error {
@@ -162,7 +162,7 @@ func ResetUserContainerTime(dockerNodeContainerID string) error {
 	}
 
 	if ttl > 10*time.Minute {
-		return fmt.Errorf("you can only extend the container life when it has less than 10 minutes remaining")
+		return fmt.Errorf("remaining time is greater than 10 minutes")
 	}
 
 	if err := database.GetRedis().Expire(ctx, containerKey, time.Hour).Err(); err != nil {

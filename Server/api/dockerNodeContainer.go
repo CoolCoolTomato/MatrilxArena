@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +20,7 @@ func GetContainerListFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -27,24 +28,24 @@ func GetContainerListFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.GetContainerList(dockerNode)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Get container list fail", c)
+		response.Fail(err, localizer.GetMessage("GetContainerListFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Get container list success", c)
+	response.OK(res["data"], localizer.GetMessage("GetContainerListSuccess", c), c)
 }
 
 func GetContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -52,24 +53,24 @@ func GetContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.GetContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Get container fail", c)
+		response.Fail(err, localizer.GetMessage("GetContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Get container success", c)
+	response.OK(res["data"], localizer.GetMessage("GetContainerSuccess", c), c)
 }
 
 func CreateContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeImageID == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -77,24 +78,24 @@ func CreateContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.CreateContainer(dockerNode, containerRequest.DockerNodeImageID, containerRequest.SpecifiedPorts)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Create container fail", c)
+		response.Fail(err, localizer.GetMessage("CreateContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Create container success", c)
+	response.OK(res["data"], localizer.GetMessage("CreateContainerSuccess", c), c)
 }
 
 func StartContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -102,24 +103,24 @@ func StartContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.StartContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Start container fail", c)
+		response.Fail(err, localizer.GetMessage("StartContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Start container success", c)
+	response.OK(res["data"], localizer.GetMessage("StartContainerSuccess", c), c)
 }
 
 func StopContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -127,24 +128,24 @@ func StopContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.StopContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Stop container fail", c)
+		response.Fail(err, localizer.GetMessage("StopContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Stop container success", c)
+	response.OK(res["data"], localizer.GetMessage("StopContainerSuccess", c), c)
 }
 
 func RemoveContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -152,24 +153,24 @@ func RemoveContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.RemoveContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Remove container fail", c)
+		response.Fail(err, localizer.GetMessage("RemoveContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Remove container success", c)
+	response.OK(res["data"], localizer.GetMessage("RemoveContainerSuccess", c), c)
 }
 
 func ExecuteCommandFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" || len(containerRequest.Command) == 0 {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -177,15 +178,15 @@ func ExecuteCommandFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, "Get dockerNode fail", c)
+		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.ExecuteCommand(dockerNode, containerRequest.DockerNodeContainerID, containerRequest.Command)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, "Execute command fail", c)
+		response.Fail(err, localizer.GetMessage("ExecuteCommandFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], "Remove container success", c)
+	response.OK(res["data"], localizer.GetMessage("ExecuteCommandSuccess", c), c)
 }

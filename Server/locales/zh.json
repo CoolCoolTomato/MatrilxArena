@@ -71,6 +71,10 @@
   "ExecuteCommandFail": "命令执行失败",
   "ExecuteCommandSuccess": "命令执行成功",
 
+  "GetImageListFromDockerNodeFail": "从Docker节点获取镜像列表失败",
+  "GetImageListFromDockerNodeSuccess": "从Docker节点获取镜像列表成功",
+  "GetImageFromDockerNodeFail": "从Docker节点获取镜像失败",
+  "GetImageFromDockerNodeSuccess": "从Docker节点获取镜像成功",
   "PullImageFail": "镜像拉取失败",
   "PullImageSuccess": "镜像拉取成功",
   "RemoveImageFail": "镜像删除失败",
@@ -99,18 +103,25 @@
   "DeleteUserFail": "用户删除失败",
   "DeleteUserSuccess": "用户删除成功",
 
+  "GetUserChallengeListFail": "用户题目列表获取失败",
+  "GetUserChallengeListSuccess": "用户题目列表获取成功",
+  "GetUserChallengeFail": "用户题目获取失败",
+  "DeleteUserChallengeFail": "用户题目获取失败",
   "ResetChallengeSuccess": "题目重置成功",
   "CheckFlagFromChallengeFail": "从题目中检查Flag失败",
   "CheckFlagFromContainerFail": "从容器中检查Flag失败",
   "IncorrectFlag": "Flag错误",
   "CorrectFlag": "Flag正确",
 
-  "GetUserContainersFail": "用户容器列表获取失败",
-  "YouCanOnlyCreateUpTo3Containers": "最多只能创建3个容器",
-  "DecodeContainerFail": "容器解码失败",
+  "GetUserContainerListFail": "用户容器列表获取失败",
+  "GetUserContainerListSuccess": "用户容器列表获取成功",
+  "YouCanOnlyCreateUpTo3Containers": "最多同时创建3个容器",
+  "DecodeContainerFail": "容器解析失败",
   "AddUserContainerFail": "用户容器添加失败",
+  "DeleteUserContainerFail": "用户容器删除失败",
   "DestroyContainerSuccess": "容器销毁成功",
   "ContainerNotFound": "找不到容器",
-  "DelayContainerFail": "容器延迟失败",
-  "DelayContainerSuccess": "延迟容器成功"
+  "RemainingTimeIsGreaterThan10Minutes": "只能在容器剩余10分钟时延时",
+  "DelayContainerFail": "容器延时失败",
+  "DelayContainerSuccess": "容器延时成功"
 }

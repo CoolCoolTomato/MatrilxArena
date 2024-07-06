@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/config"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
 	"os"
@@ -15,92 +16,92 @@ import (
 func GetAttachmentList(c *gin.Context) {
 	attachmentList, err := model.GetAttachmentList()
 	if err != nil {
-		response.Fail(err, "Get attachment list fail", c)
+		response.Fail(err, localizer.GetMessage("GetAttachmentListFail", c), c)
 		return
 	}
 
-	response.OK(attachmentList, "Get attachment list success", c)
+	response.OK(attachmentList, localizer.GetMessage("GetAttachmentListSuccess", c), c)
 }
 
 func GetAttachment(c *gin.Context) {
 	var attachment model.Attachment
 	err := c.ShouldBindJSON(&attachment)
 	if err != nil || attachment.ID == 0 {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
 	err = attachment.GetAttachment()
 	if err != nil {
-		response.Fail(err, "Get attachment fail", c)
+		response.Fail(err, localizer.GetMessage("GetAttachmentFail", c), c)
 		return
 	}
 
-	response.OK(attachment, "Get attachment success", c)
+	response.OK(attachment, localizer.GetMessage("GetAttachmentSuccess", c), c)
 }
 
 func CreateAttachment(c *gin.Context) {
 	var attachment model.Attachment
 	err := c.ShouldBindJSON(&attachment)
 	if err != nil || attachment.FileName == "" || attachment.FilePath == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
 	err = attachment.CreateAttachment()
 	if err != nil {
-		response.Fail(err, "Create attachment fail", c)
+		response.Fail(err, localizer.GetMessage("CreateAttachmentFail", c), c)
 		return
 	}
 
-	response.OK(nil, "Create attachment success", c)
+	response.OK(nil, localizer.GetMessage("CreateAttachmentSuccess", c), c)
 }
 
 func UpdateAttachment(c *gin.Context) {
 	var attachment model.Attachment
 	err := c.ShouldBindJSON(&attachment)
 	if err != nil || attachment.ID == 0 || attachment.FileName == "" || attachment.FilePath == "" {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
 	err = attachment.UpdateAttachment()
 	if err != nil {
-		response.Fail(err, "Update attachment fail", c)
+		response.Fail(err, localizer.GetMessage("UpdateAttachmentFail", c), c)
 		return
 	}
 
-	response.OK(nil, "Update attachment success", c)
+	response.OK(nil, localizer.GetMessage("UpdateAttachmentSuccess", c), c)
 }
 
 func DeleteAttachment(c *gin.Context) {
 	var attachment model.Attachment
 	err := c.ShouldBindJSON(&attachment)
 	if err != nil || attachment.ID == 0 {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
 	err = attachment.DeleteAttachment()
 	if err != nil {
-		response.Fail(err, "Delete attachment fail", c)
+		response.Fail(err, localizer.GetMessage("DeleteAttachmentFail", c), c)
 		return
 	}
 
-	response.OK(nil, "Delete attachment success", c)
+	response.OK(nil, localizer.GetMessage("DeleteAttachmentSuccess", c), c)
 }
 
 func UploadAttachment(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
-		response.Fail(err, "Upload file fail", c)
+		response.Fail(err, localizer.GetMessage("UploadFileFail", c), c)
 		return
 	}
 
 	filePath := filepath.Join(config.GetConfig().GetString("AttachmentPath"), generateRandomFilename()+filepath.Ext(file.Filename))
 	err = c.SaveUploadedFile(file, filePath)
 	if err != nil {
-		response.Fail(err, "Save file fail", c)
+		response.Fail(err, localizer.GetMessage("SaveFileFail", c), c)
 		return
 	}
 
@@ -116,17 +117,17 @@ func UploadAttachment(c *gin.Context) {
 	attachment.FilePath = filePath
 	err = attachment.CreateAttachment()
 	if err != nil {
-		response.Fail(err, "Create attachment fail", c)
+		response.Fail(err, localizer.GetMessage("CreateAttachmentFail", c), c)
 		return
 	}
 
-	response.OK(attachment, "Upload attachment success", c)
+	response.OK(attachment, localizer.GetMessage("UploadAttachmentSuccess", c), c)
 }
 
 func DownloadAttachment(c *gin.Context) {
 	ID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		response.Fail(err, "Invalid argument", c)
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}
 
@@ -134,12 +135,12 @@ func DownloadAttachment(c *gin.Context) {
 	attachment.ID = uint(ID)
 	err = attachment.GetAttachment()
 	if err != nil {
-		response.Fail(err, "Get attachment fail", c)
+		response.Fail(err, localizer.GetMessage("GetAttachmentFail", c), c)
 		return
 	}
 
 	if _, err := os.Stat(attachment.FilePath); os.IsNotExist(err) {
-		response.Fail(err, "File not found", c)
+		response.Fail(err, localizer.GetMessage("FileNotFound", c), c)
 		return
 	}
 
