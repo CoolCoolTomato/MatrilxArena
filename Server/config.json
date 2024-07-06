@@ -5,7 +5,7 @@
     "Database": {
         "Driver": "mysql",
         "Username": "root",
-        "Password": "root",
+        "Password": "msql_lqk",
         "Host": "127.0.0.1",
         "Port": "3306",
         "Database": "matrilx",
@@ -18,5 +18,7 @@
         "Password": "",
         "DB": 0
     },
-    "AttachmentPath": "attachment"
+    "AttachmentPath": "attachment",
+    "locales": "locales",
+    "Language": "zh"
 }
