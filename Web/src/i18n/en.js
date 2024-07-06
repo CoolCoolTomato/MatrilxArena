@@ -132,5 +132,27 @@ export default {
     "Cancel": "Cancel",
     "Submit": "Submit",
     "Confirm": "Confirm"
+  },
+  "AdminUser": {
+    "UserManager": "User Manager",
+    "Add": "Add",
+    "Username": "Username",
+    "Email": "Email",
+    "Role": "Role",
+    "Password": "Password",
+    "Operations": "Operations",
+    "Update": "Update",
+    "Delete": "Delete",
+    "Select": "Select",
+    "CreateUser": "Create User",
+    "UpdateNode": "Update Node",
+    "DeleteUser": "Delete User",
+    "AreYouConfirmToDeleteTheUser": "Are you confirm to delete the user?",
+    "Cancel": "Cancel",
+    "Submit": "Submit",
+    "Confirm": "Confirm",
+    "Admin": "Admin",
+    "User": "User",
+    "Null": "Null"
   }
 }

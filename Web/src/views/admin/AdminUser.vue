@@ -1,100 +1,106 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">User Manager</h2>
+      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminUser.UserManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createUserFormVisible = true">Add</el-button>
+      <el-button style="margin: 10px" @click="createUserFormVisible = true">{{ $t('AdminUser.Add') }}</el-button>
       <el-table
         :data="userList"
         table-layout="fixed"
       >
-        <el-table-column prop="Username" label="Username"/>
-        <el-table-column prop="Email" label="Email"/>
-        <el-table-column label="Role">
+        <el-table-column prop="Username" :label="$t('AdminUser.Username')"/>
+        <el-table-column prop="Email" :label="$t('AdminUser.Email')"/>
+        <el-table-column :label="$t('AdminUser.Role')">
           <template #default="scope">
             {{ formatRole(scope.row.Role) }}
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="Operations" width="300px">
+        <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="300px">
           <template #default=scope>
             <el-button
               @click="OpenUpdateUserForm(scope.row)"
               >
-              Update
+              {{ $t('AdminUser.Update') }}
             </el-button>
             <el-button
               @click="OpenDeleteUserForm(scope.row)"
               >
-              Delete
+              {{ $t('AdminUser.Delete') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-dialog
         v-model="createUserFormVisible"
-        title="Create User"
+        :title="$t('AdminUser.CreateUser')"
         width="500"
         @close="ClearCreateUserForm"
         >
         <el-form :model=createUserData>
-          <el-form-item label="Username" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Username')" :label-width="labelWidth">
             <el-input v-model="createUserData.Username"/>
           </el-form-item>
-          <el-form-item label="Email" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Email')" :label-width="labelWidth">
             <el-input v-model="createUserData.Email"/>
           </el-form-item>
-          <el-form-item label="Role" :label-width="labelWidth">
-            <el-select v-model="createUserData.Role">
+          <el-form-item :label="$t('AdminUser.Role')" :label-width="labelWidth">
+            <el-select
+              v-model="createUserData.Role"
+              :placeholder="$t('AdminUser.Select')"
+            >
               <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="Password" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Password')" :label-width="labelWidth">
             <el-input v-model="createUserData.Password"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createUserFormVisible = false">Cancel</el-button>
-          <el-button @click="CreateUser">Submit</el-button>
+          <el-button @click="createUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
+          <el-button @click="CreateUser">{{ $t('AdminUser.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="updateUserFormVisible"
-        title="Update Node"
+        :title="$t('AdminUser.UpdateNode')"
         width="500"
         @close="ClearUpdateUserForm"
         >
         <el-form :model=updateUserData>
-          <el-form-item label="Username" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Username')" :label-width="labelWidth">
             <el-input v-model="updateUserData.Username"/>
           </el-form-item>
-          <el-form-item label="Email" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Email')" :label-width="labelWidth">
             <el-input v-model="updateUserData.Email"/>
           </el-form-item>
-          <el-form-item label="Role" :label-width="labelWidth">
-            <el-select v-model="updateUserData.Role">
+          <el-form-item :label="$t('AdminUser.Role')" :label-width="labelWidth">
+            <el-select
+              v-model="updateUserData.Role"
+              :placeholder="$t('AdminUser.Select')"
+            >
               <el-option v-for="role in roles" :label="role.label" :key="role.value" :value="role.value"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="Password" :label-width="labelWidth">
+          <el-form-item :label="$t('AdminUser.Password')" :label-width="labelWidth">
             <el-input v-model="updateUserData.Password"/>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateUserFormVisible = false">Cancel</el-button>
-          <el-button @click="UpdateUser">Submit</el-button>
+          <el-button @click="updateUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
+          <el-button @click="UpdateUser">{{ $t('AdminUser.Submit') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="deleteUserFormVisible"
-        title="Delete User"
+        :title="$t('AdminUser.DeleteUser')"
         width="500"
         @close="ClearDeleteUserForm"
         >
-        <el-text>Are you confirm to delete the user?</el-text>
+        <el-text>{{ $t('AdminUser.AreYouConfirmToDeleteTheUser') }}</el-text>
         <template #footer>
-          <el-button @click="deleteUserFormVisible = false">Cancel</el-button>
-          <el-button @click="DeleteUser">Confirm</el-button>
+          <el-button @click="deleteUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
+          <el-button @click="DeleteUser">{{ $t('AdminUser.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -103,8 +109,13 @@
 <script>
 import userApi from "@/api/user.js"
 import { ElMessage } from 'element-plus'
+import {useI18n} from "vue-i18n";
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       labelWidth: 100,
@@ -240,11 +251,11 @@ export default {
     },
     formatRole(role) {
       if (role === 1) {
-        return "admin"
+        return this.t('AdminUser.Admin')
       } else if (role === 2) {
-        return "user"
+        return this.t('AdminUser.User')
       } else {
-        return "select"
+        return this.t('AdminUser.Null')
       }
     },
   },
