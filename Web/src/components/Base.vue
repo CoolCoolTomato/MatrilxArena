@@ -49,6 +49,18 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  data() {
+    return {
+      theme: "light",
+    }
+  },
+  mounted() {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      this.theme = savedTheme
+    }
+    document.documentElement.className = this.theme
+  },
 }
 </script>
 <style scoped>

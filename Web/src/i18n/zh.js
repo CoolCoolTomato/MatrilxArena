@@ -3,7 +3,8 @@ export default {
     "MatrilxArena": "MatrilxArena",
     "Challenge": "题目",
     "Group": "题集",
-    "AWD": "AWD"
+    "AWD": "AWD",
+    "Profile": "个人中心"
   },
   "BaseAdmin": {
     "MatrilxArena": "MatrilxArena",
@@ -16,6 +17,10 @@ export default {
     "Category": "分类",
     "Attachment": "附件",
     "User": "用户"
+  },
+  "ThemeSelect": {
+    "Light": "亮色",
+    "Dark": "暗色"
   },
   "AdminAttachment": {
     "AttachmentManager": "附件管理",
@@ -221,5 +226,11 @@ export default {
     "ContainerList": "容器列表",
     "NoContainerIsRunning": "没有容器正在运行",
     "DownloadAttachmentFail": "附件下载失败"
+  },
+  "Profile": {
+    "UserInformation": "用户信息",
+    "Setting": "设置",
+    "Language": "语言",
+    "Theme": "主题"
   }
 }

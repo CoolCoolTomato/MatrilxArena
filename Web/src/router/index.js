@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Base from "@/components/Base.vue";
-import Login from "@/views/Login.vue";
-import Index from "@/views/Index.vue";
-import Challenge from "@/views/Challenge.vue";
-import BaseAdmin from "@/components/BaseAdmin.vue";
+import Base from "@/components/Base.vue"
+import Login from "@/views/Login.vue"
+import Index from "@/views/Index.vue"
+import Challenge from "@/views/Challenge.vue"
+import BaseAdmin from "@/components/BaseAdmin.vue"
 import AdminIndex from "@/views/admin/AdminIndex.vue"
-import AdminNode from "@/views/admin/AdminNode.vue";
+import AdminNode from "@/views/admin/AdminNode.vue"
 import AdminNodeDetail from "@/views/admin/AdminNodeDetail.vue"
-import AdminImage from "@/views/admin/AdminImage.vue";
-import AdminChallenge from "@/views/admin/AdminChallenge.vue";
-import AdminUser from "@/views/admin/AdminUser.vue";
-import AdminAttachment from "@/views/admin/AdminAttachment.vue";
-import AdminCategory from "@/views/admin/AdminCategory.vue";
-import authApi from "@/api/auth.js";
+import AdminImage from "@/views/admin/AdminImage.vue"
+import AdminChallenge from "@/views/admin/AdminChallenge.vue"
+import AdminUser from "@/views/admin/AdminUser.vue"
+import AdminAttachment from "@/views/admin/AdminAttachment.vue"
+import AdminCategory from "@/views/admin/AdminCategory.vue"
+import authApi from "@/api/auth.js"
+import Profile from "@/views/Profile.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,7 @@ const router = createRouter({
     { path: "/", component: Base, children: [
       { path: "", component: Index },
       { path: "challenge/:category?", component: Challenge },
+      { path: "profile", component: Profile },
     ]},
     { path: "/admin", component: BaseAdmin, children: [
       { path: "", component: AdminIndex },

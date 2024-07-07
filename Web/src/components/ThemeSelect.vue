@@ -37,7 +37,7 @@ export default {
   mounted() {
     const savedTheme = localStorage.getItem('theme')
     if (savedTheme) {
-      this.theme = savedTheme;
+      this.theme = savedTheme
     }
     document.documentElement.className = this.theme
   },

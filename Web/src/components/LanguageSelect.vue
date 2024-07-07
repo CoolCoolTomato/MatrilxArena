@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="currentLang" @change="changeLang">
+  <el-select v-model="lang" @change="changeLang">
     <el-option value="en" label="English"/>
     <el-option value="zh" label="中文"/>
   </el-select>
@@ -10,20 +10,20 @@
 export default {
   data() {
     return {
-      currentLang: 'en'
+      lang: 'en'
     }
   },
   methods: {
     changeLang(value) {
-      this.currentLang = value
+      this.lang = value
       this.$i18n.locale = value
       localStorage.setItem('lang', value)
     },
   },
   created() {
-    const localLanguage = localStorage.getItem('lang') || 'en'
-    this.currentLang = localLanguage
-    this.$i18n.locale = localLanguage
+    const savedLanguage = localStorage.getItem('lang') || 'en'
+    this.lang = savedLanguage
+    this.$i18n.locale = savedLanguage
   }
 }
 </script>

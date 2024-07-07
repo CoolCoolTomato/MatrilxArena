@@ -37,7 +37,7 @@ export default {
   mounted() {
     const savedTheme = localStorage.getItem('theme')
     if (savedTheme) {
-      this.theme = savedTheme;
+      this.theme = savedTheme
       this.icon = this.theme === 'light' ? Sunny : Moon
     }
     document.documentElement.className = this.theme

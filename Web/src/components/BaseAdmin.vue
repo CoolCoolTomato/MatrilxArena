@@ -89,7 +89,7 @@
 </template>
 <script>
 import { RouterView } from 'vue-router'
-import Copyright from "@/components/Copyright.vue";
+import Copyright from "@/components/Copyright.vue"
 import Menu from "@/components/icon/Menu.vue"
 import Home from "@/components/icon/Home.vue"
 import Docker from "@/components/icon/Docker.vue"
@@ -115,15 +115,23 @@ export default {
   },
   data() {
     return {
+      theme: "light",
       isMenuOpen: false,
-    };
+    }
   },
   methods: {
     toggleSidebar() {
-      this.isMenuOpen = !this.isMenuOpen;
+      this.isMenuOpen = !this.isMenuOpen
     }
-  }
-};
+  },
+  mounted() {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) {
+      this.theme = savedTheme
+    }
+    document.documentElement.className = this.theme
+  },
+}
 </script>
 <style scoped>
 #main {

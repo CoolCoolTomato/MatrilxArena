@@ -3,7 +3,8 @@ export default {
     "MatrilxArena": "MatrilxArena",
     "Challenge": "Challenge",
     "Group": "Group",
-    "AWD": "AWD"
+    "AWD": "AWD",
+    "Profile": "Profile"
   },
   "BaseAdmin": {
     "MatrilxArena": "MatrilxArena",
@@ -16,6 +17,10 @@ export default {
     "Category": "Category",
     "Attachment": "Attachment",
     "User": "User"
+  },
+  "ThemeSelect": {
+    "Light": "Light",
+    "Dark": "Dark"
   },
   "AdminAttachment": {
     "AttachmentManager": "Attachment Manager",
@@ -221,5 +226,11 @@ export default {
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"
+  },
+  "Profile": {
+    "UserInformation": "User Information",
+    "Setting": "Setting",
+    "Language": "Language",
+    "Theme": "Theme"
   }
 }
