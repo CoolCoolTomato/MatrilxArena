@@ -1,16 +1,22 @@
 <template>
   <el-container>
     <el-header style="display: flex">
-      <h2 style="color: var(--el-text-color-primary);">Node Detail / Host: {{dockerNode.Host}} | Port: {{dockerNode.Port}}</h2>
+      <h2 style="color: var(--el-text-color-primary);">
+        {{ $t('AdminNodeDetail.NodeDetail') }} /
+        {{ $t('AdminNodeDetail.Host') }}: {{dockerNode.Host}} |
+        {{ $t('AdminNodeDetail.Port') }}: {{dockerNode.Port}}
+      </h2>
       <div style="flex-grow: 1;" />
       <div style="display: flex; align-items: center">
         <el-button
           @click="pullImageFormVisible = true"
-          >Pull image</el-button>
+          >
+          {{ $t('AdminNodeDetail.PullImage') }}
+        </el-button>
         <el-button
           @click="goBack"
           >
-           Back
+          {{ $t('AdminNodeDetail.Back') }}
         </el-button>
       </div>
     </el-header>
@@ -19,75 +25,75 @@
         v-model="activeTab"
         class="el-tabs-custom"
         >
-        <el-tab-pane label="Image" name="image">
+        <el-tab-pane :label="$t('AdminNodeDetail.Image')" name="image">
           <el-table
             :data="dockerNodeImageList"
             table-layout="fixed"
             height="99%"
             >
-            <el-table-column prop="RepoTags" label="RepoTags"/>
-            <el-table-column label="Size">
+            <el-table-column prop="RepoTags" :label="$t('AdminNodeDetail.RepoTags')"/>
+            <el-table-column :label="$t('AdminNodeDetail.Size')">
               <template #default="scope">
                 {{ (scope.row.Size / 1000000).toFixed(2) }} MB
               </template>
             </el-table-column>
-            <el-table-column label="Created">
+            <el-table-column :label="$t('AdminNodeDetail.Created')">
               <template #default="scope">
                 {{ formatDate(scope.row.Created) }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="200px">
+            <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="200px">
               <template #default=scope>
                 <el-button
                   size="small"
                   @click="OpenImageDetail(scope.row)"
                   >
-                  Detail
+                  {{ $t('AdminNodeDetail.Detail') }}
                 </el-button>
                 <el-button
                   size="small"
                   @click="OpenRemoveImageForm(scope.row)"
                   >
-                  Remove
+                  {{ $t('AdminNodeDetail.Remove') }}
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="Container" name="container">
+        <el-tab-pane :label="$t('AdminNodeDetail.Container')" name="container">
           <el-table
             :data="dockerNodeContainerList"
             table-layout="fixed"
             height="99%"
             >
-            <el-table-column prop="Names" label="Names"/>
-            <el-table-column prop="Image" label="Image"/>
-            <el-table-column prop="State" label="State"/>
-            <el-table-column fixed="right" label="Operations" width="320px">
+            <el-table-column prop="Names" :label="$t('AdminNodeDetail.Names')"/>
+            <el-table-column prop="Image" :label="$t('AdminNodeDetail.Image')"/>
+            <el-table-column prop="State" :label="$t('AdminNodeDetail.State')"/>
+            <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="320px">
               <template #default=scope>
                 <el-button
                   size="small"
                   @click="OpenContainerDetail(scope.row)"
                   >
-                  Detail
+                  {{ $t('AdminNodeDetail.Detail') }}
                 </el-button>
                 <el-button
                   size="small"
                   @click="OpenStartContainerForm(scope.row)"
                   >
-                  Start
-                  </el-button>
+                  {{ $t('AdminNodeDetail.Start') }}
+                </el-button>
                 <el-button
                   size="small"
                   @click="OpenStopContainerForm(scope.row)"
                   >
-                  Stop
+                  {{ $t('AdminNodeDetail.Stop') }}
                 </el-button>
                 <el-button
                   size="small"
                   @click="OpenRemoveContainerForm(scope.row)"
                   >
-                  Remove
+                  {{ $t('AdminNodeDetail.Remove') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -96,7 +102,7 @@
       </el-tabs>
       <el-dialog
         v-model="pullImageFormVisible"
-        title="Pull Image"
+        :title="$t('AdminNodeDetail.PullImage')"
         width="1000px"
         style="max-height: 620px;"
         @close="ClearPullImageForm"
@@ -110,14 +116,14 @@
               @selection-change="handleSelectionChange"
               >
               <el-table-column type="selection" width="50" />
-              <el-table-column prop="Remark" label="Remark"/>
-              <el-table-column prop="RepoTags" label="RepoTags"/>
-              <el-table-column label="Repository">
+              <el-table-column prop="Remark" :label="$t('AdminNodeDetail.Remark')"/>
+              <el-table-column prop="RepoTags" :label="$t('AdminNodeDetail.RepoTags')"/>
+              <el-table-column :label="$t('AdminNodeDetail.Repository')">
                 <template #default="scope">
                     {{ formatRepository(scope.row.Repository) }}
                 </template>
               </el-table-column>
-              <el-table-column label="Existence">
+              <el-table-column :label="$t('AdminNodeDetail.Existence')">
                 <template #default="scope">
                   {{ checkImageExistence(scope.row.RepoTags) }}
                 </template>
@@ -129,8 +135,8 @@
               :data="pullImageDataList"
               max-height="500px"
               >
-              <el-table-column prop="RepoTags" label="Selected image"/>
-              <el-table-column prop="Status" label="Status"/>
+              <el-table-column prop="RepoTags" :label="$t('AdminNodeDetail.SelectedImage')"/>
+              <el-table-column prop="Status" :label="$t('AdminNodeDetail.Status')"/>
             </el-table>
           </el-col>
         </el-row>
@@ -138,98 +144,98 @@
           <el-button
             @click="pullImageFormVisible = false"
             >
-            Cancel
+          {{ $t('AdminNodeDetail.Cancel') }}
           </el-button>
           <el-button
             @click="PullImageFromDockerNode"
             >
-            Pull
+          {{ $t('AdminNodeDetail.Pull') }}
           </el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="imageDetailVisible"
-        title="Image Detail"
+        :title="$t('AdminNodeDetail.ImageDetail')"
         width="1000"
         @close="ClearImageDetail"
         >
         <el-card>
-          <p style="word-break: break-all;">ID: {{ imageDetail.Id }}</p>
-          <p style="word-break: break-all;">RepoTags: {{ imageDetail.RepoTags }}</p>
-          <p style="word-break: break-all;">Size: {{ (imageDetail.Size / 1000000).toFixed(2) }} MB</p>
-          <p style="word-break: break-all;">Created: {{ formatDate(imageDetail.Created) }}</p>
-          <p style="word-break: break-all;">RepoDigests: {{ imageDetail.RepoDigests }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.ID') }}: {{ imageDetail.Id }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.RepoTags') }}: {{ imageDetail.RepoTags }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Size') }}: {{ (imageDetail.Size / 1000000).toFixed(2) }} MB</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Created') }}: {{ formatDate(imageDetail.Created) }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.RepoDigests') }}: {{ imageDetail.RepoDigests }}</p>
         </el-card>
         <template #footer>
-          <el-button @click="imageDetailVisible = false">Close</el-button>
+          <el-button @click="imageDetailVisible = false">{{ $t('AdminNodeDetail.Close') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="removeImageFormVisible"
-        title="Remove Image"
+        :title="$t('AdminNodeDetail.RemoveImage')"
         width="500"
         @close="ClearRemoveImageForm"
       >
-        <el-text>Are you confirm to remove the image?</el-text>
+        <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToRemoveTheImage') }}</el-text>
         <template #footer>
-          <el-button @click="removeImageFormVisible = false">Cancel</el-button>
-          <el-button @click="RemoveImageFromDockerNode">Confirm</el-button>
+          <el-button @click="removeImageFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
+          <el-button @click="RemoveImageFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="containerDetailVisible"
-        title="Container Detail"
+        :title="$t('AdminNodeDetail.ContainerDetail')"
         width="1000"
         @close="ClearContainerDetail"
         >
         <el-card>
-          <p style="word-break: break-all;">ID: {{ containerDetail.Id }}</p>
-          <p style="word-break: break-all;">Names: {{ containerDetail.Names }}</p>
-          <p style="word-break: break-all;">Created: {{ formatDate(containerDetail.Created) }}</p>
-          <p style="word-break: break-all;">Image: {{ containerDetail.Image }}</p>
-          <p style="word-break: break-all;">ImageID: {{ containerDetail.ImageID }}</p>
-          <p style="word-break: break-all;">Ports: {{ containerDetail.Ports }}</p>
-          <p style="word-break: break-all;">State: {{ containerDetail.State }}</p>
-          <p style="word-break: break-all;">Status: {{ containerDetail.Status }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.ID') }}: {{ containerDetail.Id }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Names') }}: {{ containerDetail.Names }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Created') }}: {{ formatDate(containerDetail.Created) }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Image') }}: {{ containerDetail.Image }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.ImageID') }}: {{ containerDetail.ImageID }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Ports') }}: {{ containerDetail.Ports }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.State') }}: {{ containerDetail.State }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminNodeDetail.Status') }}: {{ containerDetail.Status }}</p>
         </el-card>
         <template #footer>
-          <el-button @click="containerDetailVisible = false">Close</el-button>
+          <el-button @click="containerDetailVisible = false">{{ $t('AdminNodeDetail.Close') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="startContainerFormVisible"
-        title="Start Container"
+        :title="$t('AdminNodeDetail.StartContainer')"
         width="500"
         @close="ClearStartContainerForm"
         >
-        <el-text>Are you confirm to start the container?</el-text>
+        <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToStartTheContainer') }}</el-text>
         <template #footer>
-          <el-button @click="startContainerFormVisible = false">Cancel</el-button>
-          <el-button @click="StartContainerFromDockerNode">Confirm</el-button>
+          <el-button @click="startContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
+          <el-button @click="StartContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
           </template>
       </el-dialog>
       <el-dialog
         v-model="stopContainerFormVisible"
-        title="Stop Container"
+        :title="$t('AdminNodeDetail.StopContainer')"
         width="500"
         @close="ClearStopContainerForm"
         >
-        <el-text>Are you confirm to stop the container?</el-text>
+        <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToStopTheContainer') }}</el-text>
         <template #footer>
-        <el-button @click="stopContainerFormVisible = false">Cancel</el-button>
-        <el-button @click="StopContainerFromDockerNode">Confirm</el-button>
+        <el-button @click="stopContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
+        <el-button @click="StopContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
         </template>
       </el-dialog>
       <el-dialog
         v-model="removeContainerFormVisible"
-        title="Remove Container"
+        :title="$t('AdminNodeDetail.RemoveContainer')"
         width="500"
         @close="ClearRemoveContainerForm"
         >
-        <el-text>Are you confirm to remove the container?</el-text>
+        <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToRemoveTheContainer') }}</el-text>
         <template #footer>
-        <el-button @click="removeContainerFormVisible = false">Cancel</el-button>
-        <el-button @click="RemoveContainerFromDockerNode">Confirm</el-button>
+        <el-button @click="removeContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
+        <el-button @click="RemoveContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
         </template>
       </el-dialog>
     </el-main>
@@ -238,8 +244,14 @@
 <script>
 import dockerNodeApi from "@/api/dockerNode.js";
 import imageApi from "@/api/image.js";
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
+
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   data() {
     return {
       activeTab: "image",
@@ -351,21 +363,21 @@ export default {
       this.inPull = true;
       const pullPromises = this.pullImageDataList.map(async data => {
         try {
-          data.Status = "pulling";
+          data.Status = this.t('pulling')
           const res = await dockerNodeApi.PullImageFromDockerNode({
             "DockerNodeID": data.DockerNodeID,
             "ImageID": data.ImageID
           });
           if (res.code === 0) {
-            data.Status = "pulled";
+            data.Status = this.t('pulled')
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
       });
       await Promise.all(pullPromises)
       this.GetImageListFromDockerNode()
-      this.inPull = false;
+      this.inPull = false
     },
     ClearPullImageForm() {
       if (!this.inPull){
@@ -529,7 +541,7 @@ export default {
       }
     },
     checkImageExistence(repoTags) {
-      return this.dockerNodeImageList.some(image => image.RepoTags.some(tag => repoTags.includes(tag))) ? 'Exists' : 'Not Exists';
+      return this.dockerNodeImageList.some(image => image.RepoTags.some(tag => repoTags.includes(tag))) ? this.t('Exists') : this.t('NotExists')
     },
     formatDate(timestamp) {
       const date = new Date(timestamp * 1000)
@@ -539,7 +551,7 @@ export default {
       return `${year}-${month}-${day}`
     },
     formatRepository(repository) {
-      return repository === '' ? 'Not Specified' : repository;
+      return repository === '' ? this.t('NotSpecified') : repository
     },
   },
   mounted() {

@@ -142,11 +142,11 @@ export default {
       roles: [
         {
           "value": 1,
-          "label": "admin"
+          "label": this.t('AdminUser.Admin')
         },
         {
           "value": 2,
-          "label": "user"
+          "label": this.t('AdminUser.User')
         }
       ]
     }

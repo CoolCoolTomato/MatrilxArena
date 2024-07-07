@@ -87,7 +87,7 @@
 <script>
 import dockerNodeApi from "@/api/dockerNode.js"
 import { ElMessage } from 'element-plus'
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 
 export default {
   setup() {
