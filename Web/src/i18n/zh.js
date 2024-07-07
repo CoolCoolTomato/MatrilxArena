@@ -209,6 +209,7 @@ export default {
     "FindChallenge": "查询题目",
     "Find": "查询",
     "Containers": "容器列表",
+    "ChallengeDetail": "题目详情",
     "Solved": "已解决",
     "Attachment": "附件",
     "Reset": "重置",

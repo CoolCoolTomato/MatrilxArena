@@ -55,7 +55,7 @@
       </el-scrollbar>
       <el-dialog
         v-model="challengeDetailVisible"
-        title="Challenge Detail"
+        :title="$t('Challenge.ChallengeDetail')"
         width="600"
         @close="ClearChallengeDetail"
         >

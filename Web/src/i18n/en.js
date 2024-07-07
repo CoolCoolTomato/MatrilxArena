@@ -209,6 +209,7 @@ export default {
     "FindChallenge": "Find challenge",
     "Find": "Find",
     "Containers": "Containers",
+    "ChallengeDetail": "Challenge Detail",
     "Solved": "Solved",
     "Attachment": "Attachment",
     "Reset": "Reset",

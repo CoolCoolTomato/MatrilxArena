@@ -1,7 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import ToggleThemeButton from "@/components/ToggleThemeButton.vue";
-import Copyright from "@/components/Copyright.vue";
+import ToggleThemeButton from "@/components/ToggleThemeButton.vue"
+import LanguageSelect from "@/components/LanguageSelect.vue"
+import Copyright from "@/components/Copyright.vue"
 </script>
 
 <template>
@@ -29,6 +30,9 @@ import Copyright from "@/components/Copyright.vue";
           </el-menu-item>
           <el-menu-item class="el-menu-item-no-style">
             <ToggleThemeButton />
+          </el-menu-item>
+          <el-menu-item class="el-menu-item-no-style">
+            <LanguageSelect />
           </el-menu-item>
         </el-menu>
       </el-header>
