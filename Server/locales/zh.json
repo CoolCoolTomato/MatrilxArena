@@ -22,6 +22,7 @@
   "LoginSuccess": "登录成功",
   "InvalidToken": "Token无效",
   "Authorized": "验证成功",
+  "GetUserByAuthSuccess": "当前用户获取成功",
 
   "GetCategoryListFail": "分类列表获取失败",
   "GetCategoryListSuccess": "分类列表获取成功",

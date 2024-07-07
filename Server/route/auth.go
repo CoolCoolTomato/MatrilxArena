@@ -2,8 +2,8 @@ package route
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/api"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/middleware"
-    "github.com/gin-gonic/gin"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 func SetAuthRoute(r *gin.Engine) {
@@ -11,9 +11,9 @@ func SetAuthRoute(r *gin.Engine) {
 	{
 		noauth.POST("/login", api.Login)
 	}
-    auth := r.Group("/auth")
-    auth.Use(middleware.JWTAuthMiddleware())
-    {
-        auth.POST("/CheckAuth", api.CheckAuth)
-    }
+	auth := r.Group("/auth")
+	auth.Use(middleware.JWTAuthMiddleware())
+	{
+		auth.POST("/GetUserByAuth", api.GetUserByAuth)
+	}
 }

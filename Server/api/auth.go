@@ -38,7 +38,7 @@ func Login(c *gin.Context) {
 	response.OK(token, localizer.GetMessage("LoginSuccess", c), c)
 }
 
-func CheckAuth(c *gin.Context) {
+func GetUserByAuth(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
 		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
@@ -53,5 +53,5 @@ func CheckAuth(c *gin.Context) {
 		return
 	}
 
-	response.OK(user.Role, localizer.GetMessage("Authorized", c), c)
+	response.OK(user, localizer.GetMessage("GetUserByAuthSuccess", c), c)
 }

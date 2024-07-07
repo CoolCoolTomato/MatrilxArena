@@ -22,6 +22,7 @@
   "LoginSuccess": "Login success",
   "InvalidToken": "Invalid token",
   "Authorized": "Authorized",
+  "GetUserByAuthSuccess": "Get user by auth success",
 
   "GetCategoryListFail": "Get category list fail",
   "GetCategoryListSuccess": "Get category list success",

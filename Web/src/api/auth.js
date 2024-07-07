@@ -4,13 +4,13 @@ function Login(data) {
   return apiClient.post("/auth/login", data).then(handleResponse).catch(handleError)
 }
 
-function CheckAuth() {
-  return apiClient.post("/auth/CheckAuth").then(handleResponse).catch(handleError)
+function GetUserByAuth() {
+  return apiClient.post("/auth/GetUserByAuth").then(handleResponse).catch(handleError)
 }
 
 const authApi = {
   Login,
-  CheckAuth
+  GetUserByAuth
 }
 
 export default authApi

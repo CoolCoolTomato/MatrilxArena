@@ -42,9 +42,9 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
-  authApi.CheckAuth().then(res => {
+  authApi.GetUserByAuth().then(res => {
     if (res.code === 0) {
-      const role = res.data
+      const role = res.data.Role
       if (to.path.startsWith('/admin')) {
         if (role !== 1) {
           next("/login")
