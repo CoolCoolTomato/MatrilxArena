@@ -13,7 +13,7 @@
           </el-menu-item>
           <div class="flex-grow" />
           <el-menu-item class="el-menu-item-no-style">
-            <ToggleThemeButton />
+            <ThemeButton />
           </el-menu-item>
         </el-menu>
       </el-header>
@@ -49,11 +49,11 @@
 <script>
 import authApi from "@/api/auth.js";
 import {ElMessage} from "element-plus";
-import ToggleThemeButton from "@/components/ToggleThemeButton.vue";
+import ThemeButton from "@/components/ThemeButton.vue";
 import Copyright from "@/components/Copyright.vue";
 
 export default {
-  components: {Copyright, ToggleThemeButton},
+  components: {Copyright, ThemeButton},
   data() {
     return {
       userForm: {

@@ -1,9 +1,3 @@
-<script setup>
-import { RouterView } from 'vue-router'
-import ToggleThemeButton from "@/components/ToggleThemeButton.vue";
-import Copyright from "@/components/Copyright.vue";
-</script>
-
 <template>
   <div class="common-layout" id="main">
     <el-container>
@@ -18,9 +12,6 @@ import Copyright from "@/components/Copyright.vue";
             <h2 style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.MatrilxArena') }}</h2>
           </el-menu-item>
           <div class="flex-grow"/>
-          <el-menu-item class="el-menu-item-no-style">
-            <ToggleThemeButton/>
-          </el-menu-item>
         </el-menu>
       </el-header>
       <el-main>
@@ -97,20 +88,31 @@ import Copyright from "@/components/Copyright.vue";
   </div>
 </template>
 <script>
+import { RouterView } from 'vue-router'
+import Copyright from "@/components/Copyright.vue";
 import Menu from "@/components/icon/Menu.vue"
 import Home from "@/components/icon/Home.vue"
 import Docker from "@/components/icon/Docker.vue"
 import Challenge from "@/components/icon/Challenge.vue"
 import Attachment from "@/components/icon/Attachment.vue"
 import User from "@/components/icon/User.vue"
-import { useI18n } from "vue-i18n";
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {
     const { t } = useI18n()
     return { t }
   },
-  components: {Menu, Home, Docker, Challenge, Attachment, User},
+  components: {
+    RouterView,
+    Copyright,
+    Menu,
+    Home,
+    Docker,
+    Challenge,
+    Attachment,
+    User
+  },
   data() {
     return {
       isMenuOpen: false,
@@ -141,7 +143,7 @@ export default {
 .flex-grow {
   flex-grow: 1;
 }
-::v-deep(.el-menu-item-no-style > .el-button > [class^="el-icon"]) {
+::v-deep(.el-menu-item-no-style .el-button [class^="el-icon"]) {
   margin-right: 0;
 }
 .el-container {

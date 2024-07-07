@@ -1,10 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import ToggleThemeButton from "@/components/ToggleThemeButton.vue"
-import LanguageSelect from "@/components/LanguageSelect.vue"
-import Copyright from "@/components/Copyright.vue"
-</script>
-
 <template>
   <div class="common-layout" id="main">
     <el-container>
@@ -28,11 +21,8 @@ import Copyright from "@/components/Copyright.vue"
           <el-menu-item index="/awd">
             <el-text size="large" tag="b">{{ $t('Base.AWD') }}</el-text>
           </el-menu-item>
-          <el-menu-item class="el-menu-item-no-style">
-            <ToggleThemeButton />
-          </el-menu-item>
-          <el-menu-item class="el-menu-item-no-style">
-            <LanguageSelect />
+          <el-menu-item index="/profile">
+            <el-text size="large" tag="b">{{ $t('Base.Profile') }}</el-text>
           </el-menu-item>
         </el-menu>
       </el-header>
@@ -46,9 +36,15 @@ import Copyright from "@/components/Copyright.vue"
   </div>
 </template>
 <script>
-import {useI18n} from "vue-i18n";
+import { RouterView } from 'vue-router'
+import Copyright from "@/components/Copyright.vue"
+import {useI18n} from "vue-i18n"
 
 export default {
+  components: {
+    RouterView,
+    Copyright
+  },
   setup() {
     const { t } = useI18n()
     return { t }
@@ -73,7 +69,7 @@ export default {
 .flex-grow {
   flex-grow: 1;
 }
-::v-deep(.el-menu-item-no-style > .el-button > [class^="el-icon"]) {
+::v-deep(.el-menu-item-no-style .el-button [class^="el-icon"]) {
   margin-right: 0;
 }
 .el-container{
