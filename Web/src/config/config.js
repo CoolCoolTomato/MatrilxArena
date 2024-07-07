@@ -1,14 +1,14 @@
-import devConfig from './config.development.js';
-import prodConfig from './config.production.js';
+import devConfig from './config.development.js'
+import prodConfig from './config.production.js'
 
-let config;
+let config
 
 if (process.env.NODE_ENV === 'development') {
-    config = devConfig;
+    config = devConfig
 } else if (process.env.NODE_ENV === 'production') {
-    config = prodConfig;
+    config = prodConfig
 } else {
-    throw new Error('NODE_ENV not set or invalid');
+    throw new Error('NODE_ENV not set or invalid')
 }
 
-export default config;
+export default config

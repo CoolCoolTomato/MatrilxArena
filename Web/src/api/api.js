@@ -3,7 +3,7 @@ import config from '@/config/config.js'
 import router from '@/router'
 
 export const apiClient = axios.create({
-  baseURL: config.baseURL,
+  baseURL: config.apiUrl,
   withCredentials: false,
   headers: {
       Accept: 'application/json',
