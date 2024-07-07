@@ -201,5 +201,24 @@ export default {
     "Exists": "Exists",
     "NotExists": "Not Exists",
     "NotSpecified": "Not Specified"
+  },
+  "Challenge": {
+    "Menu": "Menu",
+    "Category": "Category",
+    "All": "All",
+    "FindChallenge": "Find challenge",
+    "Find": "Find",
+    "Containers": "Containers",
+    "Solved": "Solved",
+    "Attachment": "Attachment",
+    "Reset": "Reset",
+    "Create": "Create",
+    "Destroy": "Destroy",
+    "Delay": "Delay",
+    "InputFlag": "Input flag",
+    "Submit": "Submit",
+    "ContainerList": "Container List",
+    "NoContainerIsRunning": "No container is running",
+    "DownloadAttachmentFail": "Download attachment fail"
   }
 }

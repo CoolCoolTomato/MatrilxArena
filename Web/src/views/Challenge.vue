@@ -6,17 +6,17 @@
           <el-icon>
             <Menu />
           </el-icon>
-            <template #title>Menu</template>
+            <template #title>{{ $t('Challenge.Menu') }}</template>
         </el-menu-item>
         <el-sub-menu index="challenge">
           <template #title>
             <el-icon>
               <Category/>
             </el-icon>
-            <el-text style="color: var(--el-text-color-primary);">Category</el-text>
+            <el-text style="color: var(--el-text-color-primary);">{{ $t('Challenge.Category') }}</el-text>
           </template>
           <el-menu-item index="/challenge">
-            <template #title>All</template>
+            <template #title>{{ $t('Challenge.All') }}</template>
           </el-menu-item>
           <el-menu-item
             v-for="category in categoryList"
@@ -32,22 +32,22 @@
       <el-scrollbar style="width: 80%; left: 10%;">
         <el-affix :offset="100">
           <div style="display: flex; margin: 0 20px 20px 20px;">
-            <el-input v-model="challengeQueryTitle" placeholder="Find challenge"/>
+            <el-input v-model="challengeQueryTitle" :placeholder="$t('Challenge.FindChallenge')"/>
             <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
-              Find
+              {{ $t('Challenge.Find') }}
               <el-icon style="margin-left: 10px">
                 <Search fill="var(var(--el-button-text-color))"/>
               </el-icon>
             </el-button>
             <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
-              Containers
+              {{ $t('Challenge.Containers') }}
             </el-button>
           </div>
         </el-affix>
         <el-row>
           <el-col v-for="challenge in challengeQueryList" :span="12">
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
-              <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">Solved</el-text></h2>
+              <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">{{ $t('Challenge.Solved') }}</el-text></h2>
               <el-text truncated>{{ challenge.Description }}</el-text>
             </div>
           </el-col>
@@ -62,7 +62,7 @@
         <h2 style="color: var(--el-text-color-primary)">{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <div style="margin-top: 5px;">
-          <el-text v-if="challengeDetail.Attachment.ID !== 0">attachment: </el-text>
+          <el-text v-if="challengeDetail.Attachment.ID !== 0">{{ $t('Challenge.Attachment') }}: </el-text>
           <el-link
             @click="DownloadAttachment(challengeDetail.Attachment.ID)"
             style="vertical-align: unset"
@@ -94,38 +94,38 @@
           <el-button
             @click="ResetUserChallenge(challengeDetail.ID)"
             >
-            Reset
+            {{ $t('Challenge.Reset') }}
           </el-button>
           <el-button
             @click="CreateContainerByUser(createContainerByUserData)"
             v-if="!checkContainerInUse(challengeDetail.ID) && challengeDetail.ImageID !== 0"
             >
-            Create
+            {{ $t('Challenge.Create') }}
           </el-button>
           <el-button
             @click="DestroyContainerByUser(destroyContainerByUserData)"
             v-if="checkContainerInUse(challengeDetail.ID)"
             >
-            Destroy
+            {{ $t('Challenge.Destroy') }}
           </el-button>
           <el-button
             @click="DelayContainerByUser(delayContainerByUserData)"
             v-if="checkContainerInUse(challengeDetail.ID)"
             >
-            Delay
+            {{ $t('Challenge.Delay') }}
           </el-button>
         </div>
         <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID) || challengeDetail.ImageID === 0">
-          <el-input v-model="checkFlagData.Flag" placeholder="Input flag"/>
-          <el-button @click="CheckFlag">Submit</el-button>
+          <el-input v-model="checkFlagData.Flag" :placeholder="$t('Challenge.InputFlag')"/>
+          <el-button @click="CheckFlag">{{ $t('Challenge.Submit') }}</el-button>
         </div>
       </el-dialog>
       <el-dialog
         v-model="userContainerListVisible"
-        title="Container List"
+        :title="$t('Challenge.ContainerList')"
         width="600"
         >
-        <el-text v-if="userContainerList.length === 0" size="large">No container is running</el-text>
+        <el-text v-if="userContainerList.length === 0" size="large">{{ $t('Challenge.NoContainerIsRunning') }}</el-text>
         <el-card
           v-for="userContainer in userContainerList"
           style="margin: 20px 0 20px 0;"
@@ -152,12 +152,12 @@
             <el-button
               @click="DestroyContainerByUser(userContainer)"
               >
-              Destroy
+              {{ $t('Challenge.Destroy') }}
             </el-button>
             <el-button
               @click="DelayContainerByUser(userContainer)"
               >
-              Delay
+              {{ $t('Challenge.Delay') }}
             </el-button>
           </div>
         </el-card>
@@ -167,18 +167,23 @@
 </template>
 
 <script>
-import categoryApi from "@/api/category.js";
+import categoryApi from "@/api/category.js"
 import challengeApi from "@/api/challenge.js"
-import userContainerApi from "@/api/userContainer.js";
-import userChallengeApi from "@/api/userChallenge.js";
-import { ElMessage } from "element-plus";
-import attachmentApi from "@/api/attachment.js";
+import userContainerApi from "@/api/userContainer.js"
+import userChallengeApi from "@/api/userChallenge.js"
+import { ElMessage } from "element-plus"
+import attachmentApi from "@/api/attachment.js"
 
-import Menu from "@/components/icon/Menu.vue";
-import Search from "@/components/icon/Search.vue";
-import Category from "@/components/icon/Category.vue";
+import Menu from "@/components/icon/Menu.vue"
+import Search from "@/components/icon/Search.vue"
+import Category from "@/components/icon/Category.vue"
+import { useI18n } from "vue-i18n"
 
 export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
   components: {Menu, Search, Category},
   data() {
     return {
@@ -502,7 +507,7 @@ export default {
     DownloadAttachment(id) {
       attachmentApi.DownloadAttachment(id).then(ok => {
         if (!ok) {
-          ElMessage.error("Download attachment fail")
+          ElMessage.error(this.t('Challenge.DownloadAttachmentFail'))
         }
       }).catch(error => {
         console.log(error)
