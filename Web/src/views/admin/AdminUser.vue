@@ -63,7 +63,7 @@
       </el-dialog>
       <el-dialog
         v-model="updateUserFormVisible"
-        :title="$t('AdminUser.UpdateNode')"
+        :title="$t('AdminUser.UpdateUser')"
         width="500"
         @close="ClearUpdateUserForm"
         >

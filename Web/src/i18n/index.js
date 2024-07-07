@@ -4,7 +4,7 @@ import zh from './zh.js'
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
+  locale: 'zh',
   messages: {
     en,
     zh

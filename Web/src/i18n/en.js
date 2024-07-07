@@ -145,7 +145,7 @@ export default {
     "Delete": "Delete",
     "Select": "Select",
     "CreateUser": "Create User",
-    "UpdateNode": "Update Node",
+    "UpdateUser": "Update User",
     "DeleteUser": "Delete User",
     "AreYouConfirmToDeleteTheUser": "Are you confirm to delete the user?",
     "Cancel": "Cancel",

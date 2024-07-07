@@ -59,7 +59,7 @@
         width="600"
         @close="ClearChallengeDetail"
         >
-        <h2 style="color: var(--el-text-color-primary)">{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">(Solved)</el-text></h2>
+        <h2 style="color: var(--el-text-color-primary)">{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">({{ $t('Challenge.Solved') }})</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <div style="margin-top: 5px;">
           <el-text v-if="challengeDetail.Attachment.ID !== 0">{{ $t('Challenge.Attachment') }}: </el-text>

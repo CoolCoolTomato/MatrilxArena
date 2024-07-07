@@ -541,7 +541,7 @@ export default {
       }
     },
     checkImageExistence(repoTags) {
-      return this.dockerNodeImageList.some(image => image.RepoTags.some(tag => repoTags.includes(tag))) ? this.t('Exists') : this.t('NotExists')
+      return this.dockerNodeImageList.some(image => image.RepoTags.some(tag => repoTags.includes(tag))) ? this.t('AdminNodeDetail.Exists') : this.t('AdminNodeDetail.NotExists')
     },
     formatDate(timestamp) {
       const date = new Date(timestamp * 1000)
@@ -551,7 +551,7 @@ export default {
       return `${year}-${month}-${day}`
     },
     formatRepository(repository) {
-      return repository === '' ? this.t('NotSpecified') : repository
+      return repository === '' ? this.t('AdminNodeDetail.NotSpecified') : repository
     },
   },
   mounted() {
