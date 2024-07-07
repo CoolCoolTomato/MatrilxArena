@@ -8,18 +8,21 @@ export const apiClient = axios.create({
   headers: {
       Accept: 'application/json',
   }
-});
+})
 
 apiClient.interceptors.request.use(config => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
+
+  config.headers['Accept-Language'] = localStorage.getItem('lang') || 'en'
+
   if (!(config.data instanceof FormData)) {
     config.headers['Content-Type'] = 'application/json'
   }
   return config
-});
+})
 
 export const handleResponse = (response) => {
   if (response.data.code !== 0) {
@@ -30,9 +33,9 @@ export const handleResponse = (response) => {
     }
   }
   return response.data
-};
+}
 
 export const handleError = (error) => {
   console.error('API call error:', error)
   throw error
-};
+}
