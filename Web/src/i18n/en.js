@@ -229,8 +229,16 @@ export default {
   },
   "Profile": {
     "UserInformation": "User Information",
-    "Setting": "Setting",
+    "Username": "Username",
+    "Email": "Email",
+    "Password": "Password",
+    "InputNewPassword": "Input new password",
+    "InputNewPasswordAgain": "Input new password again",
+    "ResetPassword": "Reset Password",
+    "Settings": "Settings",
     "Language": "Language",
-    "Theme": "Theme"
+    "Theme": "Theme",
+    "EmptyPassword": "Empty password",
+    "InconsistencyPassword": "Inconsistency password"
   }
 }

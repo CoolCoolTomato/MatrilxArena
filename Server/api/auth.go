@@ -73,7 +73,7 @@ func ResetPassword(c *gin.Context) {
 
     var userRequest model.User
     err = c.ShouldBindJSON(&userRequest)
-    if err != nil || user.Password == "" {
+    if err != nil || userRequest.Password == "" {
 		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
 		return
 	}

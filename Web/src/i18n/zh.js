@@ -229,8 +229,16 @@ export default {
   },
   "Profile": {
     "UserInformation": "用户信息",
-    "Setting": "设置",
+    "Username": "用户名",
+    "Email": "邮箱",
+    "Password": "密码",
+    "InputNewPassword": "输入新密码",
+    "InputNewPasswordAgain": "再次输入新密码",
+    "ResetPassword": "重置密码",
+    "Settings": "设置",
     "Language": "语言",
-    "Theme": "主题"
+    "Theme": "主题",
+    "EmptyPassword": "密码不能为空",
+    "InconsistencyPassword": "两次输入的密码不一致"
   }
 }
