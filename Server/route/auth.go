@@ -15,5 +15,6 @@ func SetAuthRoute(r *gin.Engine) {
 	auth.Use(middleware.JWTAuthMiddleware())
 	{
 		auth.POST("/GetUserByAuth", api.GetUserByAuth)
+        auth.POST("/ResetPassword", api.ResetPassword)
 	}
 }

@@ -8,9 +8,14 @@ function GetUserByAuth() {
   return apiClient.post("/auth/GetUserByAuth").then(handleResponse).catch(handleError)
 }
 
+function ResetPassword(data) {
+  return apiClient.post("/auth/ResetPassword", data).then(handleResponse).catch(handleError)
+}
+
 const authApi = {
   Login,
-  GetUserByAuth
+  GetUserByAuth,
+  ResetPassword
 }
 
 export default authApi

@@ -23,6 +23,7 @@
   "InvalidToken": "Invalid token",
   "Authorized": "Authorized",
   "GetUserByAuthSuccess": "Get user by auth success",
+  "ResetPasswordSuccess": "Reset password success",
 
   "GetCategoryListFail": "Get category list fail",
   "GetCategoryListSuccess": "Get category list success",

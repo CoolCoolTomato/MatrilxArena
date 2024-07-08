@@ -55,3 +55,40 @@ func GetUserByAuth(c *gin.Context) {
 
 	response.OK(user, localizer.GetMessage("GetUserByAuthSuccess", c), c)
 }
+
+func ResetPassword(c *gin.Context) {
+    username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
+		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		return
+	}
+
+    var userRequest model.User
+    err = c.ShouldBindJSON(&userRequest)
+    if err != nil || user.Password == "" {
+		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		return
+	}
+
+    err = user.SetPassword(userRequest.Password)
+    if err != nil {
+        response.Fail(err, localizer.GetMessage("SetPasswordFail", c), c)
+		return
+    }
+
+    err = user.UpdateUser()
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("UpdateUserFail", c), c)
+		return
+	}
+
+	response.OK(nil, localizer.GetMessage("ResetPasswordSuccess", c), c)
+}
