@@ -4,7 +4,13 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminChallenge.ChallengeManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createChallengeFormVisible = true">{{ $t('AdminChallenge.Add') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createChallengeFormVisible = true"
+        type="primary"
+        >
+        {{ $t('AdminChallenge.Add') }}
+      </el-button>
       <el-table
         :data="challengeList"
         table-layout="fixed"
@@ -124,10 +130,16 @@
                 :on-exceed="handleExceed"
               >
                 <template #trigger>
-                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.Select') }}</el-button>
+                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.SelectFile') }}</el-button>
                 </template>
                 <div style="display: inline-flex">
-                  <el-button @click="UploadAttachment" style="margin-left: 10px">{{ $t('AdminChallenge.Upload') }}</el-button>
+                  <el-button
+                    @click="UploadAttachment"
+                    style="margin-left: 10px"
+                    type="primary"
+                    >
+                    {{ $t('AdminChallenge.Upload') }}
+                  </el-button>
                 </div>
               </el-upload>
             </div>
@@ -210,13 +222,13 @@
           <el-form-item :label="$t('AdminChallenge.Flag')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 270px"
+                style="width: 245px"
                 v-if="createChallengeFlagType === 'auto'"
                 :placeholder="$t('AdminChallenge.Auto')"
                 disabled
               />
               <el-input
-                style="width: 270px"
+                style="width: 245px"
                 v-if="createChallengeFlagType === 'specify'"
                 v-model="createChallengeData.Flag"
               />
@@ -229,8 +241,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
-          <el-button @click="CreateChallenge">{{ $t('AdminChallenge.Submit') }}</el-button>
+          <el-button
+            @click="CreateChallenge"
+            type="primary"
+            >
+            {{ $t('AdminChallenge.Submit') }}
+          </el-button>
+          <el-button
+            @click="createChallengeFormVisible = false"
+            >
+            {{ $t('AdminChallenge.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -321,10 +342,16 @@
                 :on-exceed="handleExceed"
               >
                 <template #trigger>
-                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.Select') }}</el-button>
+                  <el-button style="margin-left: 20px">{{ $t('AdminChallenge.SelectFile') }}</el-button>
                 </template>
                 <div style="display: inline-flex">
-                  <el-button @click="UploadAttachment" style="margin-left: 10px">{{ $t('AdminChallenge.Upload') }}</el-button>
+                  <el-button
+                    @click="UploadAttachment"
+                    style="margin-left: 10px"
+                    type="primary"
+                    >
+                    {{ $t('AdminChallenge.Upload') }}
+                  </el-button>
                 </div>
               </el-upload>
             </div>
@@ -407,13 +434,13 @@
           <el-form-item :label="$t('AdminChallenge.Flag')" :label-width="labelWidth">
             <div style="display: flex; width: 100%;">
               <el-input
-                style="width: 270px"
+                style="width: 245px"
                 v-if="updateChallengeFlagType === 'auto'"
                 :placeholder="$t('AdminChallenge.Auto')"
                 disabled
               />
               <el-input
-                style="width: 270px"
+                style="width: 245px"
                 v-if="updateChallengeFlagType === 'specify'"
                 v-model="updateChallengeData.Flag"
               />
@@ -426,8 +453,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
-          <el-button @click="UpdateChallenge">{{ $t('AdminChallenge.Submit') }}</el-button>
+          <el-button
+            @click="UpdateChallenge"
+            type="primary"
+            >
+            {{ $t('AdminChallenge.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateChallengeFormVisible = false"
+            >
+            {{ $t('AdminChallenge.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -438,8 +474,17 @@
         >
         <el-text>{{ $t('AdminChallenge.AreYouConfirmToDeleteTheChallenge') }}</el-text>
         <template #footer>
-          <el-button @click="deleteChallengeFormVisible = false">{{ $t('AdminChallenge.Cancel') }}</el-button>
-          <el-button @click="DeleteChallenge">{{ $t('AdminChallenge.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteChallenge"
+            type="primary"
+            >
+            {{ $t('AdminChallenge.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteChallengeFormVisible = false"
+            >
+            {{ $t('AdminChallenge.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

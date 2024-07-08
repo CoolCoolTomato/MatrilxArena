@@ -4,7 +4,13 @@
       <h2 style="color: var(--el-text-color-primary)">{{ t('AdminImage.ImageManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createImageFormVisible = true">{{ t('AdminImage.Add') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createImageFormVisible = true"
+        type="primary"
+        >
+        {{ t('AdminImage.Add') }}
+      </el-button>
       <el-table
         :data="imageList"
         table-layout="fixed"
@@ -49,8 +55,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
-          <el-button @click="CreateImage">{{ t('AdminImage.Submit') }}</el-button>
+          <el-button
+            @click="CreateImage"
+            type="primary"
+            >
+            {{ t('AdminImage.Submit') }}
+          </el-button>
+          <el-button
+            @click="createImageFormVisible = false"
+            >
+          {{ t('AdminImage.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -71,8 +86,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
-          <el-button @click="UpdateImage">{{ t('AdminImage.Submit') }}</el-button>
+          <el-button
+            @click="UpdateImage"
+            type="primary"
+            >
+            {{ t('AdminImage.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateImageFormVisible = false"
+            >
+          {{ t('AdminImage.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -83,8 +107,17 @@
         >
         <el-text>{{ t('AdminImage.AreYouConfirmToDeleteTheImage') }}</el-text>
         <template #footer>
-        <el-button @click="deleteImageFormVisible = false">{{ t('AdminImage.Cancel') }}</el-button>
-        <el-button @click="DeleteImage">{{ t('AdminImage.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteImage"
+            type="primary"
+            >
+            {{ t('AdminImage.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteImageFormVisible = false"
+            >
+            {{ t('AdminImage.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

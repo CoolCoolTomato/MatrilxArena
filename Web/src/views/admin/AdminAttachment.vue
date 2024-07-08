@@ -4,8 +4,19 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createAttachmentFormVisible = true">{{ $t('AdminAttachment.Add') }}</el-button>
-      <el-button style="margin: 10px" @click="uploadAttachmentFormVisible = true">{{ $t('AdminAttachment.Upload') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createAttachmentFormVisible = true"
+        type="primary"
+        >
+        {{ $t('AdminAttachment.Add') }}
+      </el-button>
+      <el-button
+        style="margin: 10px"
+        @click="uploadAttachmentFormVisible = true"
+        >
+        {{ $t('AdminAttachment.Upload') }}
+      </el-button>
       <el-table
         :data="attachmentList"
         table-layout="fixed"
@@ -47,8 +58,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
-          <el-button @click="CreateAttachment">{{ $t('AdminAttachment.Submit') }}</el-button>
+          <el-button
+            @click="CreateAttachment"
+            type="primary"
+            >
+            {{ $t('AdminAttachment.Submit') }}
+          </el-button>
+          <el-button
+            @click="createAttachmentFormVisible = false"
+            >
+            {{ $t('AdminAttachment.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -66,8 +86,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
-          <el-button @click="UpdateAttachment">{{ $t('AdminAttachment.Submit') }}</el-button>
+          <el-button
+            @click="UpdateAttachment"
+            type="primary"
+            >
+            {{ $t('AdminAttachment.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateAttachmentFormVisible = false"
+            >
+          {{ $t('AdminAttachment.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -78,8 +107,17 @@
       >
         <el-text>{{ $t('AdminAttachment.AreYouConfirmToDeleteTheAttachment') }}</el-text>
         <template #footer>
-          <el-button @click="deleteAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
-          <el-button @click="DeleteAttachment">{{ $t('AdminAttachment.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteAttachment"
+            type="primary"
+            >
+            {{ $t('AdminAttachment.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteAttachmentFormVisible = false"
+            >
+            {{ $t('AdminAttachment.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -102,14 +140,23 @@
               :on-exceed="handleExceed"
             >
               <template #trigger>
-                <el-button>{{ $t('AdminAttachment.Select') }}</el-button>
+                <el-button size="small">{{ $t('AdminAttachment.SelectFile') }}</el-button>
               </template>
             </el-upload>
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="uploadAttachmentFormVisible = false">{{ $t('AdminAttachment.Cancel') }}</el-button>
-          <el-button @click="UploadAttachment">{{ $t('AdminAttachment.Confirm') }}</el-button>
+          <el-button
+            @click="UploadAttachment"
+            type="primary"
+            >
+            {{ $t('AdminAttachment.Confirm') }}
+          </el-button>
+          <el-button
+            @click="uploadAttachmentFormVisible = false"
+            >
+            {{ $t('AdminAttachment.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

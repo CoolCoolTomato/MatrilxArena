@@ -4,7 +4,13 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminNode.DockerNodeManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createDockerNodeFormVisible = true">{{ $t('AdminNode.Add') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createDockerNodeFormVisible = true"
+        type="primary"
+        >
+        {{ $t('AdminNode.Add') }}
+      </el-button>
       <el-table
         :data="dockerNodeList"
         table-layout="fixed"
@@ -46,8 +52,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
-          <el-button @click="CreateDockerNode">{{ $t('AdminNode.Submit') }}</el-button>
+          <el-button
+            @click="CreateDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNode.Submit') }}
+          </el-button>
+          <el-button
+            @click="createDockerNodeFormVisible = false"
+            >
+            {{ $t('AdminNode.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -65,8 +80,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
-          <el-button @click="UpdateDockerNode">{{ $t('AdminNode.Submit') }}</el-button>
+          <el-button
+            @click="UpdateDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNode.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateDockerNodeFormVisible = false"
+            >
+            {{ $t('AdminNode.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -77,8 +101,17 @@
         >
         <el-text>{{ $t('AdminNode.AreYouConfirmToDeleteTheDockerNode') }}</el-text>
         <template #footer>
-          <el-button @click="deleteDockerNodeFormVisible = false">{{ $t('AdminNode.Cancel') }}</el-button>
-          <el-button @click="DeleteDockerNode">{{ $t('AdminNode.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNode.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteDockerNodeFormVisible = false"
+            >
+            {{ $t('AdminNode.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

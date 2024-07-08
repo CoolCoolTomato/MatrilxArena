@@ -41,7 +41,7 @@ export default {
     "Submit": "提交",
     "AreYouConfirmToDeleteTheAttachment": "你确认要删除这个附件吗？",
     "Confirm": "确认",
-    "Select": "选择",
+    "SelectFile": "选择文件",
     "DownloadAttachmentFail": "附件下载失败"
   },
   "AdminCategory": {
@@ -83,6 +83,7 @@ export default {
     "Flag": "Flag",
     "Close": "关闭",
     "Select": "选择",
+    "SelectFile": "选择文件",
     "Upload": "上传",
     "Auto": "自动",
     "Specify": "指定",

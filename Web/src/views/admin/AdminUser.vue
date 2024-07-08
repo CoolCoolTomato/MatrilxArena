@@ -4,7 +4,13 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminUser.UserManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createUserFormVisible = true">{{ $t('AdminUser.Add') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createUserFormVisible = true"
+        type="primary"
+        >
+        {{ $t('AdminUser.Add') }}
+      </el-button>
       <el-table
         :data="userList"
         table-layout="fixed"
@@ -57,8 +63,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
-          <el-button @click="CreateUser">{{ $t('AdminUser.Submit') }}</el-button>
+          <el-button
+            @click="CreateUser"
+            type="primary"
+            >
+            {{ $t('AdminUser.Submit') }}
+          </el-button>
+          <el-button
+            @click="createUserFormVisible = false"
+            >
+            {{ $t('AdminUser.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -87,8 +102,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
-          <el-button @click="UpdateUser">{{ $t('AdminUser.Submit') }}</el-button>
+          <el-button
+            @click="UpdateUser"
+            type="primary"
+            >
+            {{ $t('AdminUser.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateUserFormVisible = false"
+            >
+            {{ $t('AdminUser.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -99,8 +123,17 @@
         >
         <el-text>{{ $t('AdminUser.AreYouConfirmToDeleteTheUser') }}</el-text>
         <template #footer>
-          <el-button @click="deleteUserFormVisible = false">{{ $t('AdminUser.Cancel') }}</el-button>
-          <el-button @click="DeleteUser">{{ $t('AdminUser.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteUser"
+            type="primary"
+            >
+            {{ $t('AdminUser.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteUserFormVisible = false"
+            >
+            {{ $t('AdminUser.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

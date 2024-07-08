@@ -41,7 +41,7 @@ export default {
     "Submit": "Submit",
     "AreYouConfirmToDeleteTheAttachment": "Are you confirm to delete the attachment?",
     "Confirm": "Confirm",
-    "Select": "Select",
+    "SelectFile": "Select file",
     "DownloadAttachmentFail": "Download attachment fail"
   },
   "AdminCategory": {
@@ -83,6 +83,7 @@ export default {
     "Flag": "Flag",
     "Close": "Close",
     "Select": "Select",
+    "SelectFile": "Select file",
     "Upload": "Upload",
     "Auto": "Auto",
     "Specify": "Specify",

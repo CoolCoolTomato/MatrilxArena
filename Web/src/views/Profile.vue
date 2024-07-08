@@ -31,7 +31,12 @@
                 />
               <div style="width: 100%; display: flex; margin: 10px 0 0 0;">
                 <div style="flex-grow: 1;"></div>
-                <el-button @click="ResetPassword">{{ t('Profile.ResetPassword') }}</el-button>
+                <el-button
+                  @click="ResetPassword"
+                  type="primary"
+                  >
+                  {{ t('Profile.ResetPassword') }}
+                </el-button>
               </div>
             </div>
           </div>

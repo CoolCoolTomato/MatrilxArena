@@ -4,7 +4,13 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminCategory.CategoryManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button style="margin: 10px" @click="createCategoryFormVisible = true">{{ $t('AdminCategory.Add') }}</el-button>
+      <el-button
+        style="margin: 10px"
+        @click="createCategoryFormVisible = true"
+        type="primary"
+        >
+        {{ $t('AdminCategory.Add') }}
+      </el-button>
       <el-switch
         style="margin: 10px"
         @change="switchAllowSort"
@@ -49,8 +55,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="createCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
-          <el-button @click="CreateCategory">{{ $t('AdminCategory.Submit') }}</el-button>
+          <el-button
+            @click="CreateCategory"
+            type="primary"
+            >
+            {{ $t('AdminCategory.Submit') }}
+          </el-button>
+          <el-button
+            @click="createCategoryFormVisible = false"
+            >
+            {{ $t('AdminCategory.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -68,8 +83,17 @@
           </el-form-item>
         </el-form>
         <template #footer>
-          <el-button @click="updateCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
-          <el-button @click="UpdateCategory">{{ $t('AdminCategory.Submit') }}</el-button>
+          <el-button
+            @click="UpdateCategory"
+            type="primary"
+            >
+            {{ $t('AdminCategory.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateCategoryFormVisible = false"
+            >
+            {{ $t('AdminCategory.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -80,8 +104,17 @@
       >
         <el-text>{{ $t('AdminCategory.AreYouConfirmToDeleteTheCategory') }}</el-text>
         <template #footer>
-          <el-button @click="deleteCategoryFormVisible = false">{{ $t('AdminCategory.Cancel') }}</el-button>
-          <el-button @click="DeleteCategory">{{ $t('AdminCategory.Confirm') }}</el-button>
+          <el-button
+            @click="DeleteCategory"
+            type="primary"
+            >
+            {{ $t('AdminCategory.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteCategoryFormVisible = false"
+            >
+            {{ $t('AdminCategory.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>

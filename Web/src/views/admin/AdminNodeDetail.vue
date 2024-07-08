@@ -10,6 +10,7 @@
       <div style="display: flex; align-items: center">
         <el-button
           @click="pullImageFormVisible = true"
+          type="primary"
           >
           {{ $t('AdminNodeDetail.PullImage') }}
         </el-button>
@@ -142,14 +143,15 @@
         </el-row>
         <template #footer>
           <el-button
+            @click="PullImageFromDockerNode"
+            type="primary"
+            >
+          {{ $t('AdminNodeDetail.Pull') }}
+          </el-button>
+          <el-button
             @click="pullImageFormVisible = false"
             >
           {{ $t('AdminNodeDetail.Cancel') }}
-          </el-button>
-          <el-button
-            @click="PullImageFromDockerNode"
-            >
-          {{ $t('AdminNodeDetail.Pull') }}
           </el-button>
         </template>
       </el-dialog>
@@ -178,8 +180,17 @@
       >
         <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToRemoveTheImage') }}</el-text>
         <template #footer>
-          <el-button @click="removeImageFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
-          <el-button @click="RemoveImageFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
+          <el-button
+            @click="RemoveImageFromDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNodeDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="removeImageFormVisible = false"
+            >
+            {{ $t('AdminNodeDetail.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -210,8 +221,17 @@
         >
         <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToStartTheContainer') }}</el-text>
         <template #footer>
-          <el-button @click="startContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
-          <el-button @click="StartContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
+          <el-button
+            @click="StartContainerFromDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNodeDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="startContainerFormVisible = false"
+            >
+            {{ $t('AdminNodeDetail.Cancel') }}
+          </el-button>
           </template>
       </el-dialog>
       <el-dialog
@@ -222,8 +242,17 @@
         >
         <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToStopTheContainer') }}</el-text>
         <template #footer>
-        <el-button @click="stopContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
-        <el-button @click="StopContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
+          <el-button
+            @click="StopContainerFromDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNodeDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="stopContainerFormVisible = false"
+            >
+            {{ $t('AdminNodeDetail.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
       <el-dialog
@@ -234,8 +263,17 @@
         >
         <el-text>{{ $t('AdminNodeDetail.AreYouConfirmToRemoveTheContainer') }}</el-text>
         <template #footer>
-        <el-button @click="removeContainerFormVisible = false">{{ $t('AdminNodeDetail.Cancel') }}</el-button>
-        <el-button @click="RemoveContainerFromDockerNode">{{ $t('AdminNodeDetail.Confirm') }}</el-button>
+          <el-button
+            @click="RemoveContainerFromDockerNode"
+            type="primary"
+            >
+            {{ $t('AdminNodeDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="removeContainerFormVisible = false"
+            >
+            {{ $t('AdminNodeDetail.Cancel') }}
+          </el-button>
         </template>
       </el-dialog>
     </el-main>
