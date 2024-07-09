@@ -6,7 +6,7 @@
           <el-icon>
             <Menu />
           </el-icon>
-            <template #title>{{ $t('Challenge.Menu') }}</template>
+          <template #title>{{ $t('Challenge.Menu') }}</template>
         </el-menu-item>
         <el-sub-menu index="challenge">
           <template #title>
@@ -26,6 +26,12 @@
             <template #title>{{ category.Name }}</template>
           </el-menu-item>
         </el-sub-menu>
+        <el-menu-item @click="userContainerListVisible = true">
+          <el-icon>
+            <Container/>
+          </el-icon>
+          <template #title>{{ $t('Challenge.Containers') }}</template>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-main>
@@ -38,9 +44,6 @@
               <el-icon style="margin-left: 10px">
                 <Search fill="var(var(--el-button-text-color))"/>
               </el-icon>
-            </el-button>
-            <el-button @click="userContainerListVisible = true" style="margin-left: 10px;">
-              {{ $t('Challenge.Containers') }}
             </el-button>
           </div>
         </el-affix>
@@ -177,6 +180,7 @@ import attachmentApi from "@/api/attachment.js"
 import Menu from "@/components/icon/Menu.vue"
 import Search from "@/components/icon/Search.vue"
 import Category from "@/components/icon/Category.vue"
+import Container from "@/components/icon/Container.vue"
 import { useI18n } from "vue-i18n"
 
 export default {
@@ -184,7 +188,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
-  components: {Menu, Search, Category},
+  components: { Menu, Search, Category, Container },
   data() {
     return {
       isMenuOpen: false,
