@@ -1,10 +1,212 @@
 <template>
-    
+  <el-container>
+    <el-main>
+      <el-scrollbar>
+        <el-row>
+          <el-col :span="24">
+            <el-card style="margin: 0 20px 20px 20px">
+              <el-row>
+                <el-col :span="6">
+                  <el-statistic title="Number of challenges" :value="challengeList.length" />
+                </el-col>
+                <el-col :span="6">
+                  <el-statistic title="Number of users" :value="userList.length" />
+                </el-col>
+                <el-col :span="6">
+                  <el-statistic title="Live docker node" :value="dockerNodeList.length" />
+                </el-col>
+                <el-col :span="6">
+                  <el-statistic title="Number of images" :value="imageList.length" />
+                </el-col>
+              </el-row>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-card>
+              <div id="categoryChart" style="width: 100%; height: 400px;"></div>
+            </el-card>
+          </el-col>
+          <el-col :span="10">
+            <el-card>
+              <div style="height: 400px;"></div>
+            </el-card>
+          </el-col>
+          <el-col :span="4">
+            <el-card>
+              <div style="height: 400px;"></div>
+            </el-card>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="18">
+            <el-card style="height: calc(100% - 40px);"></el-card>
+          </el-col>
+          <el-col :span="6">
+            <el-card>
+              <div style="display: flex; margin: 20px">
+                <LanguageSelect />
+              </div>
+              <div style="display: flex; margin: 20px">
+                <ThemeSelect />
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-scrollbar>
+    </el-main>
+  </el-container>
 </template>
+
 <script>
+import dockerNodeApi from "@/api/dockerNode.js"
+import imageApi from "@/api/image.js"
+import categoryApi from "@/api/category.js"
+import challengeApi from "@/api/challenge.js"
+import userApi from "@/api/user.js"
+import LanguageSelect from "@/components/LanguageSelect.vue"
+import ThemeSelect from "@/components/ThemeSelect.vue"
+import { ElMessage } from "element-plus"
+import { useI18n } from "vue-i18n"
 
+export default {
+  setup() {
+    const { t } = useI18n()
+    return { t }
+  },
+  components: { LanguageSelect, ThemeSelect },
+  data() {
+    return {
+      dockerNodeList: [],
+      imageList: [],
+      categoryList: [],
+      challengeList: [],
+      userList: [],
+      categoryChart: null,
+    }
+  },
+  methods: {
+    async GetDockerNodeList() {
+      return dockerNodeApi.GetDockerNodeList().then(res => {
+        if (res.code === 0) {
+          this.dockerNodeList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    async GetImageList() {
+      return imageApi.GetImageList().then(res => {
+        if (res.code === 0) {
+          this.imageList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    async GetCategoryList() {
+      return categoryApi.GetCategoryList().then(res => {
+        if (res.code === 0) {
+          this.categoryList = res.data
+          this.categoryList.sort((a, b) => a.Order - b.Order)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    async GetChallengeList() {
+      return challengeApi.GetChallengeList().then(res => {
+        if (res.code === 0) {
+          this.challengeList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    async GetUserList() {
+      return userApi.GetUserList().then(res => {
+        if (res.code === 0) {
+          this.userList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    InitCategoryChart() {
+      const categoryCounts = {}
+      this.categoryList.forEach(category => {
+        categoryCounts[category.Name] = 0
+      })
+      this.challengeList.forEach(challenge => {
+        categoryCounts[challenge.Category.Name]++
+      })
+      const categories = Object.keys(categoryCounts)
+      const counts = Object.values(categoryCounts)
+      const chartDom = document.getElementById('categoryChart')
+      const categoryChart = this.$echarts.init(chartDom)
+      const option = {
+        title: {
+          text: 'Challenges by Category',
+          textAlign: 'center',
+          left: '50%',
+
+        },
+        tooltip: {},
+        xAxis: {
+          data: categories
+        },
+        yAxis: {
+          type: 'value',
+          minInterval: 1,
+          axisLabel: {
+            formatter: '{value}'
+          }
+        },
+        series: [{
+          name: 'Number of Challenges',
+          type: 'bar',
+          data: counts
+        }]
+      }
+      categoryChart.setOption(option)
+      this.categoryChart = categoryChart
+    },
+    handleResize() {
+      this.categoryChart.resize()
+    },
+  },
+  async mounted() {
+    await this.GetDockerNodeList()
+    await this.GetImageList()
+    await this.GetCategoryList()
+    await this.GetChallengeList()
+    await this.GetUserList()
+    this.InitCategoryChart()
+    window.addEventListener("resize", () => {
+      this.handleResize()
+    })
+  },
+}
 </script>
-
 <style scoped>
-
+.el-card {
+  margin: 20px;
+}
+.el-row {
+  margin-right: 20px;
+}
+.el-col {
+  text-align: center;
+}
 </style>

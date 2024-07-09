@@ -57,12 +57,11 @@
   </el-container>
 </template>
 <script>
+import authApi from "@/api/auth.js"
 import LanguageSelect from "@/components/LanguageSelect.vue"
 import ThemeSelect from "@/components/ThemeSelect.vue"
-import { useI18n } from "vue-i18n"
-
-import authApi from "@/api/auth.js"
 import { ElMessage } from "element-plus"
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {

@@ -14,7 +14,7 @@
           <div class="flex-grow"/>
         </el-menu>
       </el-header>
-      <el-main>
+      <el-main style="padding: 0">
         <el-container>
           <el-aside :width="isMenuOpen ? '190px' : '64px'">
             <el-menu

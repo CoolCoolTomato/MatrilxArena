@@ -38,7 +38,7 @@
 <script>
 import { RouterView } from 'vue-router'
 import Copyright from "@/components/Copyright.vue"
-import {useI18n} from "vue-i18n"
+import { useI18n } from "vue-i18n"
 
 export default {
   components: {
