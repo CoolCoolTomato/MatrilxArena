@@ -4,45 +4,47 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button
-        style="margin: 10px"
-        @click="createAttachmentFormVisible = true"
-        type="primary"
+      <el-scrollbar>
+        <el-button
+          style="margin: 10px"
+          @click="createAttachmentFormVisible = true"
+          type="primary"
+          >
+          {{ $t('AdminAttachment.Add') }}
+        </el-button>
+        <el-button
+          style="margin: 10px"
+          @click="uploadAttachmentFormVisible = true"
+          >
+          {{ $t('AdminAttachment.Upload') }}
+        </el-button>
+        <el-table
+          :data="attachmentList"
+          table-layout="fixed"
         >
-        {{ $t('AdminAttachment.Add') }}
-      </el-button>
-      <el-button
-        style="margin: 10px"
-        @click="uploadAttachmentFormVisible = true"
-        >
-        {{ $t('AdminAttachment.Upload') }}
-      </el-button>
-      <el-table
-        :data="attachmentList"
-        table-layout="fixed"
-      >
-        <el-table-column prop="FileName" :label="$t('AdminAttachment.FileName')"/>
-        <el-table-column prop="FilePath" :label="$t('AdminAttachment.FilePath')"/>
-        <el-table-column fixed="right" :label="$t('AdminAttachment.Operations')" width="320px">
-          <template #default=scope>
-            <el-button
-              @click="OpenUpdateAttachmentForm(scope.row)"
-            >
-              {{ $t('AdminAttachment.Update') }}
-            </el-button>
-            <el-button
-              @click="OpenDeleteAttachmentForm(scope.row)"
-            >
-              {{ $t('AdminAttachment.Delete') }}
-            </el-button>
-            <el-button
-              @click="DownloadAttachment(scope.row.ID)"
+          <el-table-column prop="FileName" :label="$t('AdminAttachment.FileName')"/>
+          <el-table-column prop="FilePath" :label="$t('AdminAttachment.FilePath')"/>
+          <el-table-column fixed="right" :label="$t('AdminAttachment.Operations')" width="320px">
+            <template #default=scope>
+              <el-button
+                @click="OpenUpdateAttachmentForm(scope.row)"
               >
-              {{ $t('AdminAttachment.Download') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+                {{ $t('AdminAttachment.Update') }}
+              </el-button>
+              <el-button
+                @click="OpenDeleteAttachmentForm(scope.row)"
+              >
+                {{ $t('AdminAttachment.Delete') }}
+              </el-button>
+              <el-button
+                @click="DownloadAttachment(scope.row.ID)"
+                >
+                {{ $t('AdminAttachment.Download') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-scrollbar>
       <el-dialog
         v-model="createAttachmentFormVisible"
         :title="$t('AdminAttachment.CreateAttachment')"

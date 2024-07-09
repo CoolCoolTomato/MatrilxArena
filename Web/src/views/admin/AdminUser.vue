@@ -4,39 +4,41 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminUser.UserManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button
-        style="margin: 10px"
-        @click="createUserFormVisible = true"
-        type="primary"
+      <el-scrollbar>
+        <el-button
+          style="margin: 10px"
+          @click="createUserFormVisible = true"
+          type="primary"
+          >
+          {{ $t('AdminUser.Add') }}
+        </el-button>
+        <el-table
+          :data="userList"
+          table-layout="fixed"
         >
-        {{ $t('AdminUser.Add') }}
-      </el-button>
-      <el-table
-        :data="userList"
-        table-layout="fixed"
-      >
-        <el-table-column prop="Username" :label="$t('AdminUser.Username')"/>
-        <el-table-column prop="Email" :label="$t('AdminUser.Email')"/>
-        <el-table-column :label="$t('AdminUser.Role')">
-          <template #default="scope">
-            {{ formatRole(scope.row.Role) }}
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="300px">
-          <template #default=scope>
-            <el-button
-              @click="OpenUpdateUserForm(scope.row)"
-              >
-              {{ $t('AdminUser.Update') }}
-            </el-button>
-            <el-button
-              @click="OpenDeleteUserForm(scope.row)"
-              >
-              {{ $t('AdminUser.Delete') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column prop="Username" :label="$t('AdminUser.Username')"/>
+          <el-table-column prop="Email" :label="$t('AdminUser.Email')"/>
+          <el-table-column :label="$t('AdminUser.Role')">
+            <template #default="scope">
+              {{ formatRole(scope.row.Role) }}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="300px">
+            <template #default=scope>
+              <el-button
+                @click="OpenUpdateUserForm(scope.row)"
+                >
+                {{ $t('AdminUser.Update') }}
+              </el-button>
+              <el-button
+                @click="OpenDeleteUserForm(scope.row)"
+                >
+                {{ $t('AdminUser.Delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-scrollbar>
       <el-dialog
         v-model="createUserFormVisible"
         :title="$t('AdminUser.CreateUser')"
@@ -142,7 +144,7 @@
 <script>
 import userApi from "@/api/user.js"
 import { ElMessage } from 'element-plus'
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {

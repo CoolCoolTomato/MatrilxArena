@@ -4,42 +4,44 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminCategory.CategoryManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button
-        style="margin: 10px"
-        @click="createCategoryFormVisible = true"
-        type="primary"
+      <el-scrollbar>
+        <el-button
+          style="margin: 10px"
+          @click="createCategoryFormVisible = true"
+          type="primary"
+          >
+          {{ $t('AdminCategory.Add') }}
+        </el-button>
+        <el-switch
+          style="margin: 10px"
+          @change="switchAllowSort"
+          v-model="allowSort"
+          :active-text="$t('AdminCategory.AllowSort')"
+        />
+        <el-table
+          id="categoryListTable"
+          :data="categoryList"
+          table-layout="fixed"
+          row-key="ID"
         >
-        {{ $t('AdminCategory.Add') }}
-      </el-button>
-      <el-switch
-        style="margin: 10px"
-        @change="switchAllowSort"
-        v-model="allowSort"
-        :active-text="$t('AdminCategory.AllowSort')"
-      />
-      <el-table
-        id="categoryListTable"
-        :data="categoryList"
-        table-layout="fixed"
-        row-key="ID"
-      >
-        <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
-        <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
-        <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="300px">
-          <template #default=scope>
-            <el-button
-              @click="OpenUpdateCategoryForm(scope.row)"
-            >
-              {{ $t('AdminCategory.Update') }}
-            </el-button>
-            <el-button
-              @click="OpenDeleteCategoryForm(scope.row)"
-            >
-              {{ $t('AdminCategory.Delete') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+          <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
+          <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
+          <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="300px">
+            <template #default=scope>
+              <el-button
+                @click="OpenUpdateCategoryForm(scope.row)"
+              >
+                {{ $t('AdminCategory.Update') }}
+              </el-button>
+              <el-button
+                @click="OpenDeleteCategoryForm(scope.row)"
+              >
+                {{ $t('AdminCategory.Delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-scrollbar>
       <el-dialog
         v-model="createCategoryFormVisible"
         :title="$t('AdminCategory.CreateCategory')"
@@ -122,9 +124,9 @@
 </template>
 <script>
 import categoryApi from "@/api/category.js"
-import { ElMessage } from "element-plus";
-import Sortable from 'sortablejs';
-import {useI18n} from "vue-i18n";
+import { ElMessage } from "element-plus"
+import Sortable from 'sortablejs'
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {

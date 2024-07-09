@@ -4,39 +4,41 @@
       <h2 style="color: var(--el-text-color-primary)">{{ t('AdminImage.ImageManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button
-        style="margin: 10px"
-        @click="createImageFormVisible = true"
-        type="primary"
-        >
-        {{ t('AdminImage.Add') }}
-      </el-button>
-      <el-table
-        :data="imageList"
-        table-layout="fixed"
-        >
-        <el-table-column prop="Remark" :label="t('AdminImage.Remark')"/>
-        <el-table-column prop="RepoTags" :label="t('AdminImage.RepoTags')"/>
-        <el-table-column :label="t('AdminImage.Repository')">
-          <template #default="scope">
-            {{ formatRepository(scope.row.Repository) }}
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" :label="t('AdminImage.Operations')" width="300px">
-          <template #default=scope>
-            <el-button
-              @click="OpenUpdateImageForm(scope.row)"
-              >
-              {{ t('AdminImage.Update') }}
-            </el-button>
-            <el-button
-              @click="OpenDeleteImageForm(scope.row)"
-              >
-              {{ t('AdminImage.Delete') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-scrollbar>
+        <el-button
+          style="margin: 10px"
+          @click="createImageFormVisible = true"
+          type="primary"
+          >
+          {{ t('AdminImage.Add') }}
+        </el-button>
+        <el-table
+          :data="imageList"
+          table-layout="fixed"
+          >
+          <el-table-column prop="Remark" :label="t('AdminImage.Remark')"/>
+          <el-table-column prop="RepoTags" :label="t('AdminImage.RepoTags')"/>
+          <el-table-column :label="t('AdminImage.Repository')">
+            <template #default="scope">
+              {{ formatRepository(scope.row.Repository) }}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" :label="t('AdminImage.Operations')" width="300px">
+            <template #default=scope>
+              <el-button
+                @click="OpenUpdateImageForm(scope.row)"
+                >
+                {{ t('AdminImage.Update') }}
+              </el-button>
+              <el-button
+                @click="OpenDeleteImageForm(scope.row)"
+                >
+                {{ t('AdminImage.Delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-scrollbar>
       <el-dialog
         v-model="createImageFormVisible"
         :title="t('AdminImage.CreateImage')"
@@ -125,8 +127,8 @@
 </template>
 <script>
 import imageApi from "@/api/image.js"
-import { ElMessage } from "element-plus";
-import { useI18n } from "vue-i18n";
+import { ElMessage } from "element-plus"
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {

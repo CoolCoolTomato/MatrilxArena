@@ -4,44 +4,46 @@
       <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminChallenge.ChallengeManager') }}</h2>
     </el-header>
     <el-main>
-      <el-button
-        style="margin: 10px"
-        @click="createChallengeFormVisible = true"
-        type="primary"
-        >
-        {{ $t('AdminChallenge.Add') }}
-      </el-button>
-      <el-table
-        :data="challengeList"
-        table-layout="fixed"
-        >
-        <el-table-column prop="Title" :label="$t('AdminChallenge.Title')"/>
-        <el-table-column prop="Description" :label="$t('AdminChallenge.Description')"/>
-        <el-table-column :label="$t('AdminChallenge.Image')">
-          <template  #default=scope>
-            {{ scope.row.Image.Remark === "" ? $t('AdminChallenge.Null') : scope.row.Image.Remark}}
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" :label="$t('AdminChallenge.Operations')" width="300px">
-          <template #default=scope>
-            <el-button
-              @click="OpenChallengeDetail(scope.row)"
-              >
-              {{ $t('AdminChallenge.Detail') }}
-            </el-button>
-            <el-button
-              @click="OpenUpdateChallengeForm(scope.row)"
-              >
-              {{ $t('AdminChallenge.Update') }}
-            </el-button>
-            <el-button
-              @click="OpenDeleteChallengeForm(scope.row)"
-              >
-              {{ $t('AdminChallenge.Delete') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-scrollbar>
+        <el-button
+          style="margin: 10px"
+          @click="createChallengeFormVisible = true"
+          type="primary"
+          >
+          {{ $t('AdminChallenge.Add') }}
+        </el-button>
+        <el-table
+          :data="challengeList"
+          table-layout="fixed"
+          >
+          <el-table-column prop="Title" :label="$t('AdminChallenge.Title')"/>
+          <el-table-column prop="Description" :label="$t('AdminChallenge.Description')"/>
+          <el-table-column :label="$t('AdminChallenge.Image')">
+            <template  #default=scope>
+              {{ scope.row.Image.Remark === "" ? $t('AdminChallenge.Null') : scope.row.Image.Remark}}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" :label="$t('AdminChallenge.Operations')" width="300px">
+            <template #default=scope>
+              <el-button
+                @click="OpenChallengeDetail(scope.row)"
+                >
+                {{ $t('AdminChallenge.Detail') }}
+              </el-button>
+              <el-button
+                @click="OpenUpdateChallengeForm(scope.row)"
+                >
+                {{ $t('AdminChallenge.Update') }}
+              </el-button>
+              <el-button
+                @click="OpenDeleteChallengeForm(scope.row)"
+                >
+                {{ $t('AdminChallenge.Delete') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-scrollbar>
       <el-dialog
         v-model="challengeDetailVisible"
         :title="$t('AdminChallenge.ChallengeDetail')"
@@ -492,11 +494,11 @@
 </template>
 <script>
 import challengeApi from "@/api/challenge.js"
-import categoryApi from "@/api/category.js";
-import imageApi from "@/api/image.js";
-import attachmentApi from "@/api/attachment.js";
-import { ElMessage } from "element-plus";
-import {useI18n} from "vue-i18n";
+import categoryApi from "@/api/category.js"
+import imageApi from "@/api/image.js"
+import attachmentApi from "@/api/attachment.js"
+import { ElMessage } from "element-plus"
+import { useI18n } from "vue-i18n"
 
 export default {
   setup() {
