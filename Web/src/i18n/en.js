@@ -22,6 +22,13 @@ export default {
     "Light": "Light",
     "Dark": "Dark"
   },
+  "AdminIndex": {
+    "NumberOfChallenges": "Number of challenges",
+    "NumberOfUsers": "Number of users",
+    "LiveDockerNode": "Live docker node",
+    "NumberOfImages": "Number of images",
+    "ChallengesByCategory": "Challenges by Category",
+  },
   "AdminAttachment": {
     "AttachmentManager": "Attachment Manager",
     "Add": "Add",

@@ -22,6 +22,13 @@ export default {
     "Light": "亮色",
     "Dark": "暗色"
   },
+  "AdminIndex": {
+    "NumberOfChallenges": "题目数量",
+    "NumberOfUsers": "用户数量",
+    "LiveDockerNode": "在线容器",
+    "NumberOfImages": "镜像数量",
+    "ChallengesByCategory": "题目分类",
+  },
   "AdminAttachment": {
     "AttachmentManager": "附件管理",
     "Add": "添加",

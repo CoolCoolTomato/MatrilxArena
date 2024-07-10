@@ -8,6 +8,9 @@ input {
 span {
     font-weight: 600;
 }
+.el-statistic__head {
+  font-weight: 600;
+}
 body{
     margin: 0;
     padding: 0;

@@ -7,16 +7,16 @@
             <el-card style="margin: 0 20px 20px 20px">
               <el-row>
                 <el-col :span="6">
-                  <el-statistic title="Number of challenges" :value="challengeList.length" />
+                  <el-statistic :title="$t('AdminIndex.NumberOfChallenges')" :value="challengeList.length" />
                 </el-col>
                 <el-col :span="6">
-                  <el-statistic title="Number of users" :value="userList.length" />
+                  <el-statistic :title="$t('AdminIndex.NumberOfUsers')" :value="userList.length" />
                 </el-col>
                 <el-col :span="6">
-                  <el-statistic title="Live docker node" :value="dockerNodeList.length" />
+                  <el-statistic :title="$t('AdminIndex.LiveDockerNode')" :value="dockerNodeList.length" />
                 </el-col>
                 <el-col :span="6">
-                  <el-statistic title="Number of images" :value="imageList.length" />
+                  <el-statistic :title="$t('AdminIndex.NumberOfImages')" :value="imageList.length" />
                 </el-col>
               </el-row>
             </el-card>
@@ -25,17 +25,20 @@
         <el-row>
           <el-col :span="10">
             <el-card>
-              <div id="categoryChart" style="width: 100%; height: 400px;"></div>
+              <el-text size="large">{{ $t('AdminIndex.ChallengesByCategory') }}</el-text>
+              <div id="categoryChart" style="width: 100%; height: 350px;"></div>
             </el-card>
           </el-col>
           <el-col :span="10">
             <el-card>
-              <div style="height: 400px;"></div>
+              <el-text size="large">Hello World</el-text>
+              <div style="height: 350px;"></div>
             </el-card>
           </el-col>
           <el-col :span="4">
             <el-card>
-              <div style="height: 400px;"></div>
+              <el-text size="large">Hello World</el-text>
+              <div style="height: 350px;"></div>
             </el-card>
           </el-col>
         </el-row>
@@ -156,12 +159,6 @@ export default {
       const chartDom = document.getElementById('categoryChart')
       const categoryChart = this.$echarts.init(chartDom)
       const option = {
-        title: {
-          text: 'Challenges by Category',
-          textAlign: 'center',
-          left: '50%',
-
-        },
         tooltip: {},
         xAxis: {
           data: categories
