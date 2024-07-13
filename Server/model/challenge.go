@@ -1,7 +1,8 @@
 package model
 
 import (
-	"github.com/CoolCoolTomato/MatrilxArena/Server/database"
+    "encoding/base64"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/database"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/gormType"
 	"gorm.io/gorm"
 )
@@ -28,17 +29,22 @@ func GetChallengeList() ([]Challenge, error) {
 	if err != nil {
 		return nil, err
 	}
+
+    for i, _ := range challengeList {
+        challengeList[i].DecodeCommands()
+    }
+
 	return challengeList, nil
 }
 
-func GetChallengeListByQuery(challenge Challenge) ([]Challenge, error) {
+func GetChallengeListByQuery(queryChallenge Challenge) ([]Challenge, error) {
 	var challengeList []Challenge
 	query := database.GetDatabase().Model(&Challenge{})
-	if challenge.CategoryID != 0 {
-		query = query.Where("category_id = ?", challenge.CategoryID)
+	if queryChallenge.CategoryID != 0 {
+		query = query.Where("category_id = ?", queryChallenge.CategoryID)
 	}
-	if challenge.Title != "" {
-		query = query.Where("title LIKE ?", "%"+challenge.Title+"%")
+	if queryChallenge.Title != "" {
+		query = query.Where("title LIKE ?", "%"+queryChallenge.Title+"%")
 	}
 	err := query.
 		Preload("Category").
@@ -48,14 +54,22 @@ func GetChallengeListByQuery(challenge Challenge) ([]Challenge, error) {
 	if err != nil {
 		return nil, err
 	}
+
+    for i, _ := range challengeList {
+        challengeList[i].DecodeCommands()
+    }
+
 	return challengeList, nil
 }
 
 func (challenge *Challenge) GetChallenge() error {
-	return database.GetDatabase().Model(&Challenge{}).Preload("Category").Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).First(&challenge).Error
+	err := database.GetDatabase().Model(&Challenge{}).Preload("Category").Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).First(&challenge).Error
+    challenge.DecodeCommands()
+    return err
 }
 
 func (challenge *Challenge) CreateChallenge() error {
+    challenge.EncodeCommands()
 	createFields := []string{
 		"title",
 		"description",
@@ -89,6 +103,7 @@ func (challenge *Challenge) CreateChallenge() error {
 	if challenge.AttachmentID == 0 {
 		creates["attachment_id"] = nil
 	}
+
 	return database.GetDatabase().
 		Model(&Challenge{}).
 		Preload("Category").
@@ -100,6 +115,7 @@ func (challenge *Challenge) CreateChallenge() error {
 }
 
 func (challenge *Challenge) UpdateChallenge() error {
+    challenge.EncodeCommands()
 	updateFields := []string{
 		"title",
 		"description",
@@ -148,4 +164,22 @@ func (challenge *Challenge) UpdateChallenge() error {
 
 func (challenge *Challenge) DeleteChallenge() error {
 	return database.GetDatabase().Model(&Challenge{}).Preload("Category").Preload("Image").Preload("Attachment").Where("ID = ?", challenge.ID).Delete(&challenge).Error
+}
+
+func (challenge *Challenge) EncodeCommands() {
+    var encodedCommands gormType.StringSlice
+    for _, command := range challenge.Commands {
+        encodedCommand := base64.StdEncoding.EncodeToString([]byte(command))
+        encodedCommands = append(encodedCommands, encodedCommand)
+    }
+    challenge.Commands = encodedCommands
+}
+
+func (challenge *Challenge) DecodeCommands() {
+    var decodedCommands gormType.StringSlice
+    for _, command := range challenge.Commands {
+        decodedCommand, _ := base64.StdEncoding.DecodeString(command)
+        decodedCommands = append(decodedCommands, string(decodedCommand))
+    }
+    challenge.Commands = decodedCommands
 }
