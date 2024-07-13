@@ -209,8 +209,9 @@ export default {
     "AreYouConfirmToStopTheContainer": "你确认要停止这个容器吗？",
     "RemoveContainer": "删除容器",
     "AreYouConfirmToRemoveTheContainer": "你确认要删除这个容器吗？",
-    "pulling": "拉取中",
-    "pulled": "拉取完成",
+    "Pulling": "拉取中",
+    "Pulled": "拉取完成",
+    "Waiting": "等待中",
     "Exists": "存在",
     "NotExists": "不存在",
     "NotSpecified": "未指定"

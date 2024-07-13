@@ -305,7 +305,7 @@ export default {
       },
       dockerNodeImageList: [],
       imageList: [],
-      inPull: false,
+      imagePulling: false,
       pullImageFormVisible: false,
       pullImageDataList: [],
       imageDetailVisible: false,
@@ -402,16 +402,16 @@ export default {
       })
     },
     async PullImageFromDockerNode() {
-      this.inPull = true;
+      this.imagePulling = true;
       const pullPromises = this.pullImageDataList.map(async data => {
         try {
-          data.Status = this.t('pulling')
+          data.Status = this.t('AdminNodeDetail.Pulling')
           const res = await dockerNodeApi.PullImageFromDockerNode({
             "DockerNodeID": data.DockerNodeID,
             "ImageID": data.ImageID
           });
           if (res.code === 0) {
-            data.Status = this.t('pulled')
+            data.Status = this.t('AdminNodeDetail.Pulled')
           }
         } catch (error) {
           console.log(error)
@@ -419,10 +419,10 @@ export default {
       });
       await Promise.all(pullPromises)
       this.GetImageListFromDockerNode()
-      this.inPull = false
+      this.imagePulling = false
     },
     ClearPullImageForm() {
-      if (!this.inPull){
+      if (!this.imagePulling){
         this.$refs.pullImageForm.clearSelection()
         this.pullImageDataList = []
       }
@@ -573,12 +573,12 @@ export default {
       }
     },
     handleSelectionChange(selection) {
-      if (!this.inPull){
+      if (!this.imagePulling){
         this.pullImageDataList = selection.map(item => ({
           "DockerNodeID": this.dockerNode.ID,
           "ImageID": item.ID,
           "RepoTags": item.RepoTags,
-          "Status": "waiting",
+          "Status": this.t('AdminNodeDetail.Waiting'),
         }));
       }
     },

@@ -209,8 +209,9 @@ export default {
     "AreYouConfirmToStopTheContainer": "Are you confirm to stop the container?",
     "RemoveContainer": "Remove Container",
     "AreYouConfirmToRemoveTheContainer": "Are you confirm to remove the container?",
-    "pulling": "pulling",
-    "pulled": "pulled",
+    "Pulling": "Pulling",
+    "Pulled": "Pulled",
+    "Waiting": "Waiting",
     "Exists": "Exists",
     "NotExists": "Not Exists",
     "NotSpecified": "Not Specified"
