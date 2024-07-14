@@ -7,15 +7,12 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
-import * as echarts from 'echarts'
 
 import '/src/static/css/base.css'
 
 import i18n from "@/i18n/index.js";
 
 const app = createApp(App)
-
-app.config.globalProperties.$echarts = echarts
 
 const savedLanguage = localStorage.getItem('lang') || 'en'
 i18n.global.locale.value = savedLanguage

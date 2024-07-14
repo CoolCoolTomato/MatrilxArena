@@ -26,7 +26,7 @@
           <el-col :span="10">
             <el-card>
               <el-text size="large">{{ $t('AdminIndex.ChallengesByCategory') }}</el-text>
-              <div id="categoryChart" style="width: 100%; height: 350px;"></div>
+              <div style="height: 350px;"></div>
             </el-card>
           </el-col>
           <el-col :span="10">
@@ -86,7 +86,6 @@ export default {
       categoryList: [],
       challengeList: [],
       userList: [],
-      categoryChart: null,
     }
   },
   methods: {
@@ -146,42 +145,6 @@ export default {
         console.log(error)
       })
     },
-    InitCategoryChart() {
-      const categoryCounts = {}
-      this.categoryList.forEach(category => {
-        categoryCounts[category.Name] = 0
-      })
-      this.challengeList.forEach(challenge => {
-        categoryCounts[challenge.Category.Name]++
-      })
-      const categories = Object.keys(categoryCounts)
-      const counts = Object.values(categoryCounts)
-      const chartDom = document.getElementById('categoryChart')
-      const categoryChart = this.$echarts.init(chartDom)
-      const option = {
-        tooltip: {},
-        xAxis: {
-          data: categories
-        },
-        yAxis: {
-          type: 'value',
-          minInterval: 1,
-          axisLabel: {
-            formatter: '{value}'
-          }
-        },
-        series: [{
-          name: 'Number of Challenges',
-          type: 'bar',
-          data: counts
-        }]
-      }
-      categoryChart.setOption(option)
-      this.categoryChart = categoryChart
-    },
-    handleResize() {
-      this.categoryChart.resize()
-    },
   },
   async mounted() {
     await this.GetDockerNodeList()
@@ -189,10 +152,6 @@ export default {
     await this.GetCategoryList()
     await this.GetChallengeList()
     await this.GetUserList()
-    this.InitCategoryChart()
-    window.addEventListener("resize", () => {
-      this.handleResize()
-    })
   },
 }
 </script>
