@@ -26,7 +26,9 @@
           <el-col :span="10">
             <el-card>
               <el-text size="large">{{ $t('AdminIndex.ChallengesByCategory') }}</el-text>
-              <div style="height: 350px;"></div>
+              <div style="height: 350px;">
+                <v-chart :option="challengeByCategoryChartOptions" autoresize/>
+              </div>
             </el-card>
           </el-col>
           <el-col :span="10">
@@ -49,10 +51,10 @@
           <el-col :span="6">
             <el-card>
               <div style="display: flex; margin: 20px">
-                <LanguageSelect />
+                <LanguageSelect @change="ChangeLanguageHandle"/>
               </div>
               <div style="display: flex; margin: 20px">
-                <ThemeSelect />
+                <ThemeSelect @change="ChangeThemeHandle"/>
               </div>
             </el-card>
           </el-col>
@@ -86,6 +88,7 @@ export default {
       categoryList: [],
       challengeList: [],
       userList: [],
+      challengeByCategoryChartOptions: {},
     }
   },
   methods: {
@@ -145,6 +148,73 @@ export default {
         console.log(error)
       })
     },
+    GetChallengeByCategoryChart() {
+      const categoryCounts = {}
+      this.categoryList.forEach(category => {
+        categoryCounts[category.Name] = 0
+      })
+
+      const uncategorized = this.t('AdminIndex.Uncategorized')
+      categoryCounts[uncategorized] = 0
+
+      this.challengeList.forEach(challenge => {
+        if (categoryCounts.hasOwnProperty(challenge.Category.Name)) {
+          categoryCounts[challenge.Category.Name]++
+        } else {
+          categoryCounts[uncategorized]++
+        }
+      })
+
+      if (categoryCounts[uncategorized] === 0) {
+        delete categoryCounts[uncategorized]
+      }
+
+      this.challengeByCategoryChartOptions = {
+        xAxis: {
+          type: 'category',
+          data: Object.keys(categoryCounts),
+          axisLabel: {
+            color: this.getCSSVariableValue("--el-text-color-regular")
+          },
+          axisLine: {
+            lineStyle: {
+              color: this.getCSSVariableValue("--el-text-color-regular")
+            }
+          }
+        },
+        yAxis: {
+          type: 'value',
+          minInterval: 1,
+          axisLabel: {
+            color: this.getCSSVariableValue("--el-text-color-regular")
+          },
+          splitLine: {
+            lineStyle: {
+              color: this.getCSSVariableValue("--el-text-color-regular")
+            }
+          }
+        },
+        series: [{
+          data: Object.values(categoryCounts),
+          type: 'bar',
+          itemStyle: {
+            color: this.getCSSVariableValue("--el-color-primary")
+          }
+        }],
+      }
+    },
+    ChangeLanguageHandle() {
+      this.GetChallengeByCategoryChart()
+    },
+    ChangeThemeHandle() {
+      setTimeout( () => {
+        this.GetChallengeByCategoryChart()
+      }, 1100 )
+    },
+    getCSSVariableValue(variableName) {
+      const style = getComputedStyle(document.documentElement)
+      return style.getPropertyValue(variableName).trim()
+    }
   },
   async mounted() {
     await this.GetDockerNodeList()
@@ -152,6 +222,7 @@ export default {
     await this.GetCategoryList()
     await this.GetChallengeList()
     await this.GetUserList()
+    this.GetChallengeByCategoryChart()
   },
 }
 </script>

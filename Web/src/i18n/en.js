@@ -28,6 +28,7 @@ export default {
     "LiveDockerNode": "Live docker node",
     "NumberOfImages": "Number of images",
     "ChallengesByCategory": "Challenges by Category",
+    "Uncategorized": "Uncategorized"
   },
   "AdminAttachment": {
     "AttachmentManager": "Attachment Manager",

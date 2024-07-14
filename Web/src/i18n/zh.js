@@ -28,6 +28,7 @@ export default {
     "LiveDockerNode": "在线容器",
     "NumberOfImages": "镜像数量",
     "ChallengesByCategory": "题目分类",
+    "Uncategorized": "未分类"
   },
   "AdminAttachment": {
     "AttachmentManager": "附件管理",
