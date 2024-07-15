@@ -26,6 +26,12 @@
             <template #title>{{ category.Name }}</template>
           </el-menu-item>
         </el-sub-menu>
+        <el-menu-item @click="userChallengeVisible = true">
+          <el-icon>
+            <Finish/>
+          </el-icon>
+          <template #title>{{ $t('Challenge.Finished') }}</template>
+        </el-menu-item>
         <el-menu-item @click="userContainerListVisible = true">
           <el-icon>
             <Container/>
@@ -65,7 +71,11 @@
         <h2 style="color: var(--el-text-color-primary)">{{ challengeDetail.Title }} <el-text v-if="checkChallengeSolved(challengeDetail.ID)">({{ $t('Challenge.Solved') }})</el-text></h2>
         <el-text>{{ challengeDetail.Description }}</el-text>
         <div style="margin-top: 5px;">
-          <el-text v-if="challengeDetail.Attachment.ID !== 0">{{ $t('Challenge.Attachment') }}: </el-text>
+          <el-text>{{ $t('Challenge.Category') }}: </el-text>
+          <el-text>{{ challengeDetail.CategoryName === "" ? $t('Challenge.Uncategorized') : challengeDetail.CategoryName }}</el-text>
+        </div>
+        <div v-if="challengeDetail.Attachment.ID !== 0" style="margin-top: 5px;">
+          <el-text>{{ $t('Challenge.Attachment') }}: </el-text>
           <el-link
             @click="DownloadAttachment(challengeDetail.Attachment.ID)"
             style="vertical-align: unset"
@@ -165,6 +175,22 @@
           </div>
         </el-card>
       </el-dialog>
+      <el-dialog
+        v-model="userChallengeVisible"
+        :title="$t('Challenge.FinishedChallenge')"
+        width="70%"
+      >
+        <el-scrollbar style="height: 60vh;">
+          <el-row>
+            <el-col v-for="challenge in userChallengeList" :span="12">
+              <div class="challenge" @click="OpenChallengeDetail(challenge)">
+                <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">{{ $t('Challenge.Solved') }}</el-text></h2>
+                <el-text truncated>{{ challenge.Description }}</el-text>
+              </div>
+            </el-col>
+          </el-row>
+        </el-scrollbar>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -177,10 +203,11 @@ import userChallengeApi from "@/api/userChallenge.js"
 import { ElMessage } from "element-plus"
 import attachmentApi from "@/api/attachment.js"
 
-import Menu from "@/components/icon/Menu.vue"
-import Search from "@/components/icon/Search.vue"
-import Category from "@/components/icon/Category.vue"
-import Container from "@/components/icon/Container.vue"
+import Menu from "@/components/icons/Menu.vue"
+import Search from "@/components/icons/Search.vue"
+import Category from "@/components/icons/Category.vue"
+import Finish from "@/components/icons/Finish.vue"
+import Container from "@/components/icons/Container.vue"
 import { useI18n } from "vue-i18n"
 
 export default {
@@ -188,7 +215,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
-  components: { Menu, Search, Category, Container },
+  components: { Menu, Search, Category, Finish, Container },
   data() {
     return {
       isMenuOpen: false,
@@ -211,6 +238,7 @@ export default {
         "ID": 0,
         "Title": "",
         "Description": "",
+        "CategoryName": "",
         "ImageID": 0,
         "Attachment": {}
       },
@@ -225,6 +253,7 @@ export default {
         "DockerNodeID": 0,
         "DockerNodeContainerID": ""
       },
+      userChallengeVisible: false,
       userChallengeList: [],
       resetUserChallengeData: {
         "ChallengeID": 0
@@ -304,6 +333,7 @@ export default {
         "ID": challenge.ID,
         "Title": challenge.Title,
         "Description": challenge.Description,
+        "CategoryName": challenge.Category.Name,
         "ImageID": challenge.ImageID,
         "Attachment": challenge.Attachment
       }
@@ -546,7 +576,7 @@ export default {
     this.challengeQueryTitle = ""
     this.GetChallengeList()
     this.GetUserChallengeList()
-    next();
+    next()
   },
 }
 </script>

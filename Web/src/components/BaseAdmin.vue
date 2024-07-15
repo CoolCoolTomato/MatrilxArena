@@ -90,12 +90,12 @@
 <script>
 import { RouterView } from 'vue-router'
 import Copyright from "@/components/Copyright.vue"
-import Menu from "@/components/icon/Menu.vue"
-import Home from "@/components/icon/Home.vue"
-import Docker from "@/components/icon/Docker.vue"
-import Challenge from "@/components/icon/Challenge.vue"
-import Attachment from "@/components/icon/Attachment.vue"
-import User from "@/components/icon/User.vue"
+import Menu from "@/components/icons/Menu.vue"
+import Home from "@/components/icons/Home.vue"
+import Docker from "@/components/icons/Docker.vue"
+import Challenge from "@/components/icons/Challenge.vue"
+import Attachment from "@/components/icons/Attachment.vue"
+import User from "@/components/icons/User.vue"
 import { useI18n } from "vue-i18n"
 
 export default {

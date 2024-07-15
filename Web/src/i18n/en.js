@@ -226,6 +226,7 @@ export default {
     "Containers": "Containers",
     "ChallengeDetail": "Challenge Detail",
     "Solved": "Solved",
+    "Uncategorized": "Uncategorized",
     "Attachment": "Attachment",
     "Reset": "Reset",
     "Create": "Create",
@@ -233,6 +234,8 @@ export default {
     "Delay": "Delay",
     "InputFlag": "Input flag",
     "Submit": "Submit",
+    "Finished": "Finished",
+    "FinishedChallenge": "Finished Challenge",
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"
