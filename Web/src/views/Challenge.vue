@@ -30,7 +30,7 @@
           <el-icon>
             <Finish/>
           </el-icon>
-          <template #title>{{ $t('Challenge.Finished') }}</template>
+          <template #title>{{ $t('Challenge.Solved') }}</template>
         </el-menu-item>
         <el-menu-item @click="userContainerListVisible = true">
           <el-icon>
@@ -177,7 +177,7 @@
       </el-dialog>
       <el-dialog
         v-model="userChallengeVisible"
-        :title="$t('Challenge.FinishedChallenge')"
+        :title="$t('Challenge.SolvedChallenge')"
         width="70%"
       >
         <el-scrollbar style="height: 60vh;">

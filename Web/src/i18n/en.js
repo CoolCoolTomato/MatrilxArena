@@ -234,7 +234,6 @@ export default {
     "Delay": "Delay",
     "InputFlag": "Input flag",
     "Submit": "Submit",
-    "Finished": "Finished",
     "FinishedChallenge": "Finished Challenge",
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
