@@ -65,7 +65,7 @@ func (user *User) CheckPassword(password string) error {
 
 func (user *User) GetChallengeList() ([]Challenge, error) {
 	var challengeList []Challenge
-	err := database.GetDatabase().Model(user).Association("Challenges").Find(&challengeList)
+	err := database.GetDatabase().Model(user).Preload("Category").Preload("Image").Preload("Attachment").Association("Challenges").Find(&challengeList)
 	if err != nil {
 		return nil, err
 	}
