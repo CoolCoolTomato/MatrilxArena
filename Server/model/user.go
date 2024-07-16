@@ -8,11 +8,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Username   string
-	Password   string
-	Email      string
-	Role       int
-	Challenges []Challenge `gorm:"many2many:challenge_user"`
+	Username        string
+	Password        string
+	Email           string
+	Role            int
+	Challenges      []Challenge      `gorm:"many2many:challenge_user"`
+	Groups          []Group          `gorm:"many2many:group_user"`
+	GroupChallenges []GroupChallenge `gorm:"many2many:group_challenge_user"`
 }
 
 func GetUserList() ([]User, error) {
