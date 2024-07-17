@@ -36,7 +36,7 @@ type ContainerResponse struct {
 func GetContainerListByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.InvalidToken", c), c)
 		return
 	}
 
@@ -44,23 +44,23 @@ func GetContainerListByUser(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.UserNotFound", c), c)
 		return
 	}
 
 	userContainers, err := manager.GetUserContainerList(username.(string))
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserContainerListFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
 	}
 
-	response.OK(userContainers, localizer.GetMessage("GetUserContainerListSuccess", c), c)
+	response.OK(userContainers, localizer.GetMessage("UserContainer.GetUserContainerListSuccess", c), c)
 }
 
 func CreateContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.InvalidToken", c), c)
 		return
 	}
 
@@ -68,30 +68,30 @@ func CreateContainerByUser(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.UserNotFound", c), c)
 		return
 	}
 
 	userContainers, err := manager.GetUserContainerList(username.(string))
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserContainerListFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
 	}
 	if len(userContainers) >= 3 {
-		response.Fail(nil, localizer.GetMessage("YouCanOnlyCreateUpTo3Containers", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.YouCanOnlyCreateUpTo3Containers", c), c)
 		return
 	}
 
 	var challenge model.Challenge
 	err = c.ShouldBindJSON(&challenge)
 	if err != nil || challenge.ID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.InvalidArgument", c), c)
 		return
 	}
 
 	err = challenge.GetChallenge()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetChallengeFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.GetChallengeFail", c), c)
 		return
 	}
 
@@ -101,7 +101,7 @@ func CreateContainerByUser(c *gin.Context) {
 
 	dockerNodeList, err := model.GetDockerNodeList()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeListFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.GetDockerNodeListFail", c), c)
 		return
 	}
 
@@ -124,21 +124,21 @@ func CreateContainerByUser(c *gin.Context) {
 
 	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID, challenge.SpecifiedPorts)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("CreateContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.CreateContainerFail", c), c)
 		return
 	}
 
 	containerID := res["data"].(string)
 	res, err = docker.GetContainer(dockerNode, containerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("GetContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.GetContainerFail", c), c)
 		return
 	}
 
 	var containerResponse ContainerResponse
 	err = mapstructure.Decode(res, &containerResponse)
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("DecodeContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.DecodeContainerFail", c), c)
 		return
 	}
 
@@ -162,13 +162,13 @@ func CreateContainerByUser(c *gin.Context) {
 
 	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID, userFlag)
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("AddUserContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.AddUserContainerFail", c), c)
 		return
 	}
 
 	res, err = docker.StartContainer(dockerNode, containerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("StartContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.StartContainerFail", c), c)
 		return
 	}
 
@@ -178,18 +178,18 @@ func CreateContainerByUser(c *gin.Context) {
         runCommand := fmt.Sprintf("echo %s | base64 -d | /bin/sh", encodedCommand)
 		res, err = docker.ExecuteCommand(dockerNode, containerID, []string{"/bin/sh", "-c", runCommand})
 		if err != nil || res["code"].(float64) != 0 {
-			response.Fail(err, localizer.GetMessage("ExecuteCommandFail", c), c)
+			response.Fail(err, localizer.GetMessage("UserContainer.ExecuteCommandFail", c), c)
 			return
 		}
 	}
 
-	response.OK(nil, localizer.GetMessage("CreateContainerSuccess", c), c)
+	response.OK(nil, localizer.GetMessage("UserContainer.CreateContainerSuccess", c), c)
 }
 
 func DestroyContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.InvalidToken", c), c)
 		return
 	}
 
@@ -197,20 +197,20 @@ func DestroyContainerByUser(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.UserNotFound", c), c)
 		return
 	}
 
 	var containerRequest ContainerRequest
 	err = c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.InvalidArgument", c), c)
 		return
 	}
 
 	userContainers, err := manager.GetUserContainerList(username.(string))
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserContainerListFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
 	}
 
@@ -220,30 +220,30 @@ func DestroyContainerByUser(c *gin.Context) {
 			dockerNode.ID = userContainer.DockerNodeID
 			err = dockerNode.GetDockerNode()
 			if err != nil {
-				response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+				response.Fail(err, localizer.GetMessage("UserContainer.GetDockerNodeFail", c), c)
 				return
 			}
 			err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID)
 			if err != nil {
-				response.Fail(err, localizer.GetMessage("DeleteUserContainerFail", c), c)
+				response.Fail(err, localizer.GetMessage("UserContainer.DeleteUserContainerFail", c), c)
 				return
 			}
 			res, err := docker.RemoveContainer(dockerNode, userContainer.DockerNodeContainerID)
 			if err != nil || res["code"].(float64) != 0 {
-				response.Fail(err, localizer.GetMessage("RemoveContainerFail", c), c)
+				response.Fail(err, localizer.GetMessage("UserContainer.RemoveContainerFail", c), c)
 				return
 			}
-			response.OK(nil, localizer.GetMessage("DestroyContainerSuccess", c), c)
+			response.OK(nil, localizer.GetMessage("UserContainer.DestroyContainerSuccess", c), c)
 			return
 		}
 	}
-	response.Fail(nil, localizer.GetMessage("ContainerNotFound", c), c)
+	response.Fail(nil, localizer.GetMessage("UserContainer.ContainerNotFound", c), c)
 }
 
 func DelayContainerByUser(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.InvalidToken", c), c)
 		return
 	}
 
@@ -251,20 +251,20 @@ func DelayContainerByUser(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.UserNotFound", c), c)
 		return
 	}
 
 	var containerRequest ContainerRequest
 	err = c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("UserContainer.InvalidArgument", c), c)
 		return
 	}
 
 	userContainers, err := manager.GetUserContainerList(username.(string))
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserContainerListFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
 	}
 
@@ -274,22 +274,22 @@ func DelayContainerByUser(c *gin.Context) {
 			dockerNode.ID = userContainer.DockerNodeID
 			err = dockerNode.GetDockerNode()
 			if err != nil {
-				response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+				response.Fail(err, localizer.GetMessage("UserContainer.GetDockerNodeFail", c), c)
 				return
 			}
 			err = manager.ResetUserContainerTime(userContainer.DockerNodeContainerID)
 			if err != nil {
 				if strings.Contains(err.Error(), "remaining time is greater than 10 minutes") {
-					response.Fail(err, localizer.GetMessage("RemainingTimeIsGreaterThan10Minutes", c), c)
+					response.Fail(err, localizer.GetMessage("UserContainer.RemainingTimeIsGreaterThan10Minutes", c), c)
 					return
 				} else {
-					response.Fail(err, localizer.GetMessage("DelayContainerFail", c), c)
+					response.Fail(err, localizer.GetMessage("UserContainer.DelayContainerFail", c), c)
 					return
 				}
 			}
-			response.OK(nil, localizer.GetMessage("DelayContainerSuccess", c), c)
+			response.OK(nil, localizer.GetMessage("UserContainer.DelayContainerSuccess", c), c)
 			return
 		}
 	}
-	response.Fail(nil, localizer.GetMessage("ContainerNotFound", c), c)
+	response.Fail(nil, localizer.GetMessage("UserContainer.ContainerNotFound", c), c)
 }

@@ -10,77 +10,77 @@ import (
 func GetCategoryList(c *gin.Context) {
 	categoryList, err := model.GetCategoryList()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetCategoryListFail", c), c)
+		response.Fail(err, localizer.GetMessage("Category.GetCategoryListFail", c), c)
 		return
 	}
 
-	response.OK(categoryList, localizer.GetMessage("GetCategoryListSuccess", c), c)
+	response.OK(categoryList, localizer.GetMessage("Category.GetCategoryListSuccess", c), c)
 }
 
 func GetCategory(c *gin.Context) {
 	var category model.Category
 	err := c.ShouldBindJSON(&category)
 	if err != nil || category.ID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("Category.InvalidArgument", c), c)
 		return
 	}
 
 	err = category.GetCategory()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetCategoryFail", c), c)
+		response.Fail(err, localizer.GetMessage("Category.GetCategoryFail", c), c)
 		return
 	}
 
-	response.OK(category, localizer.GetMessage("GetCategorySuccess", c), c)
+	response.OK(category, localizer.GetMessage("Category.GetCategorySuccess", c), c)
 }
 
 func CreateCategory(c *gin.Context) {
 	var category model.Category
 	err := c.ShouldBindJSON(&category)
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("Category.InvalidArgument", c), c)
 		return
 	}
 
 	err = category.CreateCategory()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("CreateCategoryFail", c), c)
+		response.Fail(err, localizer.GetMessage("Category.CreateCategoryFail", c), c)
 		return
 	}
 
-	response.OK(nil, localizer.GetMessage("CreateCategorySuccess", c), c)
+	response.OK(nil, localizer.GetMessage("Category.CreateCategorySuccess", c), c)
 }
 
 func UpdateCategory(c *gin.Context) {
 	var category model.Category
 	err := c.ShouldBindJSON(&category)
 	if err != nil || category.ID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("Category.InvalidArgument", c), c)
 		return
 	}
 
 	err = category.UpdateCategory()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("UpdateCategoryFail", c), c)
+		response.Fail(err, localizer.GetMessage("Category.UpdateCategoryFail", c), c)
 		return
 	}
 
-	response.OK(nil, localizer.GetMessage("UpdateCategorySuccess", c), c)
+	response.OK(nil, localizer.GetMessage("Category.UpdateCategorySuccess", c), c)
 }
 
 func DeleteCategory(c *gin.Context) {
 	var category model.Category
 	err := c.ShouldBindJSON(&category)
 	if err != nil || category.ID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("Category.InvalidArgument", c), c)
 		return
 	}
 
 	err = category.DeleteCategory()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("DeleteCategoryFail", c), c)
+		response.Fail(err, localizer.GetMessage("Category.DeleteCategoryFail", c), c)
 		return
 	}
 
-	response.OK(nil, localizer.GetMessage("DeleteCategorySuccess", c), c)
+	response.OK(nil, localizer.GetMessage("Category.DeleteCategorySuccess", c), c)
 }

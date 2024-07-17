@@ -20,7 +20,7 @@ func GetContainerListFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -28,24 +28,24 @@ func GetContainerListFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.GetContainerList(dockerNode)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("GetContainerListFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetContainerListFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("GetContainerListSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.GetContainerListSuccess", c), c)
 }
 
 func GetContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -53,24 +53,24 @@ func GetContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.GetContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("GetContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("GetContainerSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.GetContainerSuccess", c), c)
 }
 
 func CreateContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeImageID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -78,24 +78,24 @@ func CreateContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.CreateContainer(dockerNode, containerRequest.DockerNodeImageID, containerRequest.SpecifiedPorts)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("CreateContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.CreateContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("CreateContainerSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.CreateContainerSuccess", c), c)
 }
 
 func StartContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -103,24 +103,24 @@ func StartContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.StartContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("StartContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.StartContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("StartContainerSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.StartContainerSuccess", c), c)
 }
 
 func StopContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -128,24 +128,24 @@ func StopContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.StopContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("StopContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.StopContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("StopContainerSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.StopContainerSuccess", c), c)
 }
 
 func RemoveContainerFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -153,24 +153,24 @@ func RemoveContainerFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.RemoveContainer(dockerNode, containerRequest.DockerNodeContainerID)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("RemoveContainerFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.RemoveContainerFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("RemoveContainerSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.RemoveContainerSuccess", c), c)
 }
 
 func ExecuteCommandFromDockerNode(c *gin.Context) {
 	var containerRequest ContainerRequest
 	err := c.ShouldBindJSON(&containerRequest)
 	if err != nil || containerRequest.DockerNodeID == 0 || containerRequest.DockerNodeContainerID == "" || len(containerRequest.Command) == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.InvalidArgument", c), c)
 		return
 	}
 
@@ -178,15 +178,15 @@ func ExecuteCommandFromDockerNode(c *gin.Context) {
 	dockerNode.ID = containerRequest.DockerNodeID
 	err = dockerNode.GetDockerNode()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetDockerNodeFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.GetDockerNodeFail", c), c)
 		return
 	}
 
 	res, err := docker.ExecuteCommand(dockerNode, containerRequest.DockerNodeContainerID, containerRequest.Command)
 	if err != nil || res["code"].(float64) != 0 {
-		response.Fail(err, localizer.GetMessage("ExecuteCommandFail", c), c)
+		response.Fail(err, localizer.GetMessage("DockerNodeContainer.ExecuteCommandFail", c), c)
 		return
 	}
 
-	response.OK(res["data"], localizer.GetMessage("ExecuteCommandSuccess", c), c)
+	response.OK(res["data"], localizer.GetMessage("DockerNodeContainer.ExecuteCommandSuccess", c), c)
 }

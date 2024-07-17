@@ -18,7 +18,7 @@ type UserChallengeRequest struct {
 func GetUserChallengeList(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.InvalidToken", c), c)
 		return
 	}
 
@@ -26,23 +26,23 @@ func GetUserChallengeList(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.UserNotFound", c), c)
 		return
 	}
 
 	challengeList, err := user.GetChallengeList()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserChallengeListFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.GetUserChallengeListFail", c), c)
 		return
 	}
 
-	response.OK(challengeList, localizer.GetMessage("GetUserChallengeListSuccess", c), c)
+	response.OK(challengeList, localizer.GetMessage("UserChallenge.GetUserChallengeListSuccess", c), c)
 }
 
 func ResetUserChallenge(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.InvalidToken", c), c)
 		return
 	}
 
@@ -50,14 +50,14 @@ func ResetUserChallenge(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.UserNotFound", c), c)
 		return
 	}
 
 	var userChallengeRequest UserChallengeRequest
 	err = c.ShouldBindJSON(&userChallengeRequest)
 	if err != nil || userChallengeRequest.ChallengeID == 0 {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("UserChallenge.InvalidArgument", c), c)
 		return
 	}
 
@@ -65,23 +65,23 @@ func ResetUserChallenge(c *gin.Context) {
 	challenge.ID = userChallengeRequest.ChallengeID
 	err = challenge.GetChallenge()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("GetUserChallengeFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.GetUserChallengeFail", c), c)
 		return
 	}
 
 	err = user.DeleteChallenge(&challenge)
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("DeleteUserChallengeFail", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.DeleteUserChallengeFail", c), c)
 		return
 	}
 
-	response.OK(nil, localizer.GetMessage("ResetChallengeSuccess", c), c)
+	response.OK(nil, localizer.GetMessage("UserChallenge.ResetChallengeSuccess", c), c)
 }
 
 func CheckFlag(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
-		response.Fail(nil, localizer.GetMessage("InvalidToken", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.InvalidToken", c), c)
 		return
 	}
 
@@ -89,14 +89,14 @@ func CheckFlag(c *gin.Context) {
 	user.Username = username.(string)
 	err := user.GetUserByUsernameOrEmail()
 	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserNotFound", c), c)
+		response.Fail(nil, localizer.GetMessage("UserChallenge.UserNotFound", c), c)
 		return
 	}
 
 	var userChallengeRequest UserChallengeRequest
 	err = c.ShouldBindJSON(&userChallengeRequest)
 	if err != nil || userChallengeRequest.Flag == "" {
-		response.Fail(err, localizer.GetMessage("InvalidArgument", c), c)
+		response.Fail(err, localizer.GetMessage("UserChallenge.InvalidArgument", c), c)
 		return
 	}
 
@@ -104,33 +104,33 @@ func CheckFlag(c *gin.Context) {
 	challenge.ID = userChallengeRequest.ChallengeID
 	err = challenge.GetChallenge()
 	if err != nil {
-		response.Fail(err, localizer.GetMessage("GetUserChallengeFail", c), c)
+		response.Fail(err, localizer.GetMessage("UserChallenge.GetUserChallengeFail", c), c)
 		return
 	}
 
 	if challenge.ImageID == 0 {
 		ok, err := checkFlagFromChallenge(user, userChallengeRequest, challenge)
 		if err != nil {
-			response.Fail(err, localizer.GetMessage("CheckFlagFromChallengeFail", c), c)
+			response.Fail(err, localizer.GetMessage("UserChallenge.CheckFlagFromChallengeFail", c), c)
 			return
 		}
 		if !ok {
-			response.Fail(err, localizer.GetMessage("IncorrectFlag", c), c)
+			response.Fail(err, localizer.GetMessage("UserChallenge.IncorrectFlag", c), c)
 			return
 		}
 	} else {
 		ok, err := checkFlagFromContainer(user, userChallengeRequest, challenge)
 		if err != nil {
-			response.Fail(err, localizer.GetMessage("CheckFlagFromContainerFail", c), c)
+			response.Fail(err, localizer.GetMessage("UserChallenge.CheckFlagFromContainerFail", c), c)
 			return
 		}
 		if !ok {
-			response.Fail(err, localizer.GetMessage("IncorrectFlag", c), c)
+			response.Fail(err, localizer.GetMessage("UserChallenge.IncorrectFlag", c), c)
 			return
 		}
 	}
 
-	response.OK(nil, localizer.GetMessage("CorrectFlag", c), c)
+	response.OK(nil, localizer.GetMessage("UserChallenge.CorrectFlag", c), c)
 }
 
 func checkFlagFromContainer(user model.User, userChallengeRequest UserChallengeRequest, challenge model.Challenge) (bool, error) {
