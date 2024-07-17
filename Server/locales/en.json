@@ -112,6 +112,19 @@
     "DeleteGroupSuccess": "Delete group success",
     "InvalidArgument": "Invalid argument"
   },
+  "GroupChallenge": {
+    "GetGroupChallengeListFail": "Get group challenge list fail",
+    "GetGroupChallengeListSuccess": "Get group challenge list success",
+    "GetGroupChallengeFail": "Get group challenge fail",
+    "GetGroupChallengeSuccess": "Get group challenge success",
+    "CreateGroupChallengeFail": "Create group challenge fail",
+    "CreateGroupChallengeSuccess": "Create group challenge success",
+    "UpdateGroupChallengeFail": "Update group challenge fail",
+    "UpdateGroupChallengeSuccess": "Update group challenge success",
+    "DeleteGroupChallengeFail": "Delete group challenge fail",
+    "DeleteGroupChallengeSuccess": "Delete group challenge success",
+    "InvalidArgument": "Invalid argument"
+  },
   "Image": {
     "GetImageListFail": "Get image list fail",
     "GetImageListSuccess": "Get image list success",

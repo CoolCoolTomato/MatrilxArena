@@ -47,6 +47,9 @@ func GetGroupChallengeList() ([]GroupChallenge, error) {
 
 func GetGroupChallengeListByQuery(queryGroupChallenge GroupChallenge) ([]GroupChallenge, error) {
 	query := database.GetDatabase().Model(&GroupChallenge{})
+    if queryGroupChallenge.GroupID != 0 {
+		query = query.Where("group_id = ?", queryGroupChallenge.GroupID)
+	}
 	if queryGroupChallenge.CategoryID != 0 {
 		query = query.Where("category_id = ?", queryGroupChallenge.CategoryID)
 	}
