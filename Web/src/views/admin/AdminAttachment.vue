@@ -37,7 +37,7 @@
                 {{ $t('AdminAttachment.Delete') }}
               </el-button>
               <el-button
-                @click="DownloadAttachment(scope.row.ID)"
+                @click="DownloadAttachment(scope.row)"
                 >
                 {{ $t('AdminAttachment.Download') }}
               </el-button>
@@ -313,31 +313,36 @@ export default {
         "fileName": "",
         "file": null
       }
-      this.$refs.upload.clearFiles();
+      this.$refs.upload.clearFiles()
     },
-    DownloadAttachment(id) {
-      attachmentApi.DownloadAttachment(id).then(ok => {
-        if (!ok) {
-          ElMessage.error(this.t('AdminAttachment.DownloadAttachmentFail'))
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+    DownloadAttachment(attachment) {
+      try {
+        new URL(attachment.FilePath)
+        window.open(attachment.FilePath, '_blank')
+      } catch (err) {
+        attachmentApi.DownloadAttachment(attachment.ID).then(ok => {
+          if (!ok) {
+            ElMessage.error(this.t('AdminAttachment.DownloadAttachmentFail'))
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     handleFileChange(file) {
       if (file) {
-        this.uploadAttachmentData.fileName = file.name;
-        this.uploadAttachmentData.file = file.raw;
+        this.uploadAttachmentData.fileName = file.name
+        this.uploadAttachmentData.file = file.raw
       } else {
-        this.uploadAttachmentData.fileName = '';
-        this.uploadAttachmentData.file = null;
+        this.uploadAttachmentData.fileName = ''
+        this.uploadAttachmentData.file = null
       }
     },
     handleExceed(files) {
-      const uploadInstance = this.$refs.upload;
-      uploadInstance.clearFiles();
-      const file = files[0];
-      uploadInstance.handleStart(file);
+      const uploadInstance = this.$refs.upload
+      uploadInstance.clearFiles()
+      const file = files[0]
+      uploadInstance.handleStart(file)
     }
   },
   mounted() {

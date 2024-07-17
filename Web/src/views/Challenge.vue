@@ -77,7 +77,7 @@
         <div v-if="challengeDetail.Attachment.ID !== 0" style="margin-top: 5px;">
           <el-text>{{ $t('Challenge.Attachment') }}: </el-text>
           <el-link
-            @click="DownloadAttachment(challengeDetail.Attachment.ID)"
+            @click="DownloadAttachment(challengeDetail.Attachment)"
             style="vertical-align: unset"
             :underline="false"
           >
@@ -538,14 +538,19 @@ export default {
         console.log(error)
       })
     },
-    DownloadAttachment(id) {
-      attachmentApi.DownloadAttachment(id).then(ok => {
-        if (!ok) {
-          ElMessage.error(this.t('Challenge.DownloadAttachmentFail'))
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+    DownloadAttachment(attachment) {
+      try {
+        new URL(attachment.FilePath)
+        window.open(attachment.FilePath, '_blank')
+      } catch (err) {
+        attachmentApi.DownloadAttachment(attachment).then(ok => {
+          if (!ok) {
+            ElMessage.error(this.t('Challenge.DownloadAttachmentFail'))
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     checkContainerInUse(challengeID) {
       return this.userContainerList.some(container => container.ChallengeID === challengeID)

@@ -234,7 +234,7 @@ export default {
     "Delay": "延时",
     "InputFlag": "请输入flag",
     "Submit": "提交",
-    "FinishedChallenge": "已解决的题目",
+    "SolvedChallenge": "已解决的题目",
     "ContainerList": "容器列表",
     "NoContainerIsRunning": "没有容器正在运行",
     "DownloadAttachmentFail": "附件下载失败"

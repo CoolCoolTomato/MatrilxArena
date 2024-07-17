@@ -234,7 +234,7 @@ export default {
     "Delay": "Delay",
     "InputFlag": "Input flag",
     "Submit": "Submit",
-    "FinishedChallenge": "Finished Challenge",
+    "SolvedChallenge": "Solved Challenge",
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"

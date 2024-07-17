@@ -21,17 +21,17 @@ function DeleteAttachment(data) {
 }
 
 function UploadAttachment(fileName, file) {
-  const formData = new FormData();
-  formData.append('file', file);
+  const formData = new FormData()
+  formData.append('file', file)
   if (fileName) {
-    formData.append('fileName', fileName);
+    formData.append('fileName', fileName)
   }
 
   return apiClient.post("/attachment/UploadAttachment", formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
-  }).then(handleResponse).catch(handleError);
+  }).then(handleResponse).catch(handleError)
 }
 
 function DownloadAttachment(id) {
@@ -39,29 +39,29 @@ function DownloadAttachment(id) {
     responseType: 'blob',
   }).then(response => {
     if (response.data.type === "application/octet-stream") {
-      const contentDisposition = response.headers['content-disposition'];
-      let fileName = `attachment${id}`;
+      const contentDisposition = response.headers['content-disposition']
+      let fileName = `attachment${id}`
       if (contentDisposition) {
-        const fileNameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+        const fileNameMatch = contentDisposition.match(/filename="?(.+)"?/i)
         if (fileNameMatch && fileNameMatch[1]) {
-          fileName = fileNameMatch[1].replace(/['"]/g, '');
+          fileName = fileNameMatch[1].replace(/['"]/g, '')
         }
       }
-      const contentType = response.headers['content-type'] || 'application/octet-stream';
-      const blob = new Blob([response.data], { type: contentType });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      return true;
+      const contentType = response.headers['content-type'] || 'application/octet-stream'
+      const blob = new Blob([response.data], { type: contentType })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+      return true
     } else {
-      return false;
+      return false
     }
-  }).catch(handleError);
+  }).catch(handleError)
 }
 
 const attachmentApi = {
