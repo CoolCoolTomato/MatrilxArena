@@ -16,35 +16,34 @@
       </div>
     </el-header>
     <el-main>
-      <el-scrollbar>
-        <el-table
-          :data="dockerNodeList"
-          table-layout="fixed"
-        >
-          <el-table-column prop="Address" :label="$t('AdminNode.Address')"/>
-          <el-table-column prop="Host" :label="$t('AdminNode.Host')"/>
-          <el-table-column prop="Port" :label="$t('AdminNode.Port')"/>
-          <el-table-column fixed="right" :label="$t('AdminNode.Operations')" width="300px">
-            <template #default=scope>
-              <el-button
-                @click="OpenDockerNodeDetail(scope.row)"
-                >
-                {{ $t('AdminNode.Detail') }}
-              </el-button>
-              <el-button
-                @click="OpenUpdateDockerNodeForm(scope.row)"
-                >
-                {{ $t('AdminNode.Update') }}
-              </el-button>
-              <el-button
-                @click="OpenDeleteDockerNodeForm(scope.row)"
-                >
-                {{ $t('AdminNode.Delete') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-scrollbar>
+      <el-table
+        :data="dockerNodeList"
+        table-layout="fixed"
+        height="100%"
+      >
+        <el-table-column prop="Address" :label="$t('AdminNode.Address')"/>
+        <el-table-column prop="Host" :label="$t('AdminNode.Host')"/>
+        <el-table-column prop="Port" :label="$t('AdminNode.Port')"/>
+        <el-table-column fixed="right" :label="$t('AdminNode.Operations')" width="300px">
+          <template #default=scope>
+            <el-button
+              @click="OpenDockerNodeDetail(scope.row)"
+              >
+              {{ $t('AdminNode.Detail') }}
+            </el-button>
+            <el-button
+              @click="OpenUpdateDockerNodeForm(scope.row)"
+              >
+              {{ $t('AdminNode.Update') }}
+            </el-button>
+            <el-button
+              @click="OpenDeleteDockerNodeForm(scope.row)"
+              >
+              {{ $t('AdminNode.Delete') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-dialog
         v-model="createDockerNodeFormVisible"
         :title="$t('AdminNode.CreateNode')"

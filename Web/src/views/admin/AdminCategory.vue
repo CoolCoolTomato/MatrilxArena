@@ -22,31 +22,30 @@
       </div>
     </el-header>
     <el-main>
-      <el-scrollbar>
-        <el-table
-          id="categoryListTable"
-          :data="categoryList"
-          table-layout="fixed"
-          row-key="ID"
-        >
-          <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
-          <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
-          <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="230px">
-            <template #default=scope>
-              <el-button
-                @click="OpenUpdateCategoryForm(scope.row)"
-              >
-                {{ $t('AdminCategory.Update') }}
-              </el-button>
-              <el-button
-                @click="OpenDeleteCategoryForm(scope.row)"
-              >
-                {{ $t('AdminCategory.Delete') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-scrollbar>
+      <el-table
+        id="categoryListTable"
+        :data="categoryList"
+        table-layout="fixed"
+        row-key="ID"
+        height="100%"
+      >
+        <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
+        <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
+        <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="230px">
+          <template #default=scope>
+            <el-button
+              @click="OpenUpdateCategoryForm(scope.row)"
+            >
+              {{ $t('AdminCategory.Update') }}
+            </el-button>
+            <el-button
+              @click="OpenDeleteCategoryForm(scope.row)"
+            >
+              {{ $t('AdminCategory.Delete') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-dialog
         v-model="createCategoryFormVisible"
         :title="$t('AdminCategory.CreateCategory')"

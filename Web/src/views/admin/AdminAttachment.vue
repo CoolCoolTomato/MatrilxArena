@@ -22,34 +22,33 @@
       </div>
     </el-header>
     <el-main>
-      <el-scrollbar>
-        <el-table
-          :data="attachmentList"
-          table-layout="fixed"
-        >
-          <el-table-column prop="FileName" :label="$t('AdminAttachment.FileName')"/>
-          <el-table-column prop="FilePath" :label="$t('AdminAttachment.FilePath')"/>
-          <el-table-column fixed="right" :label="$t('AdminAttachment.Operations')" width="320px">
-            <template #default=scope>
-              <el-button
-                @click="OpenUpdateAttachmentForm(scope.row)"
+      <el-table
+        :data="attachmentList"
+        table-layout="fixed"
+        height="100%"
+      >
+        <el-table-column prop="FileName" :label="$t('AdminAttachment.FileName')"/>
+        <el-table-column prop="FilePath" :label="$t('AdminAttachment.FilePath')"/>
+        <el-table-column fixed="right" :label="$t('AdminAttachment.Operations')" width="320px">
+          <template #default=scope>
+            <el-button
+              @click="OpenUpdateAttachmentForm(scope.row)"
+            >
+              {{ $t('AdminAttachment.Update') }}
+            </el-button>
+            <el-button
+              @click="OpenDeleteAttachmentForm(scope.row)"
+            >
+              {{ $t('AdminAttachment.Delete') }}
+            </el-button>
+            <el-button
+              @click="DownloadAttachment(scope.row)"
               >
-                {{ $t('AdminAttachment.Update') }}
-              </el-button>
-              <el-button
-                @click="OpenDeleteAttachmentForm(scope.row)"
-              >
-                {{ $t('AdminAttachment.Delete') }}
-              </el-button>
-              <el-button
-                @click="DownloadAttachment(scope.row)"
-                >
-                {{ $t('AdminAttachment.Download') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-scrollbar>
+              {{ $t('AdminAttachment.Download') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-dialog
         v-model="createAttachmentFormVisible"
         :title="$t('AdminAttachment.CreateAttachment')"

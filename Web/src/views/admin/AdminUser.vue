@@ -16,34 +16,33 @@
       </div>
     </el-header>
     <el-main>
-      <el-scrollbar>
-        <el-table
-          :data="userList"
-          table-layout="fixed"
-        >
-          <el-table-column prop="Username" :label="$t('AdminUser.Username')"/>
-          <el-table-column prop="Email" :label="$t('AdminUser.Email')"/>
-          <el-table-column :label="$t('AdminUser.Role')">
-            <template #default="scope">
-              {{ formatRole(scope.row.Role) }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="230">
-            <template #default=scope>
-              <el-button
-                @click="OpenUpdateUserForm(scope.row)"
-                >
-                {{ $t('AdminUser.Update') }}
-              </el-button>
-              <el-button
-                @click="OpenDeleteUserForm(scope.row)"
-                >
-                {{ $t('AdminUser.Delete') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-scrollbar>
+      <el-table
+        :data="userList"
+        table-layout="fixed"
+        height="100%"
+      >
+        <el-table-column prop="Username" :label="$t('AdminUser.Username')"/>
+        <el-table-column prop="Email" :label="$t('AdminUser.Email')"/>
+        <el-table-column :label="$t('AdminUser.Role')">
+          <template #default="scope">
+            {{ formatRole(scope.row.Role) }}
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="230">
+          <template #default=scope>
+            <el-button
+              @click="OpenUpdateUserForm(scope.row)"
+              >
+              {{ $t('AdminUser.Update') }}
+            </el-button>
+            <el-button
+              @click="OpenDeleteUserForm(scope.row)"
+              >
+              {{ $t('AdminUser.Delete') }}
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-dialog
         v-model="createUserFormVisible"
         :title="$t('AdminUser.CreateUser')"

@@ -31,82 +31,78 @@
         class="el-tabs-custom"
         >
         <el-tab-pane :label="$t('AdminNodeDetail.Image')" name="image">
-          <el-scrollbar>
-            <el-table
-              :data="dockerNodeImageList"
-              table-layout="fixed"
-              height="99%"
-              >
-              <el-table-column prop="RepoTags" :label="$t('AdminNodeDetail.RepoTags')"/>
-              <el-table-column :label="$t('AdminNodeDetail.Size')">
-                <template #default="scope">
-                  {{ (scope.row.Size / 1000000).toFixed(2) }} MB
-                </template>
-              </el-table-column>
-              <el-table-column :label="$t('AdminNodeDetail.Created')">
-                <template #default="scope">
-                  {{ formatDate(scope.row.Created) }}
-                </template>
-              </el-table-column>
-              <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="200px">
-                <template #default=scope>
-                  <el-button
-                    size="small"
-                    @click="OpenImageDetail(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Detail') }}
-                  </el-button>
-                  <el-button
-                    size="small"
-                    @click="OpenRemoveImageForm(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Remove') }}
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-scrollbar>
+          <el-table
+            :data="dockerNodeImageList"
+            table-layout="fixed"
+            height="100%"
+            >
+            <el-table-column prop="RepoTags" :label="$t('AdminNodeDetail.RepoTags')"/>
+            <el-table-column :label="$t('AdminNodeDetail.Size')">
+              <template #default="scope">
+                {{ (scope.row.Size / 1000000).toFixed(2) }} MB
+              </template>
+            </el-table-column>
+            <el-table-column :label="$t('AdminNodeDetail.Created')">
+              <template #default="scope">
+                {{ formatDate(scope.row.Created) }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="200px">
+              <template #default=scope>
+                <el-button
+                  size="small"
+                  @click="OpenImageDetail(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Detail') }}
+                </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenRemoveImageForm(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Remove') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
         <el-tab-pane :label="$t('AdminNodeDetail.Container')" name="container">
-          <el-scrollbar>
-            <el-table
-              :data="dockerNodeContainerList"
-              table-layout="fixed"
-              height="99%"
-              >
-              <el-table-column prop="Names" :label="$t('AdminNodeDetail.Names')"/>
-              <el-table-column prop="Image" :label="$t('AdminNodeDetail.Image')"/>
-              <el-table-column prop="State" :label="$t('AdminNodeDetail.State')"/>
-              <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="320px">
-                <template #default=scope>
-                  <el-button
-                    size="small"
-                    @click="OpenContainerDetail(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Detail') }}
-                  </el-button>
-                  <el-button
-                    size="small"
-                    @click="OpenStartContainerForm(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Start') }}
-                  </el-button>
-                  <el-button
-                    size="small"
-                    @click="OpenStopContainerForm(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Stop') }}
-                  </el-button>
-                  <el-button
-                    size="small"
-                    @click="OpenRemoveContainerForm(scope.row)"
-                    >
-                    {{ $t('AdminNodeDetail.Remove') }}
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-scrollbar>
+          <el-table
+            :data="dockerNodeContainerList"
+            table-layout="fixed"
+            height="100%"
+            >
+            <el-table-column prop="Names" :label="$t('AdminNodeDetail.Names')"/>
+            <el-table-column prop="Image" :label="$t('AdminNodeDetail.Image')"/>
+            <el-table-column prop="State" :label="$t('AdminNodeDetail.State')"/>
+            <el-table-column fixed="right" :label="$t('AdminNodeDetail.Operations')" width="320px">
+              <template #default=scope>
+                <el-button
+                  size="small"
+                  @click="OpenContainerDetail(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Detail') }}
+                </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenStartContainerForm(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Start') }}
+                </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenStopContainerForm(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Stop') }}
+                </el-button>
+                <el-button
+                  size="small"
+                  @click="OpenRemoveContainerForm(scope.row)"
+                  >
+                  {{ $t('AdminNodeDetail.Remove') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
       <el-dialog
@@ -623,6 +619,4 @@ export default {
   height: 100%;
 }
 </style>
-<style scoped>
 
-</style>
