@@ -23,7 +23,11 @@
         >
         <el-table-column prop="Title" :label="$t('AdminChallenge.Title')"/>
         <el-table-column prop="Description" :label="$t('AdminChallenge.Description')"/>
-        <el-table-column prop="Category.Name" :label="$t('AdminChallenge.Category')"/>
+        <el-table-column :label="$t('AdminChallenge.Category')">
+          <template  #default=scope>
+            {{ scope.row.Category.Name === "" ? $t('AdminChallenge.Null') : scope.row.Category.Name}}
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('AdminChallenge.Image')">
           <template  #default=scope>
             {{ scope.row.Image.Remark === "" ? $t('AdminChallenge.Null') : scope.row.Image.Remark}}

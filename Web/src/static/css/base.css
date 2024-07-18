@@ -2,14 +2,8 @@
     --el-font-weight-primary: 600 !important;
     font-weight: 600;
 }
-input {
+input, textarea, span, .el-statistic__head {
     font-weight: 600;
-}
-span {
-    font-weight: 600;
-}
-.el-statistic__head {
-  font-weight: 600;
 }
 body{
     margin: 0;
