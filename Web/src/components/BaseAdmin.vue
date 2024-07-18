@@ -61,6 +61,9 @@
                 <el-menu-item index="/admin/challenge">
                   <template #title>{{ $t('BaseAdmin.Challenge') }}</template>
                 </el-menu-item>
+                <el-menu-item index="/admin/group">
+                  <template #title>{{ $t('BaseAdmin.Group') }}</template>
+                </el-menu-item>
               </el-sub-menu>
               <el-menu-item index="/admin/attachment">
                 <el-icon>

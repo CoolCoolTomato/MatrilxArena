@@ -9,6 +9,8 @@ import AdminNode from "@/views/admin/AdminNode.vue"
 import AdminNodeDetail from "@/views/admin/AdminNodeDetail.vue"
 import AdminImage from "@/views/admin/AdminImage.vue"
 import AdminChallenge from "@/views/admin/AdminChallenge.vue"
+import AdminGroup from "@/views/admin/AdminGroup.vue"
+import AdminGroupDetail from "@/views/admin/AdminGroupDetail.vue"
 import AdminUser from "@/views/admin/AdminUser.vue"
 import AdminAttachment from "@/views/admin/AdminAttachment.vue"
 import AdminCategory from "@/views/admin/AdminCategory.vue"
@@ -30,7 +32,9 @@ const router = createRouter({
       { path: "node/:id(\\d+)", component: AdminNodeDetail },
       { path: "image", component: AdminImage},
       { path: "category", component: AdminCategory },
-      {  path: "challenge", component: AdminChallenge },
+      { path: "challenge", component: AdminChallenge },
+      { path: "group", component: AdminGroup },
+      { path: "group/:id(\\d+)", component: AdminGroupDetail },
       { path: "attachment", component: AdminAttachment },
       { path: "user", component: AdminUser },
     ]},
