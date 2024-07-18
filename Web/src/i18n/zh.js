@@ -15,6 +15,7 @@ export default {
     "Image": "镜像",
     "Challenge": "题目",
     "Category": "分类",
+    "Group": "题集",
     "Attachment": "附件",
     "User": "用户"
   },
@@ -133,6 +134,7 @@ export default {
   "AdminNode": {
     "DockerNodeManager": "Docker节点管理",
     "Add": "添加",
+    "Address": "地址",
     "Host": "主机",
     "Port": "端口",
     "Operations": "操作",

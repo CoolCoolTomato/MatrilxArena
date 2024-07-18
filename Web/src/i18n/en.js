@@ -15,6 +15,7 @@ export default {
     "Image": "Image",
     "Challenge": "Challenge",
     "Category": "Category",
+    "Group": "Group",
     "Attachment": "Attachment",
     "User": "User"
   },
@@ -133,6 +134,7 @@ export default {
   "AdminNode": {
     "DockerNodeManager": "Docker Node Manager",
     "Add": "Add",
+    "Address": "Address",
     "Host": "Host",
     "Port": "Port",
     "Operations": "Operations",

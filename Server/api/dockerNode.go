@@ -36,7 +36,7 @@ func GetDockerNode(c *gin.Context) {
 func CreateDockerNode(c *gin.Context) {
 	var dockerNode model.DockerNode
 	err := c.ShouldBindJSON(&dockerNode)
-	if err != nil || dockerNode.Host == "" || dockerNode.Port == "" {
+	if err != nil || dockerNode.Address == "" || dockerNode.Host == "" || dockerNode.Port == "" {
 		response.Fail(err, localizer.GetMessage("DockerNode.InvalidArgument", c), c)
 		return
 	}
@@ -53,7 +53,7 @@ func CreateDockerNode(c *gin.Context) {
 func UpdateDockerNode(c *gin.Context) {
 	var dockerNode model.DockerNode
 	err := c.ShouldBindJSON(&dockerNode)
-	if err != nil || dockerNode.ID == 0 || dockerNode.Host == "" || dockerNode.Port == "" {
+	if err != nil || dockerNode.ID == 0 || dockerNode.Address == "" || dockerNode.Host == "" || dockerNode.Port == "" {
 		response.Fail(err, localizer.GetMessage("DockerNode.InvalidArgument", c), c)
 		return
 	}

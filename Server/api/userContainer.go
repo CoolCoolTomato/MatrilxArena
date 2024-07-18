@@ -1,8 +1,8 @@
 package api
 
 import (
-    "encoding/base64"
-    "fmt"
+	"encoding/base64"
+	"fmt"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
@@ -148,7 +148,7 @@ func CreateContainerByUser(c *gin.Context) {
 		for _, binding := range bindings {
 			portMaps = append(portMaps, manager.PortMap{
 				PortProtocol: portProtocol,
-				Link:         dockerNode.Host + ":" + binding.HostPort,
+				Link:         dockerNode.Address + ":" + binding.HostPort,
 			})
 		}
 	}
@@ -174,8 +174,8 @@ func CreateContainerByUser(c *gin.Context) {
 
 	challenge.Commands = append(challenge.Commands, fmt.Sprintf("echo %s > /flag", userFlag))
 	for _, command := range challenge.Commands {
-        encodedCommand := base64.StdEncoding.EncodeToString([]byte(command))
-        runCommand := fmt.Sprintf("echo %s | base64 -d | /bin/sh", encodedCommand)
+		encodedCommand := base64.StdEncoding.EncodeToString([]byte(command))
+		runCommand := fmt.Sprintf("echo %s | base64 -d | /bin/sh", encodedCommand)
 		res, err = docker.ExecuteCommand(dockerNode, containerID, []string{"/bin/sh", "-c", runCommand})
 		if err != nil || res["code"].(float64) != 0 {
 			response.Fail(err, localizer.GetMessage("UserContainer.ExecuteCommandFail", c), c)

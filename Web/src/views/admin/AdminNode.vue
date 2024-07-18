@@ -16,6 +16,7 @@
           :data="dockerNodeList"
           table-layout="fixed"
         >
+          <el-table-column prop="Address" :label="$t('AdminNode.Address')"/>
           <el-table-column prop="Host" :label="$t('AdminNode.Host')"/>
           <el-table-column prop="Port" :label="$t('AdminNode.Port')"/>
           <el-table-column fixed="right" :label="$t('AdminNode.Operations')" width="300px">
@@ -46,6 +47,9 @@
         @close="ClearCreateDockerNodeForm"
         >
         <el-form :model=createDockerNodeData>
+          <el-form-item :label="$t('AdminNode.Address')" :label-width="labelWidth">
+            <el-input v-model="createDockerNodeData.Address"/>
+          </el-form-item>
           <el-form-item :label="$t('AdminNode.Host')" :label-width="labelWidth">
             <el-input v-model="createDockerNodeData.Host"/>
           </el-form-item>
@@ -74,6 +78,9 @@
         @close="ClearUpdateDockerNodeForm"
         >
         <el-form :model=updateDockerNodeData>
+          <el-form-item :label="$t('AdminNode.Address')" :label-width="labelWidth">
+            <el-input v-model="updateDockerNodeData.Address"/>
+          </el-form-item>
           <el-form-item :label="$t('AdminNode.Host')" :label-width="labelWidth">
             <el-input v-model="updateDockerNodeData.Host"/>
           </el-form-item>
@@ -135,12 +142,14 @@ export default {
       dockerNodeList: [],
       createDockerNodeFormVisible: false,
       createDockerNodeData: {
+        "Address": "",
         "Host": "",
         "Port": "",
       },
       updateDockerNodeFormVisible: false,
       updateDockerNodeData: {
         "ID": 0,
+        "Address": "",
         "Host": "",
         "Port": "",
       },
@@ -183,6 +192,7 @@ export default {
     },
     ClearCreateDockerNodeForm() {
       this.createDockerNodeData = {
+        "Address": "",
         "Host": "",
         "Port": "",
       }
@@ -206,6 +216,7 @@ export default {
     OpenUpdateDockerNodeForm(row) {
       this.updateDockerNodeData = {
         "ID": row.ID,
+        "Address": row.Address,
         "Host": row.Host,
         "Port": row.Port,
       }
@@ -214,6 +225,7 @@ export default {
     ClearUpdateDockerNodeForm() {
       this.updateDockerNodeData = {
         "ID": 0,
+        "Address": "Address",
         "Host": "",
         "Port": "",
       }

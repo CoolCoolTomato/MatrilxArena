@@ -7,8 +7,9 @@ import (
 
 type DockerNode struct {
 	gorm.Model
-	Host string
-	Port string
+	Address string
+	Host    string
+	Port    string
 }
 
 func GetDockerNodeList() ([]DockerNode, error) {
