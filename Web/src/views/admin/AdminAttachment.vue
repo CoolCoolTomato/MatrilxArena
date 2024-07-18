@@ -1,23 +1,28 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
+      <div style="display:flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
+        <div style="flex-grow: 1;"></div>
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="createAttachmentFormVisible = true"
+            type="primary"
+          >
+            {{ $t('AdminAttachment.Add') }}
+          </el-button>
+          <el-button
+            style="margin: 10px;"
+            @click="uploadAttachmentFormVisible = true"
+          >
+            {{ $t('AdminAttachment.Upload') }}
+          </el-button>
+        </div>
+      </div>
     </el-header>
     <el-main>
       <el-scrollbar>
-        <el-button
-          style="margin: 10px"
-          @click="createAttachmentFormVisible = true"
-          type="primary"
-          >
-          {{ $t('AdminAttachment.Add') }}
-        </el-button>
-        <el-button
-          style="margin: 10px"
-          @click="uploadAttachmentFormVisible = true"
-          >
-          {{ $t('AdminAttachment.Upload') }}
-        </el-button>
         <el-table
           :data="attachmentList"
           table-layout="fixed"

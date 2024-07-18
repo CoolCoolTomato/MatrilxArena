@@ -1,24 +1,28 @@
 <template>
   <el-container>
-    <el-header style="display: flex">
-      <h2 style="color: var(--el-text-color-primary);">
-        {{ $t('AdminNodeDetail.NodeDetail') }} /
-        {{ $t('AdminNodeDetail.Host') }}: {{dockerNode.Host}} |
-        {{ $t('AdminNodeDetail.Port') }}: {{dockerNode.Port}}
-      </h2>
-      <div style="flex-grow: 1;" />
-      <div style="display: flex; align-items: center">
-        <el-button
-          @click="pullImageFormVisible = true"
-          type="primary"
+    <el-header>
+      <div style="display: flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">
+          {{ $t('AdminNodeDetail.NodeDetail') }} /
+          {{ $t('AdminNodeDetail.Host') }}: {{dockerNode.Host}} |
+          {{ $t('AdminNodeDetail.Port') }}: {{dockerNode.Port}}
+        </h2>
+        <div style="flex-grow: 1;" />
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="pullImageFormVisible = true"
+            type="primary"
           >
-          {{ $t('AdminNodeDetail.PullImage') }}
-        </el-button>
-        <el-button
-          @click="goBack"
+            {{ $t('AdminNodeDetail.PullImage') }}
+          </el-button>
+          <el-button
+            style="margin: 10px;"
+            @click="goBack"
           >
-          {{ $t('AdminNodeDetail.Back') }}
-        </el-button>
+            {{ $t('AdminNodeDetail.Back') }}
+          </el-button>
+        </div>
       </div>
     </el-header>
     <el-main>

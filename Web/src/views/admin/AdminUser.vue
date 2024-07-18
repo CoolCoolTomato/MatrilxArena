@@ -1,17 +1,22 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminUser.UserManager') }}</h2>
+      <div style="display: flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminUser.UserManager') }}</h2>
+        <div style="flex-grow: 1;"></div>
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="createUserFormVisible = true"
+            type="primary"
+          >
+            {{ $t('AdminUser.Add') }}
+          </el-button>
+        </div>
+      </div>
     </el-header>
     <el-main>
       <el-scrollbar>
-        <el-button
-          style="margin: 10px"
-          @click="createUserFormVisible = true"
-          type="primary"
-          >
-          {{ $t('AdminUser.Add') }}
-        </el-button>
         <el-table
           :data="userList"
           table-layout="fixed"
@@ -23,7 +28,7 @@
               {{ formatRole(scope.row.Role) }}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="300px">
+          <el-table-column fixed="right" :label="$t('AdminUser.Operations')" width="230">
             <template #default=scope>
               <el-button
                 @click="OpenUpdateUserForm(scope.row)"

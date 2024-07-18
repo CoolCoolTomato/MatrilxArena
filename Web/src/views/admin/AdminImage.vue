@@ -1,17 +1,22 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">{{ t('AdminImage.ImageManager') }}</h2>
+      <div style="display: flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">{{ t('AdminImage.ImageManager') }}</h2>
+        <div style="flex-grow: 1;"></div>
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="createImageFormVisible = true"
+            type="primary"
+          >
+            {{ t('AdminImage.Add') }}
+          </el-button>
+        </div>
+      </div>
     </el-header>
     <el-main>
       <el-scrollbar>
-        <el-button
-          style="margin: 10px"
-          @click="createImageFormVisible = true"
-          type="primary"
-          >
-          {{ t('AdminImage.Add') }}
-        </el-button>
         <el-table
           :data="imageList"
           table-layout="fixed"
@@ -23,7 +28,7 @@
               {{ formatRepository(scope.row.Repository) }}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" :label="t('AdminImage.Operations')" width="300px">
+          <el-table-column fixed="right" :label="t('AdminImage.Operations')" width="230">
             <template #default=scope>
               <el-button
                 @click="OpenUpdateImageForm(scope.row)"

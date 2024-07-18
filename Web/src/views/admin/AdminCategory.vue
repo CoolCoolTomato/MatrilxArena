@@ -1,23 +1,28 @@
 <template>
   <el-container>
     <el-header>
-      <h2 style="color: var(--el-text-color-primary)">{{ $t('AdminCategory.CategoryManager') }}</h2>
+      <div style="display: flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminCategory.CategoryManager') }}</h2>
+        <div style="flex-grow: 1;"></div>
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="createCategoryFormVisible = true"
+            type="primary"
+          >
+            {{ $t('AdminCategory.Add') }}
+          </el-button>
+          <el-switch
+            style="margin: 10px;"
+            @change="switchAllowSort"
+            v-model="allowSort"
+            :active-text="$t('AdminCategory.AllowSort')"
+          />
+        </div>
+      </div>
     </el-header>
     <el-main>
       <el-scrollbar>
-        <el-button
-          style="margin: 10px"
-          @click="createCategoryFormVisible = true"
-          type="primary"
-          >
-          {{ $t('AdminCategory.Add') }}
-        </el-button>
-        <el-switch
-          style="margin: 10px"
-          @change="switchAllowSort"
-          v-model="allowSort"
-          :active-text="$t('AdminCategory.AllowSort')"
-        />
         <el-table
           id="categoryListTable"
           :data="categoryList"
@@ -26,7 +31,7 @@
         >
           <el-table-column prop="Name" :label="$t('AdminCategory.Name')"/>
           <el-table-column prop="Order" :label="$t('AdminCategory.Order')"/>
-          <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="300px">
+          <el-table-column fixed="right" :label="$t('AdminCategory.Operations')" width="230px">
             <template #default=scope>
               <el-button
                 @click="OpenUpdateCategoryForm(scope.row)"
