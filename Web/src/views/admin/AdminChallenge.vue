@@ -854,22 +854,22 @@ export default {
         "fileName": "",
         "file": null
       }
-      this.$refs.upload.clearFiles();
+      this.$refs.upload.clearFiles()
     },
     handleFileChange(file) {
       if (file) {
-        this.uploadAttachmentData.fileName = file.name;
-        this.uploadAttachmentData.file = file.raw;
+        this.uploadAttachmentData.fileName = file.name
+        this.uploadAttachmentData.file = file.raw
       } else {
-        this.uploadAttachmentData.fileName = '';
-        this.uploadAttachmentData.file = null;
+        this.uploadAttachmentData.fileName = ''
+        this.uploadAttachmentData.file = null
       }
     },
     handleExceed(files) {
-      const uploadInstance = this.$refs.upload;
-      uploadInstance.clearFiles();
-      const file = files[0];
-      uploadInstance.handleStart(file);
+      const uploadInstance = this.$refs.upload
+      uploadInstance.clearFiles()
+      const file = files[0]
+      uploadInstance.handleStart(file)
     }
   },
   mounted() {

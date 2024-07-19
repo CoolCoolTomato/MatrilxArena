@@ -7,7 +7,7 @@
           {{ $t('AdminNodeDetail.Host') }}: {{dockerNode.Host}} |
           {{ $t('AdminNodeDetail.Port') }}: {{dockerNode.Port}}
         </h2>
-        <div style="flex-grow: 1;" />
+        <div style="flex-grow: 1;"></div>
         <div style="margin-right: 50px;">
           <el-button
             style="margin: 10px;"
