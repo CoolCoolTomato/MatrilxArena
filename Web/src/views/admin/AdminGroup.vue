@@ -25,12 +25,12 @@
         <el-table-column prop="Description" :label="t('AdminGroup.Description')"/>
         <el-table-column :label="t('AdminGroup.Users')">
           <template #default="scope">
-            {{ scope.row.Users === null ? 0 : scope.row.Users.length }}
+            {{ scope.row.Users.length }}
           </template>
         </el-table-column>
         <el-table-column :label="t('AdminGroup.GroupChallenges')">
           <template #default="scope">
-            {{ scope.row.GroupChallenges === null ? 0 : scope.row.GroupChallenges.length }}
+            {{ scope.row.GroupChallenges.length }}
           </template>
         </el-table-column>
         <el-table-column fixed="right" :label="t('AdminGroup.Operations')" width="300">

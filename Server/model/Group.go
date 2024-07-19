@@ -15,7 +15,11 @@ type Group struct {
 
 func GetGroupList() ([]Group, error) {
 	var groupList []Group
-	err := database.GetDatabase().Model(&Group{}).Find(&groupList).Error
+	err := database.GetDatabase().Model(&Group{}).
+        Preload("GroupChallenges").
+        Preload("Users").
+        Find(&groupList).
+        Error
 	if err != nil {
 		return nil, err
 	}
@@ -23,17 +27,36 @@ func GetGroupList() ([]Group, error) {
 }
 
 func (group *Group) GetGroup() error {
-	return database.GetDatabase().Model(&Group{}).Where("ID = ?", group.ID).First(&group).Error
+	return database.GetDatabase().Model(&Group{}).
+        Preload("GroupChallenges").
+        Preload("Users").
+        Where("ID = ?", group.ID).
+        First(&group).
+        Error
 }
 
 func (group *Group) CreateGroup() error {
-	return database.GetDatabase().Model(&Group{}).Create(&group).Error
+	return database.GetDatabase().Model(&Group{}).
+        Preload("GroupChallenges").
+        Preload("Users").
+        Create(&group).
+        Error
 }
 
 func (group *Group) UpdateGroup() error {
-	return database.GetDatabase().Model(&Group{}).Where("ID = ?", group.ID).Updates(&group).Error
+	return database.GetDatabase().Model(&Group{}).
+        Preload("GroupChallenges").
+        Preload("Users").
+        Where("ID = ?", group.ID).
+        Updates(&group).
+        Error
 }
 
 func (group *Group) DeleteGroup() error {
-	return database.GetDatabase().Model(&Group{}).Where("ID = ?", group.ID).Delete(&group).Error
+	return database.GetDatabase().Model(&Group{}).
+        Preload("GroupChallenges").
+        Preload("Users").
+        Where("ID = ?", group.ID).
+        Delete(&group).
+        Error
 }
