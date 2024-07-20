@@ -81,3 +81,19 @@ func (user *User) AddChallenge(challenge *Challenge) error {
 func (user *User) DeleteChallenge(challenge *Challenge) error {
 	return database.GetDatabase().Model(user).Association("Challenges").Delete(challenge)
 }
+
+func (user *User) AddGroup(group *Group) error {
+	return database.GetDatabase().Model(user).Association("Groups").Append(group)
+}
+
+func (user *User) DeleteGroup(group *Group) error {
+	return database.GetDatabase().Model(user).Association("Groups").Delete(group)
+}
+
+func (user *User) AddGroupChallenge(groupChallenge *GroupChallenge) error {
+	return database.GetDatabase().Model(user).Association("GroupChallenges").Append(groupChallenge)
+}
+
+func (user *User) DeleteGroupChallenge(groupChallenge *GroupChallenge) error {
+	return database.GetDatabase().Model(user).Association("GroupChallenges").Delete(groupChallenge)
+}
