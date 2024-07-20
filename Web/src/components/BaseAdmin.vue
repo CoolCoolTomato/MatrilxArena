@@ -17,67 +17,69 @@
       <el-main style="padding: 0">
         <el-container>
           <el-aside :width="isMenuOpen ? '190px' : '64px'">
-            <el-menu
-              :collapse="!isMenuOpen"
-              style="border: none;"
-              router
-            >
-              <el-menu-item @click="toggleSidebar">
-                <el-icon>
-                  <Menu/>
-                </el-icon>
-                <template #title>{{ $t('BaseAdmin.Menu') }}</template>
-              </el-menu-item>
-              <el-menu-item index="/admin">
-                <el-icon>
-                  <Home/>
-                </el-icon>
-                <template #title>{{ $t('BaseAdmin.Index') }}</template>
-              </el-menu-item>
-              <el-sub-menu index="docker">
-                <template #title>
+            <el-scrollbar>
+              <el-menu
+                :collapse="!isMenuOpen"
+                style="border: none;"
+                router
+              >
+                <el-menu-item @click="toggleSidebar">
                   <el-icon>
-                    <Docker/>
+                    <Menu/>
                   </el-icon>
-                  <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Docker') }}</el-text>
-                </template>
-                <el-menu-item index="/admin/node">
-                  <template #title>{{ $t('BaseAdmin.Node') }}</template>
+                  <template #title>{{ $t('BaseAdmin.Menu') }}</template>
                 </el-menu-item>
-                <el-menu-item index="/admin/image">
-                  <template #title>{{ $t('BaseAdmin.Image') }}</template>
-                </el-menu-item>
-              </el-sub-menu>
-              <el-sub-menu index="challenge">
-                <template #title>
+                <el-menu-item index="/admin">
                   <el-icon>
-                    <Challenge/>
+                    <Home/>
                   </el-icon>
-                  <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Challenge') }}</el-text>
-                </template>
-                <el-menu-item index="/admin/category">
-                  <template #title>{{ $t('BaseAdmin.Category') }}</template>
+                  <template #title>{{ $t('BaseAdmin.Index') }}</template>
                 </el-menu-item>
-                <el-menu-item index="/admin/challenge">
-                  <template #title>{{ $t('BaseAdmin.Challenge') }}</template>
+                <el-sub-menu index="docker">
+                  <template #title>
+                    <el-icon>
+                      <Docker/>
+                    </el-icon>
+                    <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Docker') }}</el-text>
+                  </template>
+                  <el-menu-item index="/admin/node">
+                    <template #title>{{ $t('BaseAdmin.Node') }}</template>
+                  </el-menu-item>
+                  <el-menu-item index="/admin/image">
+                    <template #title>{{ $t('BaseAdmin.Image') }}</template>
+                  </el-menu-item>
+                </el-sub-menu>
+                <el-sub-menu index="challenge">
+                  <template #title>
+                    <el-icon>
+                      <Challenge/>
+                    </el-icon>
+                    <el-text style="color: var(--el-text-color-primary);">{{ $t('BaseAdmin.Challenge') }}</el-text>
+                  </template>
+                  <el-menu-item index="/admin/category">
+                    <template #title>{{ $t('BaseAdmin.Category') }}</template>
+                  </el-menu-item>
+                  <el-menu-item index="/admin/challenge">
+                    <template #title>{{ $t('BaseAdmin.Challenge') }}</template>
+                  </el-menu-item>
+                  <el-menu-item index="/admin/group">
+                    <template #title>{{ $t('BaseAdmin.Group') }}</template>
+                  </el-menu-item>
+                </el-sub-menu>
+                <el-menu-item index="/admin/attachment">
+                  <el-icon>
+                    <Attachment/>
+                  </el-icon>
+                  <template #title>{{ $t('BaseAdmin.Attachment') }}</template>
                 </el-menu-item>
-                <el-menu-item index="/admin/group">
-                  <template #title>{{ $t('BaseAdmin.Group') }}</template>
+                <el-menu-item index="/admin/user">
+                  <el-icon>
+                    <User/>
+                  </el-icon>
+                  <template #title>{{ $t('BaseAdmin.User') }}</template>
                 </el-menu-item>
-              </el-sub-menu>
-              <el-menu-item index="/admin/attachment">
-                <el-icon>
-                  <Attachment/>
-                </el-icon>
-                <template #title>{{ $t('BaseAdmin.Attachment') }}</template>
-              </el-menu-item>
-              <el-menu-item index="/admin/user">
-                <el-icon>
-                  <User/>
-                </el-icon>
-                <template #title>{{ $t('BaseAdmin.User') }}</template>
-              </el-menu-item>
-            </el-menu>
+              </el-menu>  
+            </el-scrollbar>
           </el-aside>
           <el-main>
             <RouterView/>

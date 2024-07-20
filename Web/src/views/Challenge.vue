@@ -1,44 +1,46 @@
 <template>
   <el-container>
     <el-aside :width="isMenuOpen ? '190px' : '64px'">
-      <el-menu :collapse="!isMenuOpen" style="border: none;" router>
-        <el-menu-item @click="toggleSidebar">
-          <el-icon>
-            <Menu />
-          </el-icon>
-          <template #title>{{ $t('Challenge.Menu') }}</template>
-        </el-menu-item>
-        <el-sub-menu index="challenge">
-          <template #title>
+      <el-scrollbar>
+        <el-menu :collapse="!isMenuOpen" style="border: none;" router>
+          <el-menu-item @click="toggleSidebar">
             <el-icon>
-              <Category/>
+              <Menu />
             </el-icon>
-            <el-text style="color: var(--el-text-color-primary);">{{ $t('Challenge.Category') }}</el-text>
-          </template>
-          <el-menu-item index="/challenge">
-            <template #title>{{ $t('Challenge.All') }}</template>
+            <template #title>{{ $t('Challenge.Menu') }}</template>
           </el-menu-item>
-          <el-menu-item
-            v-for="category in categoryList"
-            :key="category.ID"
-            :index="'/challenge/' + category.Name"
-          >
-            <template #title>{{ category.Name }}</template>
+          <el-sub-menu index="challenge">
+            <template #title>
+              <el-icon>
+                <Category/>
+              </el-icon>
+              <el-text style="color: var(--el-text-color-primary);">{{ $t('Challenge.Category') }}</el-text>
+            </template>
+            <el-menu-item index="/challenge">
+              <template #title>{{ $t('Challenge.All') }}</template>
+            </el-menu-item>
+            <el-menu-item
+              v-for="category in categoryList"
+              :key="category.ID"
+              :index="'/challenge/' + category.Name"
+            >
+              <template #title>{{ category.Name }}</template>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-menu-item @click="userChallengeVisible = true">
+            <el-icon>
+              <Finish/>
+            </el-icon>
+            <template #title>{{ $t('Challenge.Solved') }}</template>
           </el-menu-item>
-        </el-sub-menu>
-        <el-menu-item @click="userChallengeVisible = true">
-          <el-icon>
-            <Finish/>
-          </el-icon>
-          <template #title>{{ $t('Challenge.Solved') }}</template>
-        </el-menu-item>
-        <el-menu-item @click="userContainerListVisible = true">
-          <el-icon>
-            <Container/>
-          </el-icon>
-          <template #title>{{ $t('Challenge.Containers') }}</template>
-        </el-menu-item>
-      </el-menu>
+          <el-menu-item @click="userContainerListVisible = true">
+            <el-icon>
+              <Container/>
+            </el-icon>
+            <template #title>{{ $t('Challenge.Containers') }}</template>
+          </el-menu-item>
+        </el-menu>
+      </el-scrollbar>
     </el-aside>
     <el-main>
       <el-scrollbar style="width: 80%; left: 10%;">
