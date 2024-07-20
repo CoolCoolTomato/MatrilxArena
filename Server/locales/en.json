@@ -110,6 +110,11 @@
     "UpdateGroupSuccess": "Update group success",
     "DeleteGroupFail": "Delete group fail",
     "DeleteGroupSuccess": "Delete group success",
+    "GetUserFail": "Get user fail",
+    "AddUserFail": "Add user fail",
+    "AddUserSuccess": "Add user success",
+    "RemoveUserFail": "Remove user fail",
+    "RemoveUserSuccess": "Remove user success",
     "InvalidArgument": "Invalid argument"
   },
   "GroupChallenge": {

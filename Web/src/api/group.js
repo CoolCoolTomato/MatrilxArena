@@ -20,12 +20,22 @@ function DeleteGroup(data) {
     return apiClient.post("/group/DeleteGroup", data).then(handleResponse).catch(handleError)
 }
 
+function AddGroupUser(data) {
+    return apiClient.post("/group/AddGroupUser", data).then(handleResponse).catch(handleError)
+}
+
+function RemoveGroupUser(data) {
+    return apiClient.post("/group/DelRemoveGroupUsereteGroup", data).then(handleResponse).catch(handleError)
+}
+
 const groupApi = {
   GetGroupList,
   GetGroup,
   CreateGroup,
   UpdateGroup,
-  DeleteGroup
+  DeleteGroup,
+  AddGroupUser,
+  RemoveGroupUser
 }
 
 export default groupApi

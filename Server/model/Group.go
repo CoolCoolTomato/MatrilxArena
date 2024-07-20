@@ -60,3 +60,11 @@ func (group *Group) DeleteGroup() error {
         Delete(&group).
         Error
 }
+
+func (group *Group) AddUser(user *User) error {
+    return database.GetDatabase().Model(group).Association("Users").Append(user)
+}
+
+func (group *Group) DeleteUser(user *User) error {
+    return database.GetDatabase().Model(group).Association("Users").Delete(user)
+}

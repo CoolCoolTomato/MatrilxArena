@@ -110,6 +110,11 @@
     "UpdateGroupSuccess": "题集更新成功",
     "DeleteGroupFail": "题集删除失败",
     "DeleteGroupSuccess": "题集删除成功",
+    "GetUserFail": "用户获取失败",
+    "AddUserFail": "用户添加失败",
+    "AddUserSuccess": "用户添加成功",
+    "RemoveUserFail": "用户移除失败",
+    "RemoveUserSuccess": "用户移除成功",
     "InvalidArgument": "参数错误"
   },
   "GroupChallenge": {
