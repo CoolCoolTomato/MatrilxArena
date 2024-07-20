@@ -179,7 +179,7 @@
       </el-dialog>
       <el-dialog
         v-model="userChallengeVisible"
-        :title="$t('Challenge.SolvedChallenge')"
+        :title="$t('Challenge.SolvedChallenges')"
         width="70%"
       >
         <el-scrollbar style="height: 60vh;">

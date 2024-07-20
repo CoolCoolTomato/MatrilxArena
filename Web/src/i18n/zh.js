@@ -135,6 +135,8 @@ export default {
   "AdminGroupDetail": {
     "GroupDetail": "题集详情",
     "Back": "返回",
+    "Challenges": "题目",
+    "Users": "用户",
     "Add": "添加",
     "Null": "Null",
     "Detail": "详情",
@@ -171,7 +173,15 @@ export default {
     "PleaseInputProtocol": "请输入协议",
     "DuplicateSpecifiedPort": "重复的端口协议",
     "PleaseInputCommand": "请输入命令",
-    "DuplicateCommand": "重复的命令"
+    "DuplicateCommand": "重复的命令",
+    "Username": "用户名",
+    "Email": "邮箱",
+    "SolvedChallenges": "已解决的题目",
+    "Remove": "移除",
+    "AddUser": "添加用户",
+    "RemoveUser": "移除用户",
+    "AreYouConfirmToRemoveTheUser": "你确认要移除这个用户吗？",
+    "UserDetail": "用户详情",
   },
   "AdminImage": {
     "ImageManager": "镜像管理",
@@ -296,7 +306,7 @@ export default {
     "Delay": "延时",
     "InputFlag": "请输入flag",
     "Submit": "提交",
-    "SolvedChallenge": "已解决的题目",
+    "SolvedChallenges": "已解决的题目",
     "ContainerList": "容器列表",
     "NoContainerIsRunning": "没有容器正在运行",
     "DownloadAttachmentFail": "附件下载失败"

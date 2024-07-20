@@ -25,7 +25,7 @@ function AddGroupUser(data) {
 }
 
 function RemoveGroupUser(data) {
-    return apiClient.post("/group/DelRemoveGroupUsereteGroup", data).then(handleResponse).catch(handleError)
+    return apiClient.post("/group/RemoveGroupUser", data).then(handleResponse).catch(handleError)
 }
 
 const groupApi = {

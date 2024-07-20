@@ -135,6 +135,8 @@ export default {
   "AdminGroupDetail": {
     "GroupDetail": "Group Detail",
     "Back": "Back",
+    "Challenges": "Challenges",
+    "Users": "Users",
     "Add": "Add",
     "Null": "Null",
     "Detail": "Detail",
@@ -171,7 +173,15 @@ export default {
     "PleaseInputProtocol": "Please input protocol",
     "DuplicateSpecifiedPort": "Duplicate specifiedPort",
     "PleaseInputCommand": "Please input command",
-    "DuplicateCommand": "Duplicate command"
+    "DuplicateCommand": "Duplicate command",
+    "Username": "Username",
+    "Email": "Email",
+    "SolvedChallenges": "Solved challenges",
+    "Remove": "Remove",
+    "AddUser": "Add User",
+    "RemoveUser": "Remove User",
+    "AreYouConfirmToRemoveTheUser": "Are you confirm to remove the user?",
+    "UserDetail": "User Detail",
   },
   "AdminImage": {
     "ImageManager": "Image Manager",
@@ -296,7 +306,7 @@ export default {
     "Delay": "Delay",
     "InputFlag": "Input flag",
     "Submit": "Submit",
-    "SolvedChallenge": "Solved Challenge",
+    "SolvedChallenges": "Solved Challenges",
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"

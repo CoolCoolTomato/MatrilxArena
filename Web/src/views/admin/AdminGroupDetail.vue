@@ -18,16 +18,19 @@
       v-model="activeTab"
       class="el-tabs-custom"
       >
-      <el-tab-pane label="Challenges" name="challenges">
-        <el-button
-          @click="OpenCreateGroupChallengeForm"
-          >
-          {{ $t('AdminGroupDetail.Add') }}
-        </el-button>
+      <el-tab-pane :label="$t('AdminGroupDetail.Challenges')" name="challenges">
+        <div style="height: 50px; display: flex; align-items: center;">
+          <el-button
+            @click="OpenCreateGroupChallengeForm"
+            type="primary"
+            >
+            {{ $t('AdminGroupDetail.Add') }}
+          </el-button>
+        </div>
         <el-table
           :data="groupChallengeQueryList"
           table-layout="fixed"
-          height="100%"
+          height="calc(100% - 50px)"
           >
           <el-table-column prop="Title" :label="$t('AdminGroupDetail.Title')"/>
           <el-table-column prop="Description" :label="$t('AdminGroupDetail.Description')"/>
@@ -62,8 +65,42 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="Users" name="users">
-        
+      <el-tab-pane :label="$t('AdminGroupDetail.Users')" name="users">
+        <div style="height: 50px; display: flex; align-items: center;">
+          <el-button
+            @click="OpenAddGroupUserForm"
+            type="primary"
+            >
+            {{ $t('AdminGroupDetail.Add') }}
+          </el-button>
+        </div>
+        <el-table
+          :data="group.Users"
+          table-layout="fixed"
+          height="calc(100% - 50px)"
+          >
+          <el-table-column prop="Username" :label="$t('AdminGroupDetail.Username')"/>
+          <el-table-column prop="Email" :label="$t('AdminGroupDetail.Email')"/>
+          <el-table-column  :label="$t('AdminGroupDetail.SolvedChallenges')">
+            <template #default="scope">
+              {{ scope.row.GroupChallenges.length }}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" :label="$t('AdminGroupDetail.Operations')" width="230">
+            <template #default=scope>
+              <el-button
+                @click="OpenGroupUserDetailForm(scope.row)"
+                >
+                {{ $t('AdminGroupDetail.Detail') }}
+              </el-button>
+              <el-button
+                @click="OpenRemoveGroupUserForm(scope.row)"
+                >
+                {{ $t('AdminGroupDetail.Remove') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -511,6 +548,82 @@
         </el-button>
       </template>
     </el-dialog>
+    <el-dialog
+      v-model="addGroupUserFormVisible"
+      :title="$t('AdminGroupDetail.AddUser')"
+      width="500"
+      @close="ClearAddGroupUserForm"
+      >
+      <el-form :model="addGroupUserData">
+        <el-form-item>
+          <el-select
+            v-model="addGroupUserData.UserID"
+            filterable
+            :placeholder="$t('AdminGroupDetail.Select')"
+            >
+            <el-option
+              v-for="user in userList"
+              :key="user.ID"
+              :label="user.Username"
+              :value="user.ID"
+              >
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button
+          @click="AddGroupUser"
+          type="primary"
+          >
+          {{ $t('AdminGroupDetail.Submit') }}
+        </el-button>
+        <el-button
+          @click="addGroupUserFormVisible = false"
+          >
+          {{ $t('AdminGroupDetail.Cancel') }}
+        </el-button>
+      </template>
+    </el-dialog>
+    <el-dialog
+      v-model="removeGroupUserFormVisible"
+      :title="$t('AdminGroupDetail.RemoveUser')"
+      width="500"
+      @close="ClearRemoveGroupUserForm"
+      >
+      <el-text>{{ $t('AdminGroupDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
+      <template #footer>
+        <el-button
+          @click="RemoveGroupUser"
+          type="primary"
+          >
+          {{ $t('AdminGroupDetail.Confirm') }}
+        </el-button>
+        <el-button
+          @click="removeGroupUserFormVisible = false"
+          >
+          {{ $t('AdminGroupDetail.Cancel') }}
+        </el-button>
+      </template>
+    </el-dialog>
+    <el-dialog
+      v-model="groupUserDetailVisible"
+      :title="$t('AdminGroupDetail.UserDetail')"
+      width="500"
+      @close="ClearGroupUserDetail"
+      >
+      <el-card>
+        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Username') }}: {{ groupUserDetail.Username }}</p>
+        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Email') }}: {{ groupUserDetail.Email }}</p>
+        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.SolvedChallenges') }}: </p>
+        <div v-for="groupChallenge in groupUserDetail.GroupChallenges">
+          <el-text>{{ groupChallenge.Title }}</el-text>
+        </div>
+      </el-card>
+      <template #footer>
+        <el-button @click="groupUserDetailVisible = false">{{ $t('AdminGroupDetail.Close') }}</el-button>
+      </template>
+    </el-dialog>
   </el-main>
 </template>
 <script>
@@ -519,6 +632,7 @@ import groupChallengeApi from "@/api/groupChallenge.js"
 import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
+import userApi from "@/api/user.js"
 import {ElMessage} from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -591,7 +705,24 @@ export default {
       uploadAttachmentData: {
         "fileName": "",
         "file": null
-      }
+      },
+      userList: [],
+      groupUserDetailVisible: false,
+      groupUserDetail: {
+        "Username": "",
+        "Email": "",
+        "GroupChallenges": []
+      },
+      addGroupUserFormVisible: false,
+      addGroupUserData: {
+        "GroupID": 0,
+        "UserID": null
+      },
+      removeGroupUserFormVisible: false,
+      removeGroupUserData: {
+        "GroupID": 0,
+        "UserID": null
+      },
     }
   },
   methods: {
@@ -916,7 +1047,87 @@ export default {
       uploadInstance.clearFiles()
       const file = files[0]
       uploadInstance.handleStart(file)
-    }
+    },
+
+    GetUserList() {
+      userApi.GetUserList().then(res => {
+        if (res.code === 0) {
+          this.userList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenGroupUserDetailForm(row) {
+      this.groupUserDetail = {
+        "Username": row.Username,
+        "Email": row.Email,
+        "GroupChallenges": row.GroupChallenges
+      }
+      this.groupUserDetailVisible = true
+    },
+    ClearGroupUserDetail() {
+      this.groupUserDetail = {
+        "Username": "",
+        "Email": "",
+        "GroupChallenges": []
+      }
+    },
+    AddGroupUser() {
+      groupApi.AddGroupUser(this.addGroupUserData).then(res => {
+        if (res.code === 0) {
+          this.addGroupUserFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetGroup()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenAddGroupUserForm() {
+      this.addGroupUserData.GroupID = this.group.ID
+      this.addGroupUserFormVisible = true
+    },
+    ClearAddGroupUserForm() {
+      this.addGroupUserData = {
+        "GroupID": 0,
+        "UserID": null
+      }
+    },
+    RemoveGroupUser() {
+      groupApi.RemoveGroupUser(this.removeGroupUserData).then(res => {
+        if (res.code === 0) {
+          this.removeGroupUserFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetGroup()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenRemoveGroupUserForm(row) {
+      this.removeGroupUserData.GroupID = this.group.ID
+      this.removeGroupUserData.UserID = row.ID
+      this.removeGroupUserFormVisible = true
+    },
+    ClearRemoveGroupUserForm() {
+      this.removeGroupUserData = {
+        "GroupID": 0,
+        "UserID": null
+      }
+    },
   },
   mounted() {
     this.group.ID = Number(this.$route.params.id)
@@ -925,6 +1136,8 @@ export default {
     this.GetImageList()
     this.GetAttachmentList()
     this.GetGroupChallengeList()
+    this.GetUserList()
+
   }
 }
 </script>
