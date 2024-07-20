@@ -29,7 +29,7 @@ func GetGroupList() ([]Group, error) {
 func (group *Group) GetGroup() error {
 	return database.GetDatabase().Model(&Group{}).
         Preload("GroupChallenges").
-        Preload("Users").
+        Preload("Users.GroupChallenges", "group_id = ?", group.ID).
         Where("ID = ?", group.ID).
         First(&group).
         Error
