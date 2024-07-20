@@ -17,6 +17,7 @@ func RouteInit() {
 	route.SetChallengeRoute(route.Route)
     route.SetGroupRoute(route.Route)
     route.SetGroupChallengeRoute(route.Route)
+    route.SetGroupUserRoute(route.Route)
 	route.SetDockerNodeRoute(route.Route)
 	route.SetUserContainerRoute(route.Route)
 	route.SetUserChallengeRoute(route.Route)

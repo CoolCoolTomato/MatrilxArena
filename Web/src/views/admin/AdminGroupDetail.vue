@@ -629,6 +629,7 @@
 <script>
 import groupApi from "@/api/group.js"
 import groupChallengeApi from "@/api/groupChallenge.js"
+import groupUser from "@/api/groupUser.js"
 import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
@@ -1076,7 +1077,7 @@ export default {
       }
     },
     AddGroupUser() {
-      groupApi.AddGroupUser(this.addGroupUserData).then(res => {
+      groupUser.AddGroupUser(this.addGroupUserData).then(res => {
         if (res.code === 0) {
           this.addGroupUserFormVisible = false
           ElMessage({
@@ -1102,7 +1103,7 @@ export default {
       }
     },
     RemoveGroupUser() {
-      groupApi.RemoveGroupUser(this.removeGroupUserData).then(res => {
+      groupUser.RemoveGroupUser(this.removeGroupUserData).then(res => {
         if (res.code === 0) {
           this.removeGroupUserFormVisible = false
           ElMessage({

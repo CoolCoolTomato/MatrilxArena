@@ -19,7 +19,5 @@ func SetGroupRoute(r *gin.Engine) {
         adminGroup.POST("/CreateGroup", api.CreateGroup)
 		adminGroup.POST("/UpdateGroup", api.UpdateGroup)
 		adminGroup.POST("/DeleteGroup", api.DeleteGroup)
-        adminGroup.POST("/AddGroupUser", api.AddGroupUser)
-        adminGroup.POST("/RemoveGroupUser", api.RemoveGroupUser)
     }
 }
