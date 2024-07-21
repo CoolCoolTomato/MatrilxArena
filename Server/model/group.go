@@ -9,6 +9,7 @@ type Group struct {
 	gorm.Model
 	Name            string
 	Description     string
+	Public          bool
 	GroupChallenges []GroupChallenge `gorm:"foreignKey:GroupID"`
 	Users           []User           `gorm:"many2many:group_user"`
 }
@@ -16,10 +17,10 @@ type Group struct {
 func GetGroupList() ([]Group, error) {
 	var groupList []Group
 	err := database.GetDatabase().Model(&Group{}).
-        Preload("GroupChallenges").
-        Preload("Users").
-        Find(&groupList).
-        Error
+		Preload("GroupChallenges").
+		Preload("Users").
+		Find(&groupList).
+		Error
 	if err != nil {
 		return nil, err
 	}
@@ -28,43 +29,44 @@ func GetGroupList() ([]Group, error) {
 
 func (group *Group) GetGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-        Preload("GroupChallenges").
-        Preload("Users.GroupChallenges", "group_id = ?", group.ID).
-        Where("ID = ?", group.ID).
-        First(&group).
-        Error
+		Preload("GroupChallenges").
+		Preload("Users.GroupChallenges", "group_id = ?", group.ID).
+		Where("ID = ?", group.ID).
+		First(&group).
+		Error
 }
 
 func (group *Group) CreateGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-        Preload("GroupChallenges").
-        Preload("Users").
-        Create(&group).
-        Error
+		Preload("GroupChallenges").
+		Preload("Users").
+		Create(&group).
+		Error
 }
 
 func (group *Group) UpdateGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-        Preload("GroupChallenges").
-        Preload("Users").
-        Where("ID = ?", group.ID).
-        Updates(&group).
-        Error
+		Select("Name", "Description", "Public").
+		Preload("GroupChallenges").
+		Preload("Users").
+		Where("ID = ?", group.ID).
+		Updates(&group).
+		Error
 }
 
 func (group *Group) DeleteGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-        Preload("GroupChallenges").
-        Preload("Users").
-        Where("ID = ?", group.ID).
-        Delete(&group).
-        Error
+		Preload("GroupChallenges").
+		Preload("Users").
+		Where("ID = ?", group.ID).
+		Delete(&group).
+		Error
 }
 
 func (group *Group) AddUser(user *User) error {
-    return database.GetDatabase().Model(group).Association("Users").Append(user)
+	return database.GetDatabase().Model(group).Association("Users").Append(user)
 }
 
 func (group *Group) DeleteUser(user *User) error {
-    return database.GetDatabase().Model(group).Association("Users").Delete(user)
+	return database.GetDatabase().Model(group).Association("Users").Delete(user)
 }

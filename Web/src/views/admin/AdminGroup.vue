@@ -33,6 +33,16 @@
             {{ scope.row.Users.length }}
           </template>
         </el-table-column>
+        <el-table-column :label="t('AdminGroup.Public')">
+          <template #default="scope">
+            <el-text v-if="scope.row.Public">
+              {{ t('AdminGroup.True') }}
+            </el-text>
+            <el-text v-else>
+              {{ t('AdminGroup.False') }}
+            </el-text>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" :label="t('AdminGroup.Operations')" width="300">
           <template #default=scope>
             <el-button
@@ -66,6 +76,20 @@
           <el-form-item :label="t('AdminGroup.Description')" :label-width="labelWidth">
             <el-input v-model="createGroupData.Description" type="textarea" autosize/>
           </el-form-item>
+          <el-form-item :label="t('AdminGroup.Public')" :label-width="labelWidth">
+            <el-select v-model="createGroupData.Public">
+              <el-option
+                key="true"
+                :label="t('AdminGroup.True')"
+                :value="true"
+                />
+              <el-option
+                key="false"
+                :label="t('AdminGroup.False')"
+                :value="false"
+              />
+            </el-select>
+          </el-form-item>
         </el-form>
         <template #footer>
           <el-button
@@ -93,6 +117,20 @@
           </el-form-item>
           <el-form-item :label="t('AdminGroup.Description')" :label-width="labelWidth">
             <el-input v-model="updateGroupData.Description" type="textarea" autosize/>
+          </el-form-item>
+          <el-form-item :label="t('AdminGroup.Public')" :label-width="labelWidth">
+            <el-select v-model="updateGroupData.Public">
+              <el-option
+                key="true"
+                :label="t('AdminGroup.True')"
+                :value="true"
+              />
+              <el-option
+                key="false"
+                :label="t('AdminGroup.False')"
+                :value="false"
+              />
+            </el-select>
           </el-form-item>
         </el-form>
         <template #footer>
@@ -151,12 +189,14 @@ export default {
       createGroupData: {
         "Name": "",
         "Description": "",
+        "Public": false
       },
       updateGroupFormVisible: false,
       updateGroupData: {
         "ID": 0,
         "Name": "",
         "Description": "",
+        "Public": false
       },
       deleteGroupFormVisible: false,
       deleteGroupData: {
@@ -199,6 +239,7 @@ export default {
       this.createGroupData = {
         "Name": "",
         "Description": "",
+        "Public": false
       }
     },
     UpdateGroup() {
@@ -222,6 +263,7 @@ export default {
         "ID": row.ID,
         "Name": row.Name,
         "Description": row.Description,
+        "Public": row.Public
       }
       this.updateGroupFormVisible = true
     },
@@ -230,6 +272,7 @@ export default {
         "ID": 0,
         "Name": "",
         "Description": "",
+        "Public": false
       }
     },
     DeleteGroup() {
