@@ -14,7 +14,7 @@
           </div>
         </el-affix>
         <el-row>
-          <el-col v-for="group in groupList" :span="8">
+          <el-col v-for="group in visibleUserGroupList" :span="8">
             <div class="group">
               <h2 style="color: var(--el-text-color-primary)">{{ group.Name }}</h2>
               <el-text truncated>{{ group.Description }}</el-text>
@@ -26,7 +26,7 @@
   </el-container>
 </template>
 <script>
-import groupApi from "@/api/group.js"
+import userGroupApi from "@/api/userGroup.js"
 import { ElMessage } from "element-plus"
 import {useI18n} from "vue-i18n"
 import Search from "@/components/icons/Search.vue"
@@ -39,14 +39,15 @@ export default {
   },
   data() {
     return {
-      groupList: [],
+      userGroupList: [],
+      visibleUserGroupList: [],
     }
   },
   methods: {
-    GetGroupList() {
-      groupApi.GetGroupList().then(res => {
+    GetUserGroupList() {
+      userGroupApi.GetUserGroupList().then(res => {
         if (res.code === 0) {
-          this.groupList = res.data
+          this.userGroupList = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -54,9 +55,21 @@ export default {
         console.log(error)
       })
     },
+    GetVisibleUserGroupList() {
+      userGroupApi.GetVisibleUserGroupList().then(res => {
+        if (res.code === 0) {
+          this.visibleUserGroupList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   },
   mounted() {
-    this.GetGroupList()
+    this.GetUserGroupList()
+    this.GetVisibleUserGroupList()
   }
 }
 </script>

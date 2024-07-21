@@ -11,6 +11,7 @@ func SetUserGroupRoute(r *gin.Engine) {
 	userGroup.Use(middleware.JWTAuthMiddleware())
 	{
 		userGroup.POST("/GetUserGroupList", api.GetUserGroupList)
+		userGroup.POST("/GetVisibleUserGroupList", api.GetVisibleUserGroupList)
 		userGroup.POST("/AddUserGroup", api.AddUserGroup)
 		userGroup.POST("/RemoveUserGroup", api.RemoveUserGroup)
 	}

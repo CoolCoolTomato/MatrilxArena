@@ -27,7 +27,7 @@ func GetUserList() ([]User, error) {
 }
 
 func (user *User) GetUser() error {
-	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Select("ID", "Username", "Email").First(&user).Error
+	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Select("ID", "Username", "Email", "Role").First(&user).Error
 }
 
 func (user *User) CreateUser() error {
@@ -44,10 +44,16 @@ func (user *User) DeleteUser() error {
 
 func (user *User) GetUserByUsernameOrEmail() error {
 	if user.Username != "" {
-		return database.GetDatabase().Model(&User{}).Where("Username = ?", user.Username).First(&user).Error
+		return database.GetDatabase().Model(&User{}).
+			Where("Username = ?", user.Username).
+			First(&user).
+			Error
 	}
 	if user.Email != "" {
-		return database.GetDatabase().Model(&User{}).Where("Email = ?", user.Email).First(&user).Error
+		return database.GetDatabase().Model(&User{}).
+			Where("Email = ?", user.Email).
+			First(&user).
+			Error
 	}
 	return gorm.ErrRecordNotFound
 }
@@ -88,6 +94,17 @@ func (user *User) DeleteChallenge(challenge *Challenge) error {
 }
 
 func (user *User) GetGroupList() ([]Group, error) {
+	var groupList []Group
+	err := database.GetDatabase().Model(user).
+		Association("Groups").
+		Find(&groupList)
+	if err != nil {
+		return nil, err
+	}
+	return groupList, nil
+}
+
+func (user *User) GetVisibleGroupList() ([]Group, error) {
 	var groupList []Group
 	err := database.GetDatabase().Model(&Group{}).
 		Where("id IN (?) OR public = ?",

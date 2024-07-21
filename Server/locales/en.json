@@ -206,6 +206,8 @@
     "GetGroupFail": "Get group fail",
     "GetUserGroupListFail": "Get user group list fail",
     "GetUserGroupListSuccess": "Get user group list success",
+    "GetVisibleUserGroupListFail": "Get visible user group list fail",
+    "GetVisibleUserGroupListSuccess": "Get visible user group list success",
     "AddUserGroupFail": "Add user group fail",
     "AddUserGroupSuccess": "Add user group success",
     "RemoveUserGroupFail": "Remove user group fail",
