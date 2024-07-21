@@ -67,7 +67,12 @@ func (user *User) CheckPassword(password string) error {
 
 func (user *User) GetChallengeList() ([]Challenge, error) {
 	var challengeList []Challenge
-	err := database.GetDatabase().Model(user).Preload("Category").Preload("Image").Preload("Attachment").Association("Challenges").Find(&challengeList)
+	err := database.GetDatabase().Model(user).
+		Preload("Category").
+		Preload("Image").
+		Preload("Attachment").
+		Association("Challenges").
+		Find(&challengeList)
 	if err != nil {
 		return nil, err
 	}
@@ -82,12 +87,39 @@ func (user *User) DeleteChallenge(challenge *Challenge) error {
 	return database.GetDatabase().Model(user).Association("Challenges").Delete(challenge)
 }
 
+func (user *User) GetGroupList() ([]Group, error) {
+	var groupList []Group
+	err := database.GetDatabase().Model(&Group{}).
+		Where("id IN (?) OR public = ?",
+			database.GetDatabase().Table("group_user").Select("group_id").Where("user_id = ?", user.ID), true).
+		Find(&groupList).Error
+	if err != nil {
+		return nil, err
+	}
+	return groupList, nil
+}
+
 func (user *User) AddGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Append(group)
 }
 
 func (user *User) DeleteGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Delete(group)
+}
+
+func (user *User) GetGroupChallengeList() ([]GroupChallenge, error) {
+	var groupChallengeList []GroupChallenge
+	err := database.GetDatabase().Model(user).
+		Preload("Category").
+		Preload("Image").
+		Preload("Attachment").
+		Preload("Group").
+		Association("GroupChallenges").
+		Find(&groupChallengeList)
+	if err != nil {
+		return nil, err
+	}
+	return groupChallengeList, nil
 }
 
 func (user *User) AddGroupChallenge(groupChallenge *GroupChallenge) error {

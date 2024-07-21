@@ -104,17 +104,12 @@
     "GetGroupListSuccess": "Get group list success",
     "GetGroupFail": "Get group fail",
     "GetGroupSuccess": "Get group success",
-    "CreateGroupFail": "Create roup fail",
+    "CreateGroupFail": "Create group fail",
     "CreateGroupSuccess": "Create group success",
     "UpdateGroupFail": "Update group fail",
     "UpdateGroupSuccess": "Update group success",
     "DeleteGroupFail": "Delete group fail",
     "DeleteGroupSuccess": "Delete group success",
-    "GetUserFail": "Get user fail",
-    "AddUserFail": "Add user fail",
-    "AddUserSuccess": "Add user success",
-    "RemoveUserFail": "Remove user fail",
-    "RemoveUserSuccess": "Remove user success",
     "InvalidArgument": "Invalid argument"
   },
   "GroupChallenge": {
@@ -128,6 +123,15 @@
     "UpdateGroupChallengeSuccess": "Update group challenge success",
     "DeleteGroupChallengeFail": "Delete group challenge fail",
     "DeleteGroupChallengeSuccess": "Delete group challenge success",
+    "InvalidArgument": "Invalid argument"
+  },
+  "GroupUser": {
+    "GetGroupFail": "Get group fail",
+    "GetUserFail": "Get user fail",
+    "AddUserFail": "Add user fail",
+    "AddUserSuccess": "Add user success",
+    "RemoveUserFail": "Remove user fail",
+    "RemoveUserSuccess": "Remove user success",
     "InvalidArgument": "Invalid argument"
   },
   "Image": {
@@ -194,6 +198,18 @@
     "RemainingTimeIsGreaterThan10Minutes": "you can only extend the container life when it has less than 10 minutes remaining",
     "DelayContainerFail": "Delay container fail",
     "DelayContainerSuccess": "Delay container success",
+    "InvalidArgument": "Invalid argument"
+  },
+  "UserGroup": {
+    "InvalidToken": "Invalid token",
+    "UserNotFound": "User not found",
+    "GetGroupFail": "Get group fail",
+    "GetUserGroupListFail": "Get user group list fail",
+    "GetUserGroupListSuccess": "Get user group list success",
+    "AddUserGroupFail": "Add user group fail",
+    "AddUserGroupSuccess": "Add user group success",
+    "RemoveUserGroupFail": "Remove user group fail",
+    "RemoveUserGroupSuccess": "Remove user group success",
     "InvalidArgument": "Invalid argument"
   }
 }

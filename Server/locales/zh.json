@@ -110,11 +110,6 @@
     "UpdateGroupSuccess": "题集更新成功",
     "DeleteGroupFail": "题集删除失败",
     "DeleteGroupSuccess": "题集删除成功",
-    "GetUserFail": "用户获取失败",
-    "AddUserFail": "用户添加失败",
-    "AddUserSuccess": "用户添加成功",
-    "RemoveUserFail": "用户移除失败",
-    "RemoveUserSuccess": "用户移除成功",
     "InvalidArgument": "参数错误"
   },
   "GroupChallenge": {
@@ -128,6 +123,15 @@
     "UpdateGroupChallengeSuccess": "题集题目更新成功",
     "DeleteGroupChallengeFail": "题集题目删除失败",
     "DeleteGroupChallengeSuccess": "题集题目删除成功",
+    "InvalidArgument": "参数错误"
+  },
+  "GroupUser": {
+    "GetGroupFail": "题集获取失败",
+    "GetUserFail": "用户获取失败",
+    "AddUserFail": "用户添加失败",
+    "AddUserSuccess": "用户添加成功",
+    "RemoveUserFail": "用户移除失败",
+    "RemoveUserSuccess": "用户移除成功",
     "InvalidArgument": "参数错误"
   },
   "Image": {
@@ -194,6 +198,18 @@
     "RemainingTimeIsGreaterThan10Minutes": "只能在容器剩余10分钟时延时",
     "DelayContainerFail": "容器延时失败",
     "DelayContainerSuccess": "容器延时成功",
+    "InvalidArgument": "参数错误"
+  },
+  "UserGroup": {
+    "InvalidToken": "Token无效",
+    "UserNotFound": "找不到用户",
+    "GetGroupFail": "题集获取失败",
+    "GetUserGroupListFail": "题集列表获取失败",
+    "GetUserGroupListSuccess": "题集列表获取成功",
+    "AddUserGroupFail": "题集添加失败",
+    "AddUserGroupSuccess": "题集添加成功",
+    "RemoveUserGroupFail": "题集移除失败",
+    "RemoveUserGroupSuccess": "题集移除成功",
     "InvalidArgument": "参数错误"
   }
 }
