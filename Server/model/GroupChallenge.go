@@ -47,7 +47,7 @@ func GetGroupChallengeList() ([]GroupChallenge, error) {
 
 func GetGroupChallengeListByQuery(queryGroupChallenge GroupChallenge) ([]GroupChallenge, error) {
 	query := database.GetDatabase().Model(&GroupChallenge{})
-    if queryGroupChallenge.GroupID != 0 {
+	if queryGroupChallenge.GroupID != 0 {
 		query = query.Where("group_id = ?", queryGroupChallenge.GroupID)
 	}
 	if queryGroupChallenge.CategoryID != 0 {
@@ -133,10 +133,6 @@ func (groupChallenge *GroupChallenge) CreateGroupChallenge() error {
 
 	return database.GetDatabase().
 		Model(&GroupChallenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
-		Preload("Group").
 		Select(createFields).
 		Create(creates).
 		Error
@@ -187,10 +183,6 @@ func (groupChallenge *GroupChallenge) UpdateGroupChallenge() error {
 
 	return database.GetDatabase().
 		Model(&GroupChallenge{}).
-		Preload("Image").
-		Preload("Category").
-		Preload("Attachment").
-		Preload("Group").
 		Where("ID = ?", groupChallenge.ID).
 		Select(updateFields).
 		Updates(updates).
@@ -199,10 +191,6 @@ func (groupChallenge *GroupChallenge) UpdateGroupChallenge() error {
 
 func (groupChallenge *GroupChallenge) DeleteGroupChallenge() error {
 	return database.GetDatabase().Model(&GroupChallenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
-		Preload("Group").
 		Where("ID = ?", groupChallenge.ID).
 		Delete(&groupChallenge).
 		Error

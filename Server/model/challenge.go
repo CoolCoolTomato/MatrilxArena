@@ -119,9 +119,6 @@ func (challenge *Challenge) CreateChallenge() error {
 
 	return database.GetDatabase().
 		Model(&Challenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
 		Select(createFields).
 		Create(creates).
 		Error
@@ -166,9 +163,6 @@ func (challenge *Challenge) UpdateChallenge() error {
 
 	return database.GetDatabase().
 		Model(&Challenge{}).
-		Preload("Image").
-		Preload("Category").
-		Preload("Attachment").
 		Where("ID = ?", challenge.ID).
 		Select(updateFields).
 		Updates(updates).
@@ -177,9 +171,6 @@ func (challenge *Challenge) UpdateChallenge() error {
 
 func (challenge *Challenge) DeleteChallenge() error {
 	return database.GetDatabase().Model(&Challenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
 		Where("ID = ?", challenge.ID).
 		Delete(&challenge).
 		Error

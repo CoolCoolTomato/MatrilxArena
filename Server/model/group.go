@@ -38,8 +38,6 @@ func (group *Group) GetGroup() error {
 
 func (group *Group) CreateGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-		Preload("GroupChallenges").
-		Preload("Users").
 		Create(&group).
 		Error
 }
@@ -47,8 +45,6 @@ func (group *Group) CreateGroup() error {
 func (group *Group) UpdateGroup() error {
 	return database.GetDatabase().Model(&Group{}).
 		Select("Name", "Description", "Public").
-		Preload("GroupChallenges").
-		Preload("Users").
 		Where("ID = ?", group.ID).
 		Updates(&group).
 		Error
@@ -56,8 +52,6 @@ func (group *Group) UpdateGroup() error {
 
 func (group *Group) DeleteGroup() error {
 	return database.GetDatabase().Model(&Group{}).
-		Preload("GroupChallenges").
-		Preload("Users").
 		Where("ID = ?", group.ID).
 		Delete(&group).
 		Error
