@@ -127,7 +127,7 @@ export default {
       })
     },
     async GetChallengeList() {
-      return challengeApi.GetChallengeList().then(res => {
+      return challengeApi.GetChallengeList({}).then(res => {
         if (res.code === 0) {
           this.challengeList = res.data
         } else {

@@ -93,18 +93,7 @@ func (user *User) DeleteChallenge(challenge *Challenge) error {
 	return database.GetDatabase().Model(user).Association("Challenges").Delete(challenge)
 }
 
-func (user *User) GetGroupList() ([]Group, error) {
-	var groupList []Group
-	err := database.GetDatabase().Model(user).
-		Association("Groups").
-		Find(&groupList)
-	if err != nil {
-		return nil, err
-	}
-	return groupList, nil
-}
-
-func (user *User) GetGroupListByQuery(queryGroup Group) ([]Group, error) {
+func (user *User) GetGroupList(queryGroup Group) ([]Group, error) {
 	query := database.GetDatabase().Model(user)
 	if queryGroup.Name != "" {
 		query = query.Where("groups.name LIKE ?", "%"+queryGroup.Name+"%")
@@ -120,19 +109,7 @@ func (user *User) GetGroupListByQuery(queryGroup Group) ([]Group, error) {
 	return groupList, nil
 }
 
-func (user *User) GetVisibleGroupList() ([]Group, error) {
-	var groupList []Group
-	err := database.GetDatabase().Model(&Group{}).
-		Where("id IN (?) OR public = ?",
-			database.GetDatabase().Table("group_user").Select("group_id").Where("user_id = ?", user.ID), true).
-		Find(&groupList).Error
-	if err != nil {
-		return nil, err
-	}
-	return groupList, nil
-}
-
-func (user *User) GetVisibleGroupListByQuery(queryGroup Group) ([]Group, error) {
+func (user *User) GetVisibleGroupList(queryGroup Group) ([]Group, error) {
 	query := database.GetDatabase().Model(&Group{})
 	if queryGroup.Name != "" {
 		query = query.Where("name LIKE ?", "%"+queryGroup.Name+"%")

@@ -56,7 +56,7 @@
           </div>
         </el-affix>
         <el-row>
-          <el-col v-for="challenge in challengeQueryList" :span="12">
+          <el-col v-for="challenge in challengeList" :span="12">
             <div class="challenge" @click="OpenChallengeDetail(challenge)">
               <h2 style="color: var(--el-text-color-primary)">{{ challenge.Title }}<el-text v-if="checkChallengeSolved(challenge.ID)">{{ $t('Challenge.Solved') }}</el-text></h2>
               <el-text truncated>{{ challenge.Description }}</el-text>
@@ -231,10 +231,10 @@ export default {
         "PortMaps": []
       },
       categoryList: [],
-      challengeList: [],
+      totalChallengeList: [],
       challengeQueryCategoryID: 0,
       challengeQueryTitle: "",
-      challengeQueryList: [],
+      challengeList: [],
       challengeDetailVisible: false,
       challengeDetail: {
         "ID": 0,
@@ -302,32 +302,27 @@ export default {
       })
     },
     GetChallengeList() {
-      challengeApi.GetChallengeList().then(res => {
+      challengeApi.GetChallengeList({}).then(res => {
         if (res.code === 0) {
-          this.challengeList = res.data
-          if (this.challengeQueryCategoryID === 0 && this.challengeQueryTitle === "") {
-            this.challengeQueryList = res.data
-          }
+          this.totalChallengeList = res.data
         } else {
           ElMessage.error(res.msg)
         }
       }).catch(error => {
         console.log(error)
       })
-      if (this.challengeQueryCategoryID !== 0 || this.challengeQueryTitle !== "") {
-        challengeApi.GetChallengeListByQuery({
-          "CategoryID": this.challengeQueryCategoryID,
-          "Title": this.challengeQueryTitle
-        }).then(res => {
-          if (res.code === 0) {
-            this.challengeQueryList = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      }
+      challengeApi.GetChallengeList({
+        "CategoryID": this.challengeQueryCategoryID,
+        "Title": this.challengeQueryTitle
+      }).then(res => {
+        if (res.code === 0) {
+          this.challengeList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     OpenChallengeDetail(challenge) {
       this.challengeDetailVisible = true
@@ -561,7 +556,7 @@ export default {
       this.userContainer = this.userContainerList.find(container => container.ChallengeID === challengeID)
     },
     getContainerChallenge(challengeID) {
-      return this.challengeList.find(challenge => challenge.ID === challengeID)
+      return this.totalChallengeList.find(challenge => challenge.ID === challengeID)
     },
     checkChallengeSolved(challengeID) {
       return this.userChallengeList.some(userChallenge => userChallenge.ID === challengeID)

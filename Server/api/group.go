@@ -13,16 +13,6 @@ type GroupUserRequest struct {
 }
 
 func GetGroupList(c *gin.Context) {
-	groupList, err := model.GetGroupList()
-	if err != nil {
-		response.Fail(err, localizer.GetMessage("Group.GetGroupListFail", c), c)
-		return
-	}
-
-	response.OK(groupList, localizer.GetMessage("Group.GetGroupListSuccess", c), c)
-}
-
-func GetGroupListByQuery(c *gin.Context) {
 	var group model.Group
 	err := c.ShouldBindJSON(&group)
 	if err != nil {
@@ -30,7 +20,7 @@ func GetGroupListByQuery(c *gin.Context) {
 		return
 	}
 
-	groupList, err := model.GetGroupListByQuery(group)
+	groupList, err := model.GetGroupList(group)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("Group.GetGroupListFail", c), c)
 		return

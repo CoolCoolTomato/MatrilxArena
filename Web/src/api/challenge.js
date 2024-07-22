@@ -1,11 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetChallengeList() {
-    return apiClient.post("/challenge/GetChallengeList").then(handleResponse).catch(handleError)
-}
-
-function GetChallengeListByQuery(data) {
-    return apiClient.post("/challenge/GetChallengeListByQuery", data).then(handleResponse).catch(handleError)
+function GetChallengeList(data) {
+    return apiClient.post("/challenge/GetChallengeList", data).then(handleResponse).catch(handleError)
 }
 
 function GetChallenge(data) {
@@ -28,7 +24,6 @@ function DeleteChallenge(data) {
 
 const challengeApi = {
   GetChallengeList,
-  GetChallengeListByQuery,
   GetChallenge,
   CreateChallenge,
   UpdateChallenge,

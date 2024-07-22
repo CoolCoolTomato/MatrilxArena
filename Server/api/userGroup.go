@@ -22,30 +22,6 @@ func GetUserGroupList(c *gin.Context) {
 		return
 	}
 
-	groupList, err := user.GetGroupList()
-	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserGroup.GetUserGroupListFail", c), c)
-		return
-	}
-
-	response.OK(groupList, localizer.GetMessage("UserGroup.GetUserGroupListSuccess", c), c)
-}
-
-func GetUserGroupListByQuery(c *gin.Context) {
-	username, exists := c.Get("Username")
-	if !exists {
-		response.Fail(nil, localizer.GetMessage("UserGroup.InvalidToken", c), c)
-		return
-	}
-
-	var user model.User
-	user.Username = username.(string)
-	err := user.GetUserByUsernameOrEmail()
-	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserGroup.UserNotFound", c), c)
-		return
-	}
-
 	var group model.Group
 	err = c.ShouldBindJSON(&group)
 	if err != nil {
@@ -53,7 +29,7 @@ func GetUserGroupListByQuery(c *gin.Context) {
 		return
 	}
 
-	groupList, err := user.GetGroupListByQuery(group)
+	groupList, err := user.GetGroupList(group)
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroup.GetUserGroupListFail", c), c)
 		return
@@ -77,30 +53,6 @@ func GetVisibleUserGroupList(c *gin.Context) {
 		return
 	}
 
-	groupList, err := user.GetVisibleGroupList()
-	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserGroup.GetVisibleUserGroupListFail", c), c)
-		return
-	}
-
-	response.OK(groupList, localizer.GetMessage("UserGroup.GetVisibleUserGroupListSuccess", c), c)
-}
-
-func GetVisibleUserGroupListByQuery(c *gin.Context) {
-	username, exists := c.Get("Username")
-	if !exists {
-		response.Fail(nil, localizer.GetMessage("UserGroup.InvalidToken", c), c)
-		return
-	}
-
-	var user model.User
-	user.Username = username.(string)
-	err := user.GetUserByUsernameOrEmail()
-	if err != nil {
-		response.Fail(nil, localizer.GetMessage("UserGroup.UserNotFound", c), c)
-		return
-	}
-
 	var group model.Group
 	err = c.ShouldBindJSON(&group)
 	if err != nil {
@@ -108,7 +60,7 @@ func GetVisibleUserGroupListByQuery(c *gin.Context) {
 		return
 	}
 
-	groupList, err := user.GetVisibleGroupListByQuery(group)
+	groupList, err := user.GetVisibleGroupList(group)
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroup.GetVisibleUserGroupListFail", c), c)
 		return

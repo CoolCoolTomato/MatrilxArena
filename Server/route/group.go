@@ -11,7 +11,6 @@ func SetGroupRoute(r *gin.Engine) {
 	adminGroup.Use(middleware.AdminAuthMiddleware())
 	{
 		adminGroup.POST("/GetGroupList", api.GetGroupList)
-		adminGroup.POST("/GetGroupListByQuery", api.GetGroupListByQuery)
 		adminGroup.POST("/GetGroup", api.GetGroup)
 		adminGroup.POST("/CreateGroup", api.CreateGroup)
 		adminGroup.POST("/UpdateGroup", api.UpdateGroup)

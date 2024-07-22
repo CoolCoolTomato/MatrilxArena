@@ -184,6 +184,7 @@ export default {
   data() {
     return {
       labelWidth: 100,
+      groupQueryName: "",
       groupList: [],
       createGroupFormVisible: false,
       createGroupData: {
@@ -206,7 +207,9 @@ export default {
   },
   methods: {
     GetGroupList() {
-      groupApi.GetGroupList().then(res => {
+      groupApi.GetGroupList({
+        "Name": this.groupQueryName
+      }).then(res => {
         if (res.code === 0) {
           this.groupList = res.data
         } else {

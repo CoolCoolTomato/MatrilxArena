@@ -8,15 +8,6 @@ import (
 )
 
 func GetChallengeList(c *gin.Context) {
-	challengeList, err := model.GetChallengeList()
-	if err != nil {
-		response.Fail(err, localizer.GetMessage("Challenge.GetChallengeListFail", c), c)
-		return
-	}
-	response.OK(challengeList, localizer.GetMessage("Challenge.GetChallengeListSuccess", c), c)
-}
-
-func GetChallengeListByQuery(c *gin.Context) {
 	var challenge model.Challenge
 	err := c.ShouldBindJSON(&challenge)
 	if err != nil {
@@ -24,7 +15,7 @@ func GetChallengeListByQuery(c *gin.Context) {
 		return
 	}
 
-	challengeList, err := model.GetChallengeListByQuery(challenge)
+	challengeList, err := model.GetChallengeList(challenge)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("Challenge.GetChallengeListFail", c), c)
 		return

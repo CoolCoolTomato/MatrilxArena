@@ -23,26 +23,7 @@ type Challenge struct {
 	Users          []User `gorm:"many2many:challenge_user"`
 }
 
-func GetChallengeList() ([]Challenge, error) {
-	var challengeList []Challenge
-	err := database.GetDatabase().Model(&Challenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
-		Find(&challengeList).
-		Error
-	if err != nil {
-		return nil, err
-	}
-
-	for i, _ := range challengeList {
-		challengeList[i].DecodeCommands()
-	}
-
-	return challengeList, nil
-}
-
-func GetChallengeListByQuery(queryChallenge Challenge) ([]Challenge, error) {
+func GetChallengeList(queryChallenge Challenge) ([]Challenge, error) {
 	query := database.GetDatabase().Model(&Challenge{})
 	if queryChallenge.CategoryID != 0 {
 		query = query.Where("category_id = ?", queryChallenge.CategoryID)

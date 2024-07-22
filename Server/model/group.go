@@ -14,20 +14,7 @@ type Group struct {
 	Users           []User           `gorm:"many2many:group_user"`
 }
 
-func GetGroupList() ([]Group, error) {
-	var groupList []Group
-	err := database.GetDatabase().Model(&Group{}).
-		Preload("GroupChallenges").
-		Preload("Users").
-		Find(&groupList).
-		Error
-	if err != nil {
-		return nil, err
-	}
-	return groupList, nil
-}
-
-func GetGroupListByQuery(queryGroup Group) ([]Group, error) {
+func GetGroupList(queryGroup Group) ([]Group, error) {
 	query := database.GetDatabase().Model(&Group{})
 	if queryGroup.Name != "" {
 		query = query.Where("name LIKE ?", "%"+queryGroup.Name+"%")

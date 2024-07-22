@@ -520,6 +520,8 @@ export default {
       categoryList: [],
       imageList: [],
       attachmentList: [],
+      challengeQueryCategoryID: 0,
+      challengeQueryTitle: "",
       challengeList: [],
       challengeDetailVisible: false,
       challengeDetail: {
@@ -622,7 +624,10 @@ export default {
       })
     },
     GetChallengeList() {
-      challengeApi.GetChallengeList().then(res => {
+      challengeApi.GetChallengeList({
+        "CategoryID": this.challengeQueryCategoryID,
+        "Title": this.challengeQueryTitle
+      }).then(res => {
         if (res.code === 0) {
           this.challengeList = res.data
         } else {

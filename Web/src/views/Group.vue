@@ -37,13 +37,13 @@
           </div>
         </el-affix>
         <el-row>
-          <el-col v-for="group in visibleUserGroupQueryList" :span="8" v-if="!showUserGroupList">
+          <el-col v-for="group in visibleUserGroupList" :span="8" v-if="!showUserGroupList">
             <div class="group" @click="GroupClick(group)">
               <h2 style="color: var(--el-text-color-primary)">{{ group.Name }}</h2>
               <el-text truncated>{{ group.Description }}</el-text>
             </div>
           </el-col>
-          <el-col v-for="group in userGroupQueryList" :span="8" v-if="showUserGroupList">
+          <el-col v-for="group in userGroupList" :span="8" v-if="showUserGroupList">
             <div class="group" @click="GroupClick(group)">
               <h2 style="color: var(--el-text-color-primary)">{{ group.Name }}</h2>
               <el-text truncated>{{ group.Description }}</el-text>
@@ -105,9 +105,9 @@ export default {
   data() {
     return {
       userGroupQueryName: "",
-      userGroupQueryList: [],
+      userGroupList: [],
       visibleUserGroupQueryName: "",
-      visibleUserGroupQueryList: [],
+      visibleUserGroupList: [],
       userGroupFormVisible: false,
       userGroupData: {
         "ID": 0,
@@ -120,54 +120,30 @@ export default {
   },
   methods: {
     GetUserGroupList() {
-      if (this.userGroupQueryName !== "") {
-        userGroupApi.GetUserGroupListByQuery({
-          "Name": this.userGroupQueryName
-        }).then(res => {
-          if (res.code === 0) {
-            this.userGroupQueryList = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      } else {
-        userGroupApi.GetUserGroupList().then(res => {
-          if (res.code === 0) {
-            this.userGroupQueryList = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      }
+      userGroupApi.GetUserGroupList({
+        "Name": this.userGroupQueryName
+      }).then(res => {
+        if (res.code === 0) {
+          this.userGroupList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     GetVisibleUserGroupList() {
-      if (this.visibleUserGroupQueryName !== "") {
-        userGroupApi.GetVisibleUserGroupListByQuery({
-          "Name": this.visibleUserGroupQueryName
-        }).then(res => {
-          if (res.code === 0) {
-            this.visibleUserGroupQueryList = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      } else {
-        userGroupApi.GetVisibleUserGroupList().then(res => {
-          if (res.code === 0) {
-            this.visibleUserGroupQueryList = res.data
-          } else {
-            ElMessage.error(res.msg)
-          }
-        }).catch(error => {
-          console.log(error)
-        })
-      }
+      userGroupApi.GetVisibleUserGroupList({
+        "Name": this.visibleUserGroupQueryName
+      }).then(res => {
+        if (res.code === 0) {
+          this.visibleUserGroupList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     },
     GroupClick(group) {
       this.userGroupData = group
@@ -226,7 +202,7 @@ export default {
       this.GetVisibleUserGroupList()
     },
     checkUserInGroup(id) {
-      return this.userGroupQueryList.some(item => item.ID === id)
+      return this.userGroupList.some(item => item.ID === id)
     }
   },
   mounted() {
