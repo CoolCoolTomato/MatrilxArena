@@ -12,6 +12,7 @@ func SetUserGroupRoute(r *gin.Engine) {
 	{
 		userGroup.POST("/GetUserGroupList", api.GetUserGroupList)
 		userGroup.POST("/GetVisibleUserGroupList", api.GetVisibleUserGroupList)
+		userGroup.POST("/GetVisibleUserGroupListByQuery", api.GetVisibleUserGroupListByQuery)
 		userGroup.POST("/AddUserGroup", api.AddUserGroup)
 		userGroup.POST("/RemoveUserGroup", api.RemoveUserGroup)
 	}

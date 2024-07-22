@@ -55,6 +55,37 @@ func GetVisibleUserGroupList(c *gin.Context) {
 	response.OK(groupList, localizer.GetMessage("UserGroup.GetVisibleUserGroupListSuccess", c), c)
 }
 
+func GetVisibleUserGroupListByQuery(c *gin.Context) {
+	username, exists := c.Get("Username")
+	if !exists {
+		response.Fail(nil, localizer.GetMessage("UserGroup.InvalidToken", c), c)
+		return
+	}
+
+	var user model.User
+	user.Username = username.(string)
+	err := user.GetUserByUsernameOrEmail()
+	if err != nil {
+		response.Fail(nil, localizer.GetMessage("UserGroup.UserNotFound", c), c)
+		return
+	}
+
+	var group model.Group
+	err = c.ShouldBindJSON(&group)
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("UserGroup.InvalidArgument", c), c)
+		return
+	}
+
+	groupList, err := user.GetVisibleGroupListByQuery(group)
+	if err != nil {
+		response.Fail(nil, localizer.GetMessage("UserGroup.GetVisibleUserGroupListFail", c), c)
+		return
+	}
+
+	response.OK(groupList, localizer.GetMessage("UserGroup.GetVisibleUserGroupListSuccess", c), c)
+}
+
 func AddUserGroup(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {

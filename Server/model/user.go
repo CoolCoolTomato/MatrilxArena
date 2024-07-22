@@ -116,6 +116,23 @@ func (user *User) GetVisibleGroupList() ([]Group, error) {
 	return groupList, nil
 }
 
+func (user *User) GetVisibleGroupListByQuery(queryGroup Group) ([]Group, error) {
+	query := database.GetDatabase().Model(&Group{})
+	if queryGroup.Name != "" {
+		query = query.Where("name LIKE ?", "%"+queryGroup.Name+"%")
+	}
+
+	var groupList []Group
+	err := query.
+		Where("id IN (?) OR public = ?",
+			database.GetDatabase().Table("group_user").Select("group_id").Where("user_id = ?", user.ID), true).
+		Find(&groupList).Error
+	if err != nil {
+		return nil, err
+	}
+	return groupList, nil
+}
+
 func (user *User) AddGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Append(group)
 }

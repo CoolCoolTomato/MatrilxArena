@@ -29,6 +29,7 @@ func GetChallengeListByQuery(c *gin.Context) {
 		response.Fail(err, localizer.GetMessage("Challenge.GetChallengeListFail", c), c)
 		return
 	}
+
 	response.OK(challengeList, localizer.GetMessage("Challenge.GetChallengeListSuccess", c), c)
 }
 

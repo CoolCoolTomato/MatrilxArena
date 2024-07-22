@@ -27,6 +27,25 @@ func GetGroupList() ([]Group, error) {
 	return groupList, nil
 }
 
+func GetGroupListByQuery(queryGroup Group) ([]Group, error) {
+	query := database.GetDatabase().Model(&Group{})
+	if queryGroup.Name != "" {
+		query = query.Where("name LIKE ?", "%"+queryGroup.Name+"%")
+	}
+
+	var groupList []Group
+	err := query.
+		Preload("GroupChallenges").
+		Preload("Users").
+		Find(&groupList).
+		Error
+	if err != nil {
+		return nil, err
+	}
+
+	return groupList, nil
+}
+
 func (group *Group) GetGroup() error {
 	return database.GetDatabase().Model(&Group{}).
 		Preload("GroupChallenges").
