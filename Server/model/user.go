@@ -104,6 +104,22 @@ func (user *User) GetGroupList() ([]Group, error) {
 	return groupList, nil
 }
 
+func (user *User) GetGroupListByQuery(queryGroup Group) ([]Group, error) {
+	query := database.GetDatabase().Model(user)
+	if queryGroup.Name != "" {
+		query = query.Where("groups.name LIKE ?", "%"+queryGroup.Name+"%")
+	}
+
+	var groupList []Group
+	err := query.
+		Association("Groups").
+		Find(&groupList)
+	if err != nil {
+		return nil, err
+	}
+	return groupList, nil
+}
+
 func (user *User) GetVisibleGroupList() ([]Group, error) {
 	var groupList []Group
 	err := database.GetDatabase().Model(&Group{}).

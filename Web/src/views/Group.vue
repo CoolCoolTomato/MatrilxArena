@@ -3,7 +3,7 @@
     <el-main>
       <el-scrollbar style="width: 80%; left: 10%;">
         <el-affix :offset="100">
-          <div style="display: flex; margin: 0 20px 20px 20px;">
+          <div style="display: flex; margin: 0 20px 20px 20px;" v-if="!showUserGroupList">
             <el-input v-model="visibleUserGroupQueryName" :placeholder="$t('Group.FindGroups')" size="large"/>
             <el-button @click="GetVisibleUserGroupList" type="primary" style="margin-left: 15px;" size="large">
               {{ $t('Group.Find') }}
@@ -14,6 +14,23 @@
             <el-switch
               style="margin-left: 10px; white-space: nowrap;"
               v-model="showUserGroupList"
+              @change="SwitchChange"
+              :active-text="$t('Group.ShowAddedGroups')"
+              size="large"
+            />
+          </div>
+          <div style="display: flex; margin: 0 20px 20px 20px;" v-else>
+            <el-input v-model="userGroupQueryName" :placeholder="$t('Group.FindGroups')" size="large"/>
+            <el-button @click="GetUserGroupList" type="primary" style="margin-left: 15px;" size="large">
+              {{ $t('Group.Find') }}
+              <el-icon style="margin-left: 10px">
+                <Search fill="var(var(--el-button-text-color))"/>
+              </el-icon>
+            </el-button>
+            <el-switch
+              style="margin-left: 10px; white-space: nowrap;"
+              v-model="showUserGroupList"
+              @change="SwitchChange"
               :active-text="$t('Group.ShowAddedGroups')"
               size="large"
             />
@@ -26,7 +43,7 @@
               <el-text truncated>{{ group.Description }}</el-text>
             </div>
           </el-col>
-          <el-col v-for="group in userGroupList" :span="8" v-if="showUserGroupList">
+          <el-col v-for="group in userGroupQueryList" :span="8" v-if="showUserGroupList">
             <div class="group" @click="GroupClick(group)">
               <h2 style="color: var(--el-text-color-primary)">{{ group.Name }}</h2>
               <el-text truncated>{{ group.Description }}</el-text>
@@ -87,7 +104,8 @@ export default {
   },
   data() {
     return {
-      userGroupList: [],
+      userGroupQueryName: "",
+      userGroupQueryList: [],
       visibleUserGroupQueryName: "",
       visibleUserGroupQueryList: [],
       userGroupFormVisible: false,
@@ -102,15 +120,29 @@ export default {
   },
   methods: {
     GetUserGroupList() {
-      userGroupApi.GetUserGroupList().then(res => {
-        if (res.code === 0) {
-          this.userGroupList = res.data
-        } else {
-          ElMessage.error(res.msg)
-        }
-      }).catch(error => {
-        console.log(error)
-      })
+      if (this.userGroupQueryName !== "") {
+        userGroupApi.GetUserGroupListByQuery({
+          "Name": this.userGroupQueryName
+        }).then(res => {
+          if (res.code === 0) {
+            this.userGroupQueryList = res.data
+          } else {
+            ElMessage.error(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      } else {
+        userGroupApi.GetUserGroupList().then(res => {
+          if (res.code === 0) {
+            this.userGroupQueryList = res.data
+          } else {
+            ElMessage.error(res.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     },
     GetVisibleUserGroupList() {
       if (this.visibleUserGroupQueryName !== "") {
@@ -187,8 +219,14 @@ export default {
       }
       this.userInGroup = false
     },
+    SwitchChange() {
+      this.userGroupQueryName = ""
+      this.visibleUserGroupQueryName = ""
+      this.GetUserGroupList()
+      this.GetVisibleUserGroupList()
+    },
     checkUserInGroup(id) {
-      return this.userGroupList.some(item => item.ID === id)
+      return this.userGroupQueryList.some(item => item.ID === id)
     }
   },
   mounted() {
