@@ -4,6 +4,7 @@ import Login from "@/views/Login.vue"
 import Index from "@/views/Index.vue"
 import Challenge from "@/views/Challenge.vue"
 import Group from "@/views/Group.vue"
+import GroupDetail from "@/views/GroupDetail.vue"
 import BaseAdmin from "@/components/BaseAdmin.vue"
 import AdminIndex from "@/views/admin/AdminIndex.vue"
 import AdminNode from "@/views/admin/AdminNode.vue"
@@ -26,6 +27,7 @@ const router = createRouter({
       { path: "", component: Index },
       { path: "challenge/:category?", component: Challenge },
       { path: "group", component: Group },
+      { path: "group/:id(\\d+)", component: GroupDetail },
       { path: "profile", component: Profile },
     ]},
     { path: "/admin", component: BaseAdmin, children: [

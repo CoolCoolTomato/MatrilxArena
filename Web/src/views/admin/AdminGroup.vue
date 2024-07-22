@@ -217,7 +217,7 @@ export default {
       })
     },
     OpenGroupDetail(row) {
-      this.$router.push(`/admin/group/${row.ID}`);
+      this.$router.push(`/admin/group/${row.ID}`)
     },
     CreateGroup() {
       groupApi.CreateGroup(this.createGroupData).then(res => {

@@ -8,6 +8,10 @@ function GetVisibleUserGroupList() {
   return apiClient.post("/userGroup/GetVisibleUserGroupList").then(handleResponse).catch(handleError)
 }
 
+function GetVisibleUserGroupListByQuery(data) {
+  return apiClient.post("/userGroup/GetVisibleUserGroupListByQuery", data).then(handleResponse).catch(handleError)
+}
+
 function AddUserGroup(data) {
   return apiClient.post("/userGroup/AddUserGroup", data).then(handleResponse).catch(handleError)
 }
@@ -19,6 +23,7 @@ function RemoveUserGroup(data) {
 const userGroupApi = {
   GetUserGroupList,
   GetVisibleUserGroupList,
+  GetVisibleUserGroupListByQuery,
   AddUserGroup,
   RemoveUserGroup
 }

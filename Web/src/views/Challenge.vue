@@ -46,8 +46,8 @@
       <el-scrollbar style="width: 80%; left: 10%;">
         <el-affix :offset="100">
           <div style="display: flex; margin: 0 20px 20px 20px;">
-            <el-input v-model="challengeQueryTitle" :placeholder="$t('Challenge.FindChallenge')"/>
-            <el-button @click="GetChallengeList()" type="primary" style="margin-left: 10px;">
+            <el-input v-model="challengeQueryTitle" :placeholder="$t('Challenge.FindChallenges')" size="large"/>
+            <el-button @click="GetChallengeList" type="primary" style="margin-left: 15px;" size="large">
               {{ $t('Challenge.Find') }}
               <el-icon style="margin-left: 10px">
                 <Search fill="var(var(--el-button-text-color))"/>
@@ -407,7 +407,7 @@ export default {
           ElMessage({
             message: res.msg,
             type: 'success',
-            })
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -438,7 +438,7 @@ export default {
           ElMessage({
             message: res.msg,
             type: 'success',
-            })
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -474,7 +474,7 @@ export default {
           ElMessage({
             message: res.msg,
             type: 'success',
-            })
+          })
         } else {
           ElMessage.error(res.msg)
         }

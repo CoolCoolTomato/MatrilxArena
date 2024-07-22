@@ -4,6 +4,10 @@ function GetGroupList() {
     return apiClient.post("/group/GetGroupList").then(handleResponse).catch(handleError)
 }
 
+function GetGroupListByQuery(data) {
+  return apiClient.post("/group/GetGroupListByQuery", data).then(handleResponse).catch(handleError)
+}
+
 function GetGroup(data) {
     return apiClient.post("/group/GetGroup", data).then(handleResponse).catch(handleError)
 }
@@ -22,6 +26,7 @@ function DeleteGroup(data) {
 
 const groupApi = {
   GetGroupList,
+  GetGroupListByQuery,
   GetGroup,
   CreateGroup,
   UpdateGroup,

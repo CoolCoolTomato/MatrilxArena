@@ -296,7 +296,7 @@ export default {
     "Menu": "Menu",
     "Category": "Category",
     "All": "All",
-    "FindChallenge": "Find challenge",
+    "FindChallenges": "Find challenges",
     "Find": "Find",
     "Containers": "Containers",
     "ChallengeDetail": "Challenge Detail",
@@ -313,6 +313,16 @@ export default {
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"
+  },
+  "Group": {
+    "FindGroups": "Find groups",
+    "Find": "Find",
+    "ShowAddedGroups": "Show added groups",
+    "GroupDetail": "Group Detail",
+    "Open": "Open",
+    "Add": "Add",
+    "Remove": "Remove",
+    "Cancel": "Cancel",
   },
   "Profile": {
     "UserInformation": "User Information",

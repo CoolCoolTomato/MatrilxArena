@@ -176,7 +176,7 @@ export default {
       })
     },
     OpenDockerNodeDetail(row) {
-      this.$router.push(`/admin/node/${row.ID}`);
+      this.$router.push(`/admin/node/${row.ID}`)
     },
     CreateDockerNode() {
       dockerNodeApi.CreateDockerNode(this.createDockerNodeData).then(res => {

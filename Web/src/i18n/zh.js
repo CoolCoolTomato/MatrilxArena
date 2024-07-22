@@ -296,7 +296,7 @@ export default {
     "Menu": "菜单",
     "Category": "分类",
     "All": "所有分类",
-    "FindChallenge": "查询题目",
+    "FindChallenges": "查询题目",
     "Find": "查询",
     "Containers": "容器列表",
     "ChallengeDetail": "题目详情",
@@ -313,6 +313,16 @@ export default {
     "ContainerList": "容器列表",
     "NoContainerIsRunning": "没有容器正在运行",
     "DownloadAttachmentFail": "附件下载失败"
+  },
+  "Group": {
+    "FindGroups": "查询题集",
+    "Find": "查询",
+    "ShowAddedGroups": "显示已添加题集",
+    "GroupDetail": "题集详情",
+    "Open": "打开",
+    "Add": "添加",
+    "Remove": "移除",
+    "Cancel": "取消",
   },
   "Profile": {
     "UserInformation": "用户信息",
