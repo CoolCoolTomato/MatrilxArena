@@ -14,7 +14,14 @@ import (
 )
 
 func GetAttachmentList(c *gin.Context) {
-	attachmentList, err := model.GetAttachmentList()
+	var attachment model.Attachment
+	err := c.ShouldBindJSON(&attachment)
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("Attachment.InvalidArgument", c), c)
+		return
+	}
+
+	attachmentList, err := model.GetAttachmentList(attachment)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("Attachment.GetAttachmentListFail", c), c)
 		return

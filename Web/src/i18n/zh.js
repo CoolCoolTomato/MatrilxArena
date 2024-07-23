@@ -33,6 +33,8 @@ export default {
   },
   "AdminAttachment": {
     "AttachmentManager": "附件管理",
+    "FindAttachments": "查询附件",
+    "Find": "查询",
     "Add": "添加",
     "Upload": "上传",
     "Update": "更新",

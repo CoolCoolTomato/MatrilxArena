@@ -11,9 +11,16 @@ type Attachment struct {
 	FilePath string
 }
 
-func GetAttachmentList() ([]Attachment, error) {
+func GetAttachmentList(queryAttachment Attachment) ([]Attachment, error) {
+	query := database.GetDatabase().Model(&Attachment{})
+	if queryAttachment.FileName != "" {
+		query = query.Where("file_name LIKE ?", "%"+queryAttachment.FileName+"%")
+	}
+
 	var attachmentList []Attachment
-	err := database.GetDatabase().Model(&Attachment{}).Find(&attachmentList).Error
+	err := query.
+		Find(&attachmentList).
+		Error
 	if err != nil {
 		return nil, err
 	}

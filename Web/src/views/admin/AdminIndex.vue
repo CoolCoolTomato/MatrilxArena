@@ -138,7 +138,7 @@ export default {
       })
     },
     async GetUserList() {
-      return userApi.GetUserList().then(res => {
+      return userApi.GetUserList({}).then(res => {
         if (res.code === 0) {
           this.userList = res.data
         } else {

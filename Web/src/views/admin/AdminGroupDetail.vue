@@ -763,7 +763,7 @@ export default {
       })
     },
     GetAttachmentList() {
-      attachmentApi.GetAttachmentList().then(res => {
+      attachmentApi.GetAttachmentList({}).then(res => {
         if (res.code === 0) {
           this.attachmentList = res.data
           this.attachmentList.push({

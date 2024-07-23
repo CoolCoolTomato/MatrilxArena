@@ -4,7 +4,7 @@
       <div style="display: flex; align-items: center;">
         <h2 style="color: var(--el-text-color-primary);">{{ t('AdminGroup.GroupManager') }}</h2>
         <div style="flex-grow: 1;"></div>
-        <div style="margin-right: 50px; display: flex;">
+        <div style="margin-right: 50px;">
           <el-input
             v-model="groupQueryName"
             style="width: 450px; margin: 10px;"

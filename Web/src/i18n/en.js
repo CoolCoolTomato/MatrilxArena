@@ -33,6 +33,8 @@ export default {
   },
   "AdminAttachment": {
     "AttachmentManager": "Attachment Manager",
+    "FindAttachments": "Find attachments",
+    "Find": "Find",
     "Add": "Add",
     "Upload": "Upload",
     "Update": "Update",

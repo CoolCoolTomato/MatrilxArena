@@ -4,7 +4,7 @@
       <div style="display: flex; align-items: center;">
         <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminChallenge.ChallengeManager') }}</h2>
         <div style="flex-grow: 1;"></div>
-        <div style="margin-right: 50px; display: flex;">
+        <div style="margin-right: 50px;">
           <el-input
             v-model="challengeQueryTitle"
             style="width: 560px; margin: 10px;"
@@ -643,7 +643,7 @@ export default {
       })
     },
     GetAttachmentList() {
-      attachmentApi.GetAttachmentList().then(res => {
+      attachmentApi.GetAttachmentList({}).then(res => {
         if (res.code === 0) {
           this.attachmentList = res.data
           this.attachmentList.push({

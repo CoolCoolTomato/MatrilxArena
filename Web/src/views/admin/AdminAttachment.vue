@@ -5,6 +5,23 @@
         <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminAttachment.AttachmentManager') }}</h2>
         <div style="flex-grow: 1;"></div>
         <div style="margin-right: 50px;">
+          <el-input
+            v-model="attachmentQueryFileName"
+            style="width: 450px; margin: 10px;"
+            :placeholder="$t('AdminAttachment.FindAttachments')"
+          >
+            <template #append>
+              <el-button
+                @click="GetAttachmentList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminAttachment.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
           <el-button
             style="margin: 10px;"
             @click="createAttachmentFormVisible = true"
@@ -170,6 +187,7 @@
 </template>
 <script>
 import attachmentApi from "@/api/attachment.js"
+import Search from "@/components/icons/Search.vue"
 import { ElMessage } from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -178,9 +196,11 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       labelWidth: 100,
+      attachmentQueryFileName: "",
       attachmentList: [],
       createAttachmentFormVisible: false,
       createAttachmentData: {
@@ -206,7 +226,9 @@ export default {
   },
   methods: {
     GetAttachmentList() {
-      attachmentApi.GetAttachmentList().then(res => {
+      attachmentApi.GetAttachmentList({
+        "FileName": this.attachmentQueryFileName
+      }).then(res => {
         if (res.code === 0) {
           this.attachmentList = res.data
         } else {

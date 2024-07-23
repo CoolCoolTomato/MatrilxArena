@@ -1,7 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetAttachmentList() {
-  return apiClient.post("/attachment/GetAttachmentList").then(handleResponse).catch(handleError)
+function GetAttachmentList(data) {
+  return apiClient.post("/attachment/GetAttachmentList", data).then(handleResponse).catch(handleError)
 }
 
 function GetAttachment(data) {
