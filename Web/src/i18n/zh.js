@@ -145,6 +145,9 @@ export default {
   "AdminGroupDetail": {
     "GroupDetail": "题集详情",
     "Back": "返回",
+    "FindChallenges": "查询题目",
+    "All": "全部题目",
+    "Find": "查询",
     "Challenges": "题目",
     "Users": "用户",
     "Add": "添加",

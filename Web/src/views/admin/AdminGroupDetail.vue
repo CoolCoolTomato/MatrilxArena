@@ -23,9 +23,41 @@
           <el-button
             @click="OpenCreateGroupChallengeForm"
             type="primary"
-            >
+          >
             {{ $t('AdminGroupDetail.Add') }}
           </el-button>
+          <el-input
+            v-model="groupChallengeQueryTitle"
+            style="width: 560px; margin: 10px;"
+            :placeholder="$t('AdminGroupDetail.FindChallenges')"
+          >
+            <template #prepend>
+              <el-select
+                v-model="groupChallengeQueryCategoryID"
+                filterable
+                style="width: 110px;"
+                :placeholder="$t('AdminGroupDetail.Select')"
+              >
+                <el-option
+                  v-for="category in categoryList"
+                  :key="category.ID"
+                  :label="category.ID === 0 ? $t('AdminGroupDetail.All') : category.Name"
+                  :value="category.ID"
+                ></el-option>
+              </el-select>
+            </template>
+            <template #append>
+              <el-button
+                @click="GetGroupChallengeList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminGroupDetail.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
         </div>
         <el-table
           :data="groupChallengeList"
@@ -634,6 +666,7 @@ import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
 import userApi from "@/api/user.js"
+import Search from "@/components/icons/Search.vue"
 import {ElMessage} from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -642,6 +675,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       activeTab: "challenges",

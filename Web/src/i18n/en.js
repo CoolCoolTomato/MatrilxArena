@@ -145,6 +145,9 @@ export default {
   "AdminGroupDetail": {
     "GroupDetail": "Group Detail",
     "Back": "Back",
+    "FindChallenges": "Find challenges",
+    "All": "All",
+    "Find": "Find",
     "Challenges": "Challenges",
     "Users": "Users",
     "Add": "Add",
