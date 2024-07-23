@@ -11,7 +11,6 @@ func SetGroupChallengeRoute(r *gin.Engine) {
 	groupChallenge.Use(middleware.JWTAuthMiddleware())
 	{
 		groupChallenge.POST("/GetGroupChallengeList", api.GetGroupChallengeList)
-        groupChallenge.POST("/GetGroupChallengeListByQuery", api.GetGroupChallengeListByQuery)
 		groupChallenge.POST("/GetGroupChallenge", api.GetGroupChallenge)
 	}
 	adminGroupChallenge := r.Group("/groupChallenge")

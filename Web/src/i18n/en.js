@@ -75,8 +75,11 @@ export default {
   },
   "AdminChallenge": {
     "ChallengeManager": "Challenge Manager",
-    "Add": "Add",
+    "All": "All",
+    "FindChallenges": "Find challenges",
+    "Find": "Find",
     "Null": "Null",
+    "Add": "Add",
     "Detail": "Detail",
     "Update": "Update",
     "Delete": "Delete",

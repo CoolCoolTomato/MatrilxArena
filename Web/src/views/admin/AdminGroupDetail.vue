@@ -28,7 +28,7 @@
           </el-button>
         </div>
         <el-table
-          :data="groupChallengeQueryList"
+          :data="groupChallengeList"
           table-layout="fixed"
           height="calc(100% - 50px)"
           >
@@ -654,7 +654,7 @@ export default {
       attachmentList: [],
       groupChallengeQueryCategoryID: 0,
       groupChallengeQueryTitle: "",
-      groupChallengeQueryList: [],
+      groupChallengeList: [],
       groupChallengeDetailVisible: false,
       groupChallengeDetail: {
         "Title": "",
@@ -789,13 +789,13 @@ export default {
       })
     },
     GetGroupChallengeList() {
-      groupChallengeApi.GetGroupChallengeListByQuery({
+      groupChallengeApi.GetGroupChallengeList({
         "CategoryID": this.groupChallengeQueryCategoryID,
         "Title": this.groupChallengeQueryTitle,
         "GroupID": this.group.ID
       }).then(res => {
         if (res.code === 0) {
-          this.groupChallengeQueryList = res.data
+          this.groupChallengeList = res.data
         } else {
           ElMessage.error(res.msg)
         }

@@ -75,8 +75,11 @@ export default {
   },
   "AdminChallenge": {
     "ChallengeManager": "题目管理",
+    "All": "全部分类",
+    "FindChallenges": "查询题目",
+    "Find": "查询",
+    "Null": "无",
     "Add": "添加",
-    "Null": "Null",
     "Detail": "详情",
     "Update": "更新",
     "Delete": "删除",
@@ -141,7 +144,7 @@ export default {
     "Challenges": "题目",
     "Users": "用户",
     "Add": "添加",
-    "Null": "Null",
+    "Null": "无",
     "Detail": "详情",
     "Update": "更新",
     "Delete": "删除",
@@ -242,7 +245,7 @@ export default {
     "Confirm": "确认",
     "Admin": "管理员",
     "User": "普通用户",
-    "Null": "Null"
+    "Null": "无"
   },
   "AdminNodeDetail": {
     "NodeDetail": "节点详情",

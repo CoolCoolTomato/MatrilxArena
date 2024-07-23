@@ -4,7 +4,39 @@
       <div style="display: flex; align-items: center;">
         <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminChallenge.ChallengeManager') }}</h2>
         <div style="flex-grow: 1;"></div>
-        <div style="margin-right: 50px;">
+        <div style="margin-right: 50px; display: flex;">
+          <el-input
+            v-model="challengeQueryTitle"
+            style="width: 560px; margin: 10px;"
+            :placeholder="$t('AdminChallenge.FindChallenges')"
+          >
+            <template #prepend>
+              <el-select
+                v-model="challengeQueryCategoryID"
+                filterable
+                style="width: 110px;"
+                :placeholder="$t('AdminChallenge.Select')"
+              >
+                <el-option
+                  v-for="category in categoryList"
+                  :key="category.ID"
+                  :label="category.ID === 0 ? $t('AdminChallenge.All') : category.Name"
+                  :value="category.ID"
+                ></el-option>
+              </el-select>
+            </template>
+            <template #append>
+              <el-button
+                @click="GetChallengeList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminChallenge.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
           <el-button
             style="margin: 10px;"
             @click="createChallengeFormVisible = true"
@@ -506,6 +538,7 @@ import challengeApi from "@/api/challenge.js"
 import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
+import Search from "@/components/icons/Search.vue"
 import { ElMessage } from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -514,6 +547,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       labelWidth: 120,
@@ -582,7 +616,7 @@ export default {
           this.categoryList = res.data
           this.categoryList.push({
             "ID": 0,
-            "Name": "null",
+            "Name": this.t('AdminChallenge.Null'),
             "Order": 0
           })
           this.categoryList.sort((a, b) => a.Order - b.Order)
@@ -599,7 +633,7 @@ export default {
           this.imageList = res.data
           this.imageList.push({
             "ID": 0,
-            "Remark": "null"
+            "Remark": this.t('AdminChallenge.Null')
           })
         } else {
           ElMessage.error(res.msg)
@@ -614,7 +648,7 @@ export default {
           this.attachmentList = res.data
           this.attachmentList.push({
             "ID": 0,
-            "FileName": "null"
+            "FileName": this.t('AdminChallenge.Null')
           })
         } else {
           ElMessage.error(res.msg)

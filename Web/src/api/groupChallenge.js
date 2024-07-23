@@ -1,11 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetGroupChallengeList() {
-    return apiClient.post("/groupChallenge/GetGroupChallengeList").then(handleResponse).catch(handleError)
-}
-
-function GetGroupChallengeListByQuery(data) {
-    return apiClient.post("/groupChallenge/GetGroupChallengeListByQuery", data).then(handleResponse).catch(handleError)
+function GetGroupChallengeList(data) {
+    return apiClient.post("/groupChallenge/GetGroupChallengeList", data).then(handleResponse).catch(handleError)
 }
 
 function GetGroupChallenge(data) {
@@ -28,7 +24,6 @@ function DeleteGroupChallenge(data) {
 
 const groupChallengeApi = {
   GetGroupChallengeList,
-  GetGroupChallengeListByQuery,
   GetGroupChallenge,
   CreateGroupChallenge,
   UpdateGroupChallenge,

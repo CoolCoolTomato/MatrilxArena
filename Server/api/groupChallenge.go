@@ -8,15 +8,6 @@ import (
 )
 
 func GetGroupChallengeList(c *gin.Context) {
-	groupChallengeList, err := model.GetGroupChallengeList()
-	if err != nil {
-		response.Fail(err, localizer.GetMessage("GroupChallenge.GetGroupChallengeListFail", c), c)
-		return
-	}
-	response.OK(groupChallengeList, localizer.GetMessage("GroupChallenge.GetGroupChallengeListSuccess", c), c)
-}
-
-func GetGroupChallengeListByQuery(c *gin.Context) {
 	var groupChallenge model.GroupChallenge
 	err := c.ShouldBindJSON(&groupChallenge)
 	if err != nil {
@@ -24,7 +15,7 @@ func GetGroupChallengeListByQuery(c *gin.Context) {
 		return
 	}
 
-	groupChallengeList, err := model.GetGroupChallengeListByQuery(groupChallenge)
+	groupChallengeList, err := model.GetGroupChallengeList(groupChallenge)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("GroupChallenge.GetGroupChallengeListFail", c), c)
 		return

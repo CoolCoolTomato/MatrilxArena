@@ -25,27 +25,7 @@ type GroupChallenge struct {
 	Group          Group `gorm:"foreignKey:GroupID;constraint:OnDelete:SET NULL"`
 }
 
-func GetGroupChallengeList() ([]GroupChallenge, error) {
-	var groupChallengeList []GroupChallenge
-	err := database.GetDatabase().Model(&GroupChallenge{}).
-		Preload("Category").
-		Preload("Image").
-		Preload("Attachment").
-		Preload("Group").
-		Find(&groupChallengeList).
-		Error
-	if err != nil {
-		return nil, err
-	}
-
-	for i, _ := range groupChallengeList {
-		groupChallengeList[i].DecodeCommands()
-	}
-
-	return groupChallengeList, nil
-}
-
-func GetGroupChallengeListByQuery(queryGroupChallenge GroupChallenge) ([]GroupChallenge, error) {
+func GetGroupChallengeList(queryGroupChallenge GroupChallenge) ([]GroupChallenge, error) {
 	query := database.GetDatabase().Model(&GroupChallenge{})
 	if queryGroupChallenge.GroupID != 0 {
 		query = query.Where("group_id = ?", queryGroupChallenge.GroupID)
