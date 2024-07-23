@@ -148,6 +148,7 @@ export default {
     "FindChallenges": "Find challenges",
     "All": "All",
     "Find": "Find",
+    "FindUsers": "Find users",
     "Challenges": "Challenges",
     "Users": "Users",
     "Add": "Add",

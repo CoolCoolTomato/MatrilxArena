@@ -148,6 +148,7 @@ export default {
     "FindChallenges": "查询题目",
     "All": "全部题目",
     "Find": "查询",
+    "FindUsers": "查询用户",
     "Challenges": "题目",
     "Users": "用户",
     "Add": "添加",

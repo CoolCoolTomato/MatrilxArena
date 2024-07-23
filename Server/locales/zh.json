@@ -127,6 +127,8 @@
   },
   "GroupUser": {
     "GetGroupFail": "题集获取失败",
+    "GetUserListFail": "用户列表获取失败",
+    "GetUserListSuccess": "用户列表获取成功",
     "GetUserFail": "用户获取失败",
     "AddUserFail": "用户添加失败",
     "AddUserSuccess": "用户添加成功",

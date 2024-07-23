@@ -7,11 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type GroupUserRequest struct {
-	GroupID uint
-	UserID  uint
-}
-
 func GetGroupList(c *gin.Context) {
 	var group model.Group
 	err := c.ShouldBindJSON(&group)

@@ -127,6 +127,8 @@
   },
   "GroupUser": {
     "GetGroupFail": "Get group fail",
+    "GetUserListFail": "Get user list fail",
+    "GetUserListSuccess": "Get user list success",
     "GetUserFail": "Get user fail",
     "AddUserFail": "Add user fail",
     "AddUserSuccess": "Add user success",

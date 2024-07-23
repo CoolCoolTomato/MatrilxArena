@@ -105,9 +105,26 @@
             >
             {{ $t('AdminGroupDetail.Add') }}
           </el-button>
+          <el-input
+            v-model="groupUserQueryUsername"
+            style="width: 450px; margin: 10px;"
+            :placeholder="$t('AdminGroupDetail.FindUsers')"
+          >
+            <template #append>
+              <el-button
+                @click="GetGroupUserList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminGroupDetail.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
         </div>
         <el-table
-          :data="group.Users"
+          :data="groupUserList"
           table-layout="fixed"
           height="calc(100% - 50px)"
           >
@@ -742,6 +759,8 @@ export default {
         "file": null
       },
       userList: [],
+      groupUserQueryUsername: "",
+      groupUserList: [],
       groupUserDetailVisible: false,
       groupUserDetail: {
         "Username": "",
@@ -1095,6 +1114,20 @@ export default {
         console.log(error)
       })
     },
+    GetGroupUserList() {
+      groupUser.GetGroupUserList({
+        "GroupID": this.group.ID,
+        "Username": this.groupUserQueryUsername
+      }).then(res => {
+        if (res.code === 0) {
+          this.groupUserList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     OpenGroupUserDetailForm(row) {
       this.groupUserDetail = {
         "Username": row.Username,
@@ -1172,7 +1205,7 @@ export default {
     this.GetAttachmentList()
     this.GetGroupChallengeList()
     this.GetUserList()
-
+    this.GetGroupUserList()
   }
 }
 </script>

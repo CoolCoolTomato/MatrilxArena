@@ -63,6 +63,23 @@ func (group *Group) DeleteGroup() error {
 		Error
 }
 
+func (group *Group) GetUserList(queryUser User) ([]User, error) {
+	query := database.GetDatabase().Model(group)
+	if queryUser.Username != "" {
+		query = query.Where("users.username LIKE ?", "%"+queryUser.Username+"%")
+	}
+
+	var userList []User
+	err := query.
+		Preload("GroupChallenges").
+		Association("Users").
+		Find(&userList)
+	if err != nil {
+		return nil, err
+	}
+	return userList, nil
+}
+
 func (group *Group) AddUser(user *User) error {
 	return database.GetDatabase().Model(group).Association("Users").Append(user)
 }
