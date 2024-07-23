@@ -118,6 +118,8 @@ export default {
   },
   "AdminGroup": {
     "GroupManager": "题集管理",
+    "FindGroups": "查询题集",
+    "Find": "查询",
     "Add": "添加",
     "Name": "名称",
     "Description": "描述",

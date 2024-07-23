@@ -118,6 +118,8 @@ export default {
   },
   "AdminGroup": {
     "GroupManager": "Group Manager",
+    "FindGroups": "Find groups",
+    "Find": "Find",
     "Add": "Add",
     "Name": "Name",
     "Description": "Description",

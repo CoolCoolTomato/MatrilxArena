@@ -4,7 +4,24 @@
       <div style="display: flex; align-items: center;">
         <h2 style="color: var(--el-text-color-primary);">{{ t('AdminGroup.GroupManager') }}</h2>
         <div style="flex-grow: 1;"></div>
-        <div style="margin-right: 50px;">
+        <div style="margin-right: 50px; display: flex;">
+          <el-input
+            v-model="groupQueryName"
+            style="width: 450px; margin: 10px;"
+            :placeholder="$t('AdminGroup.FindGroups')"
+          >
+            <template #append>
+              <el-button
+                @click="GetGroupList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminGroup.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
           <el-button
             style="margin: 10px;"
             @click="createGroupFormVisible = true"
@@ -173,6 +190,7 @@
 </template>
 <script>
 import groupApi from "@/api/group.js"
+import Search from "@/components/icons/Search.vue"
 import { ElMessage } from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -181,6 +199,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       labelWidth: 100,
