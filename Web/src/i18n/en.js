@@ -229,6 +229,8 @@ export default {
   },
   "AdminUser": {
     "UserManager": "User Manager",
+    "FindUsers": "Find users",
+    "Find": "Find",
     "Add": "Add",
     "Username": "Username",
     "Email": "Email",

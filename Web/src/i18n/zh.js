@@ -229,6 +229,8 @@ export default {
   },
   "AdminUser": {
     "UserManager": "用户管理",
+    "FindUsers": "查询用户",
+    "Find": "查询",
     "Add": "添加",
     "Username": "用户名",
     "Email": "邮箱",

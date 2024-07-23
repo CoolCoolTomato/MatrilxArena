@@ -17,9 +17,17 @@ type User struct {
 	GroupChallenges []GroupChallenge `gorm:"many2many:group_challenge_user"`
 }
 
-func GetUserList() ([]User, error) {
+func GetUserList(queryUser User) ([]User, error) {
+	query := database.GetDatabase().Model(&User{})
+	if queryUser.Username != "" {
+		query = query.Where("username LIKE ?", "%"+queryUser.Username+"%")
+	}
+
 	var userList []User
-	err := database.GetDatabase().Model(&User{}).Select("ID", "Username", "Email", "Role").Find(&userList).Error
+	err := query.
+		Select("ID", "Username", "Email", "Role").
+		Find(&userList).
+		Error
 	if err != nil {
 		return nil, err
 	}

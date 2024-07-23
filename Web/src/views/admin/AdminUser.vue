@@ -4,7 +4,24 @@
       <div style="display: flex; align-items: center;">
         <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminUser.UserManager') }}</h2>
         <div style="flex-grow: 1;"></div>
-        <div style="margin-right: 50px;">
+        <div style="margin-right: 50px; display: flex;">
+          <el-input
+            v-model="userQueryUsername"
+            style="width: 450px; margin: 10px;"
+            :placeholder="$t('AdminUser.FindUsers')"
+          >
+            <template #append>
+              <el-button
+                @click="GetUserList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminUser.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
           <el-button
             style="margin: 10px;"
             @click="createUserFormVisible = true"
@@ -147,6 +164,7 @@
 </template>
 <script>
 import userApi from "@/api/user.js"
+import Search from "@/components/icons/Search.vue"
 import { ElMessage } from 'element-plus'
 import { useI18n } from "vue-i18n"
 
@@ -155,9 +173,11 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       labelWidth: 100,
+      userQueryUsername: "",
       userList: [],
       createUserFormVisible: false,
       createUserData: {
@@ -192,7 +212,9 @@ export default {
   },
   methods: {
     GetUserList() {
-      userApi.GetUserList().then(res => {
+      userApi.GetUserList({
+        "Username": this.userQueryUsername,
+      }).then(res => {
         if (res.code === 0) {
           this.userList = res.data
         } else {

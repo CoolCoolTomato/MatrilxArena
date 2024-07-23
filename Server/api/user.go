@@ -8,7 +8,14 @@ import (
 )
 
 func GetUserList(c *gin.Context) {
-	userList, err := model.GetUserList()
+	var user model.User
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("User.InvalidArgument", c), c)
+		return
+	}
+
+	userList, err := model.GetUserList(user)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("User.GetUserListFail", c), c)
 		return

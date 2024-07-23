@@ -1051,7 +1051,7 @@ export default {
     },
 
     GetUserList() {
-      userApi.GetUserList().then(res => {
+      userApi.GetUserList({}).then(res => {
         if (res.code === 0) {
           this.userList = res.data
         } else {

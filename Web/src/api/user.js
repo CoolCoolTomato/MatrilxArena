@@ -1,7 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetUserList() {
-    return apiClient.post("/user/GetUserList").then(handleResponse).catch(handleError)
+function GetUserList(data) {
+    return apiClient.post("/user/GetUserList", data).then(handleResponse).catch(handleError)
 }
 
 function GetUser(data) {
