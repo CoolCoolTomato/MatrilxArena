@@ -26,7 +26,7 @@ export default {
   "AdminIndex": {
     "NumberOfChallenges": "题目数量",
     "NumberOfUsers": "用户数量",
-    "LiveDockerNode": "在线容器",
+    "LiveDockerNode": "在线节点",
     "NumberOfImages": "镜像数量",
     "ChallengesByCategory": "题目分类",
     "Uncategorized": "未分类"
@@ -199,6 +199,8 @@ export default {
   },
   "AdminImage": {
     "ImageManager": "镜像管理",
+    "FindImages": "查询镜像",
+    "Find": "查询",
     "Add": "添加",
     "Remark": "标记",
     "RepoTags": "仓库标签",

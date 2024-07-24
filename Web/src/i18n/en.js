@@ -199,6 +199,8 @@ export default {
   },
   "AdminImage": {
     "ImageManager": "Image Manager",
+    "FindImages": "Find images",
+    "Find": "Find",
     "Add": "Add",
     "Remark": "Remark",
     "RepoTags": "RepoTags",

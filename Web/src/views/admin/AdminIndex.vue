@@ -104,7 +104,7 @@ export default {
       })
     },
     async GetImageList() {
-      return imageApi.GetImageList().then(res => {
+      return imageApi.GetImageList({}).then(res => {
         if (res.code === 0) {
           this.imageList = res.data
         } else {

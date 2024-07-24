@@ -5,6 +5,23 @@
         <h2 style="color: var(--el-text-color-primary);">{{ t('AdminImage.ImageManager') }}</h2>
         <div style="flex-grow: 1;"></div>
         <div style="margin-right: 50px;">
+          <el-input
+            v-model="imageQueryField"
+            style="width: 450px; margin: 10px;"
+            :placeholder="$t('AdminImage.FindImages')"
+          >
+            <template #append>
+              <el-button
+                @click="GetImageList"
+                style="width: 100px;"
+              >
+                {{ $t('AdminImage.Find') }}
+                <el-icon style="margin-left: 10px">
+                  <Search fill="var(var(--el-button-text-color))"/>
+                </el-icon>
+              </el-button>
+            </template>
+          </el-input>
           <el-button
             style="margin: 10px;"
             @click="createImageFormVisible = true"
@@ -131,6 +148,7 @@
 </template>
 <script>
 import imageApi from "@/api/image.js"
+import Search from "@/components/icons/Search.vue"
 import { ElMessage } from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -139,9 +157,11 @@ export default {
     const { t } = useI18n()
     return { t }
   },
+  components: { Search },
   data() {
     return {
       labelWidth: 100,
+      imageQueryField: "",
       imageList: [],
       createImageFormVisible: false,
       createImageData: {
@@ -164,7 +184,10 @@ export default {
   },
   methods: {
     GetImageList() {
-      imageApi.GetImageList().then(res => {
+      imageApi.GetImageList({
+        "Remark": this.imageQueryField,
+        "RepoTags": this.imageQueryField,
+      }).then(res => {
         if (res.code === 0) {
           this.imageList = res.data
         } else {

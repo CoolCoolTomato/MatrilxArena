@@ -1,7 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetImageList() {
-    return apiClient.post("/image/GetImageList").then(handleResponse).catch(handleError)
+function GetImageList(data) {
+    return apiClient.post("/image/GetImageList", data).then(handleResponse).catch(handleError)
 }
 
 function GetImage(data) {

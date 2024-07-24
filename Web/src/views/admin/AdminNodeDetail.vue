@@ -369,7 +369,7 @@ export default {
       })
     },
     GetImageList() {
-      imageApi.GetImageList().then(res => {
+      imageApi.GetImageList({}).then(res => {
         if (res.code === 0) {
           this.imageList = res.data
         } else {

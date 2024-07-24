@@ -8,7 +8,14 @@ import (
 )
 
 func GetImageList(c *gin.Context) {
-	imageList, err := model.GetImageList()
+	var image model.Image
+	err := c.ShouldBindJSON(&image)
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("Image.InvalidArgument", c), c)
+		return
+	}
+
+	imageList, err := model.GetImageList(image)
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("Image.GetImageListFail", c), c)
 		return
