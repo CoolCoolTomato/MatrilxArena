@@ -10,7 +10,11 @@
         "Port": "3306",
         "Database": "matrilx",
         "Charset": "utf8mb4",
-        "Local": "Asia%2FShanghai"
+        "Local": "Asia%2FShanghai",
+        "Admin": {
+            "Username": "admin",
+            "Password": "admin"
+        }
     },
     "Redis": {
         "Host": "127.0.0.1",
