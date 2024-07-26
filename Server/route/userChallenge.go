@@ -12,6 +12,6 @@ func SetUserChallengeRoute(r *gin.Engine) {
 	{
 		userChallenge.POST("/GetUserChallengeList", api.GetUserChallengeList)
 		userChallenge.POST("/ResetUserChallenge", api.ResetUserChallenge)
-		userChallenge.POST("/CheckFlag", api.CheckFlag)
+		userChallenge.POST("/CheckChallengeFlag", api.CheckChallengeFlag)
 	}
 }

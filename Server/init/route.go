@@ -22,5 +22,7 @@ func RouteInit() {
 	route.SetUserContainerRoute(route.Route)
 	route.SetUserChallengeRoute(route.Route)
 	route.SetUserGroupRoute(route.Route)
+    route.SetUserGroupChallengeRoute(route.Route)
+    route.SetUserGroupContainerRoute(route.Route)
 	route.SetAttachmentRoute(route.Route)
 }

@@ -119,7 +119,6 @@ func CreateContainerByUser(c *gin.Context) {
 				break
 			}
 		}
-
 	}
 
 	res, err := docker.CreateContainer(dockerNode, dockerNodeImageID, challenge.SpecifiedPorts)

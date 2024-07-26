@@ -521,7 +521,7 @@ export default {
       })
     },
     CheckFlag() {
-      userChallengeApi.CheckFlag(this.checkFlagData).then(res => {
+      userChallengeApi.CheckChallengeFlag(this.checkFlagData).then(res => {
         if (res.code === 0) {
           this.GetUserChallengeList()
           ElMessage({

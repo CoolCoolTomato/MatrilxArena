@@ -78,7 +78,7 @@ func ResetUserChallenge(c *gin.Context) {
 	response.OK(nil, localizer.GetMessage("UserChallenge.ResetChallengeSuccess", c), c)
 }
 
-func CheckFlag(c *gin.Context) {
+func CheckChallengeFlag(c *gin.Context) {
 	username, exists := c.Get("Username")
 	if !exists {
 		response.Fail(nil, localizer.GetMessage("UserChallenge.InvalidToken", c), c)
