@@ -27,7 +27,7 @@ const router = createRouter({
       { path: "", component: Index },
       { path: "challenge/:category?", component: Challenge },
       { path: "group", component: Group },
-      { path: "group/:id(\\d+)", component: GroupDetail },
+      { path: "group/:id(\\d+)/:category?", component: GroupDetail },
       { path: "profile", component: Profile },
     ]},
     { path: "/admin", component: BaseAdmin, children: [

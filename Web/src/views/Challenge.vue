@@ -132,7 +132,7 @@
         </div>
         <div style="display:flex; margin-top: 15px" v-if="checkContainerInUse(challengeDetail.ID) || challengeDetail.ImageID === 0">
           <el-input v-model="checkFlagData.Flag" :placeholder="$t('Challenge.InputFlag')"/>
-          <el-button @click="CheckFlag">{{ $t('Challenge.Submit') }}</el-button>
+          <el-button @click="CheckChallengeFlag">{{ $t('Challenge.Submit') }}</el-button>
         </div>
       </el-dialog>
       <el-dialog
@@ -520,7 +520,7 @@ export default {
         console.log(error)
       })
     },
-    CheckFlag() {
+    CheckChallengeFlag() {
       userChallengeApi.CheckChallengeFlag(this.checkFlagData).then(res => {
         if (res.code === 0) {
           this.GetUserChallengeList()
