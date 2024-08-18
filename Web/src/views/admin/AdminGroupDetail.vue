@@ -155,19 +155,59 @@
     <el-dialog
       v-model="groupChallengeDetailVisible"
       :title="$t('AdminGroupDetail.ChallengeDetail')"
-      width="500"
+      width="900"
       @close="ClearGroupChallengeDetail"
       >
       <el-card>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Title') }}: {{ groupChallengeDetail.Title }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Description') }}: {{ groupChallengeDetail.Description }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Category') }}: {{ groupChallengeDetail.Category.Name === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Category.Name }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Image') }}: {{ groupChallengeDetail.Image.Remark === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.Remark }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.RepoTags') }}: {{ groupChallengeDetail.Image.RepoTags === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.RepoTags }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Attachment') }}: {{ groupChallengeDetail.Attachment.FileName === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Attachment.FileName }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.SpecifiedPorts') }}: {{ groupChallengeDetail.SpecifiedPorts }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Commands') }}: {{ groupChallengeDetail.Commands }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Flag') }}: {{ groupChallengeDetail.Flag }}</p>
+        <h2>{{ $t('AdminGroupDetail.Challenge') }}</h2>
+        <el-row>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Title') }}: {{ groupChallengeDetail.Title }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Description') }}: {{ groupChallengeDetail.Description }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Category') }}: {{ groupChallengeDetail.Category.Name === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Category.Name }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Image') }}: {{ groupChallengeDetail.Image.Remark === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.Remark }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.RepoTags') }}: {{ groupChallengeDetail.Image.RepoTags === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.RepoTags }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Attachment') }}: {{ groupChallengeDetail.Attachment.FileName === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Attachment.FileName }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.SpecifiedPorts') }}: {{ groupChallengeDetail.SpecifiedPorts }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Commands') }}: {{ groupChallengeDetail.Commands }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Flag') }}: {{ groupChallengeDetail.Flag }}</p>
+          </el-col>
+        </el-row>
+        <h2>{{ $t('AdminGroupDetail.Solver') }}</h2>
+        <div>
+          <el-row v-if="groupChallengeDetail.Users.length !== 0">
+            <el-col
+              :span="4"
+              v-for="user in groupChallengeDetail.Users"
+            >
+              <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
+                <el-avatar size="default">
+                  {{ user.Username[0] }}
+                </el-avatar>
+                <el-text>{{ user.Username }}</el-text>
+              </div>
+            </el-col>
+          </el-row>
+          <el-text v-else>
+            {{ $t('AdminGroupDetail.Null') }}
+          </el-text>
+        </div>
       </el-card>
       <template #footer>
         <el-button @click="groupChallengeDetailVisible = false">{{ $t('AdminGroupDetail.Close') }}</el-button>
@@ -658,15 +698,45 @@
     <el-dialog
       v-model="groupUserDetailVisible"
       :title="$t('AdminGroupDetail.UserDetail')"
-      width="500"
+      width="900"
       @close="ClearGroupUserDetail"
       >
       <el-card>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Username') }}: {{ groupUserDetail.Username }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Email') }}: {{ groupUserDetail.Email }}</p>
-        <p style="word-break: break-all;">{{ $t('AdminGroupDetail.SolvedChallenges') }}: </p>
-        <div v-for="groupChallenge in groupUserDetail.GroupChallenges">
-          <el-text>{{ groupChallenge.Title }}</el-text>
+        <h2>{{ $t('AdminGroupDetail.User') }}</h2>
+        <el-row>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Username') }}: {{ groupUserDetail.Username }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Email') }}: {{ groupUserDetail.Email }}</p>
+          </el-col>
+        </el-row>
+        <h2>{{ $t('AdminGroupDetail.SolvedChallenges') }}</h2>
+        <div>
+          <el-row v-if="groupUserDetail.GroupChallenges.length !== 0">
+            <el-col
+              :span="6"
+              v-for="groupChallenge in groupUserDetail.GroupChallenges"
+            >
+              <div
+                style="margin: 10px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                border: solid 1px var(--el-border-color);
+                border-left: solid 5px var(--el-border-color);
+                position: relative"
+              >
+                <el-text style="margin-left: 20px">{{ groupChallenge.Title }}</el-text>
+                <el-icon size="25" style="right: 20px; position: absolute">
+                  <True fill="var(--el-color-primary)"/>
+                </el-icon>
+              </div>
+            </el-col>
+          </el-row>
+          <el-text v-else>
+            {{ $t('AdminGroupDetail.Null') }}
+          </el-text>
         </div>
       </el-card>
       <template #footer>
@@ -684,6 +754,7 @@ import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
 import userApi from "@/api/user.js"
 import Search from "@/components/icons/Search.vue"
+import True from "@/components/icons/True.vue"
 import {ElMessage} from "element-plus"
 import { useI18n } from "vue-i18n"
 
@@ -692,7 +763,7 @@ export default {
     const { t } = useI18n()
     return { t }
   },
-  components: { Search },
+  components: { Search, True },
   data() {
     return {
       activeTab: "challenges",
@@ -715,7 +786,8 @@ export default {
         "Attachment": {},
         "SpecifiedPorts": [],
         "Commands": [],
-        "Flag": ""
+        "Flag": "",
+        "Users": []
       },
       createGroupChallengeFormVisible: false,
       createGroupChallengeData: {
@@ -869,7 +941,8 @@ export default {
         "Attachment": {},
         "SpecifiedPorts": [],
         "Commands": [],
-        "Flag": ""
+        "Flag": "",
+        "Users": []
       }
     },
     AddCreateGroupChallengeSpecifiedPort() {

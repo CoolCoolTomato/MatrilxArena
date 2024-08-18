@@ -173,6 +173,8 @@ export default {
     "Auto": "自动",
     "Specify": "指定",
     "ChallengeDetail": "题目详情",
+    "Challenge": "题目",
+    "Solver": "解题用户",
     "CreateChallenge": "创建题目",
     "UpdateChallenge": "更新题目",
     "DeleteChallenge": "删除题目",
@@ -196,6 +198,7 @@ export default {
     "RemoveUser": "移除用户",
     "AreYouConfirmToRemoveTheUser": "你确认要移除这个用户吗？",
     "UserDetail": "用户详情",
+    "User": "用户"
   },
   "AdminImage": {
     "ImageManager": "镜像管理",

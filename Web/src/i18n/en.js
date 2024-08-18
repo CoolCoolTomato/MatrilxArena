@@ -173,6 +173,8 @@ export default {
     "Auto": "Auto",
     "Specify": "Specify",
     "ChallengeDetail": "Challenge Detail",
+    "Challenge": "Challenge",
+    "Solver": "Solver",
     "CreateChallenge": "Create Challenge",
     "UpdateChallenge": "Update Challenge",
     "DeleteChallenge": "Delete Challenge",
@@ -196,6 +198,7 @@ export default {
     "RemoveUser": "Remove User",
     "AreYouConfirmToRemoveTheUser": "Are you confirm to remove the user?",
     "UserDetail": "User Detail",
+    "User": "User"
   },
   "AdminImage": {
     "ImageManager": "Image Manager",
