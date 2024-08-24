@@ -134,7 +134,7 @@ func CheckChallengeFlag(c *gin.Context) {
 }
 
 func checkFlagFromContainer(user model.User, userChallengeRequest UserChallengeRequest, challenge model.Challenge) (bool, error) {
-	userContainers, err := manager.GetUserContainerList(user.Username)
+	userContainers, err := manager.GetUserContainerList(user.Username, manager.StandardContainerManager{})
 	if err != nil {
 		return false, err
 	}

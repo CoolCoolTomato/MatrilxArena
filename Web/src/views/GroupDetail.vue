@@ -321,6 +321,7 @@ export default {
           this.userGroupContainerList = this.userGroupContainerList.map(container => {
             const newContainer = {...container}
             newContainer.RemainingTime = Math.trunc(newContainer.RemainingTime / 1000000 + Date.now())
+            newContainer.GroupChallengeID = newContainer.ChallengeID
             return newContainer
           })
         } else {

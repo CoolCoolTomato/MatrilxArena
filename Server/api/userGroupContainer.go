@@ -29,7 +29,7 @@ func GetGroupContainerListByUser(c *gin.Context) {
 		return
 	}
 
-	userGroupContainers, err := manager.GetUserGroupContainerList(username.(string))
+	userGroupContainers, err := manager.GetUserContainerList(username.(string), manager.GroupContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroupContainer.GetUserContainerListFail", c), c)
 		return
@@ -53,7 +53,7 @@ func CreateGroupContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userGroupContainers, err := manager.GetUserGroupContainerList(username.(string))
+	userGroupContainers, err := manager.GetUserContainerList(username.(string), manager.GroupContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroupContainer.GetUserContainerListFail", c), c)
 		return
@@ -140,7 +140,7 @@ func CreateGroupContainerByUser(c *gin.Context) {
 		userFlag = groupChallenge.Flag
 	}
 
-	err = manager.AddUserGroupContainer(username.(string), containerID, portMaps, dockerNode.ID, groupChallenge.ID, userFlag)
+	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, groupChallenge.ID, userFlag, manager.GroupContainerManager{})
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("UserGroupContainer.AddUserContainerFail", c), c)
 		return
@@ -188,7 +188,7 @@ func DestroyGroupContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userGroupContainers, err := manager.GetUserGroupContainerList(username.(string))
+	userGroupContainers, err := manager.GetUserContainerList(username.(string), manager.GroupContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroupContainer.GetUserContainerListFail", c), c)
 		return
@@ -203,7 +203,7 @@ func DestroyGroupContainerByUser(c *gin.Context) {
 				response.Fail(err, localizer.GetMessage("UserGroupContainer.GetDockerNodeFail", c), c)
 				return
 			}
-			err = manager.DeleteUserGroupContainer(username.(string), userGroupContainer.DockerNodeContainerID)
+			err = manager.DeleteUserContainer(username.(string), userGroupContainer.DockerNodeContainerID, manager.GroupContainerManager{})
 			if err != nil {
 				response.Fail(err, localizer.GetMessage("UserGroupContainer.DeleteUserContainerFail", c), c)
 				return
@@ -242,7 +242,7 @@ func DelayGroupContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userGroupContainers, err := manager.GetUserGroupContainerList(username.(string))
+	userGroupContainers, err := manager.GetUserContainerList(username.(string), manager.GroupContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroupContainer.GetUserContainerListFail", c), c)
 		return
@@ -257,7 +257,7 @@ func DelayGroupContainerByUser(c *gin.Context) {
 				response.Fail(err, localizer.GetMessage("UserGroupContainer.GetDockerNodeFail", c), c)
 				return
 			}
-			err = manager.ResetUserGroupContainerTime(userGroupContainer.DockerNodeContainerID)
+			err = manager.ResetUserContainerTime(userGroupContainer.DockerNodeContainerID, manager.GroupContainerManager{})
 			if err != nil {
 				if strings.Contains(err.Error(), "remaining time is greater than 10 minutes") {
 					response.Fail(err, localizer.GetMessage("UserGroupContainer.RemainingTimeIsGreaterThan10Minutes", c), c)
