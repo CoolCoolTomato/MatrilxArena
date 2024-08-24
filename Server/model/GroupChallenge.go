@@ -42,8 +42,8 @@ func GetGroupChallengeList(queryGroupChallenge GroupChallenge) ([]GroupChallenge
 		Preload("Category").
 		Preload("Image").
 		Preload("Attachment").
-		Preload("Group").
 		Preload("Users").
+        Preload("Group").
 		Find(&groupChallengeList).
 		Error
 	if err != nil {
@@ -62,8 +62,8 @@ func (groupChallenge *GroupChallenge) GetGroupChallenge() error {
 		Preload("Category").
 		Preload("Image").
 		Preload("Attachment").
-		Preload("Group").
 		Preload("Users").
+        Preload("Group").
 		Where("ID = ?", groupChallenge.ID).
 		First(&groupChallenge).
 		Error

@@ -15,6 +15,8 @@ type User struct {
 	Challenges      []Challenge      `gorm:"many2many:challenge_user"`
 	Groups          []Group          `gorm:"many2many:group_user"`
 	GroupChallenges []GroupChallenge `gorm:"many2many:group_challenge_user"`
+    CTFs            []CTF            `gorm:"many2many:ctf_user"`
+    CTFChallenges   []CTFChallenge   `gorm:"many2many:ctf_challenge_user"`
 }
 
 func GetUserList(queryUser User) ([]User, error) {
