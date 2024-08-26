@@ -55,6 +55,19 @@
     "DeleteChallengeSuccess": "题目删除成功",
     "InvalidArgument": "参数错误"
   },
+  "CTF": {
+    "GetCTFListFail": "CTF列表获取失败",
+    "GetCTFListSuccess": "CTF列表获取成功",
+    "GetCTFFail": "CTF获取失败",
+    "GetCTFSuccess": "CTF获取成功",
+    "CreateCTFFail": "CTF创建失败",
+    "CreateCTFSuccess": "CTF创建成功",
+    "UpdateCTFFail": "CTF更新失败",
+    "UpdateCTFSuccess": "CTF更新成功",
+    "DeleteCTFFail": "CTF删除失败",
+    "DeleteCTFSuccess": "CTF删除成功",
+    "InvalidArgument": "参数错误"
+  },
   "DockerNode": {
     "GetDockerNodeListFail": "Docker节点列表获取失败",
     "GetDockerNodeListSuccess": "Docker节点列表获取成功",

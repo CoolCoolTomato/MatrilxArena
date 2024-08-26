@@ -27,29 +27,36 @@ func DatabaseInit() {
 	}
 
 	conn.AutoMigrate(
-		&model.User{},
-		&model.Image{},
+		&model.Attachment{},
+		&model.Category{},
 		&model.Challenge{},
+		&model.CTF{},
+		&model.CTFChallenge{},
+		&model.CTFTeam{},
 		&model.DockerNode{},
+		&model.Group{},
+		&model.GroupChallenge{},
+		&model.Image{},
+		&model.User{},
 	)
 
 	database.Database = conn
 
-    username := config.GetConfig().GetString("Database.Admin.Username")
-    password := config.GetConfig().GetString("Database.Admin.Password")
-    user := model.User{
-        Username: username,
-        Password: password,
-        Role: 1,
-    }
-    err = user.GetUserByUsernameOrEmail()
-    if err != nil {
-        err = user.SetPassword(user.Password)
-        err = user.CreateUser()
-        if err != nil {
-            panic(err)
-        }
-    }
+	username := config.GetConfig().GetString("Database.Admin.Username")
+	password := config.GetConfig().GetString("Database.Admin.Password")
+	user := model.User{
+		Username: username,
+		Password: password,
+		Role:     1,
+	}
+	err = user.GetUserByUsernameOrEmail()
+	if err != nil {
+		err = user.SetPassword(user.Password)
+		err = user.CreateUser()
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	database.Redis = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.GetConfig().GetString("Redis.Host"), config.GetConfig().GetString("Redis.Port")),

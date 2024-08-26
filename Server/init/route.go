@@ -15,6 +15,7 @@ func RouteInit() {
 	route.SetImageRoute(route.Route)
 	route.SetCategoryRoute(route.Route)
 	route.SetChallengeRoute(route.Route)
+	route.SetCTFRoute(route.Route)
 	route.SetGroupRoute(route.Route)
 	route.SetGroupChallengeRoute(route.Route)
 	route.SetGroupUserRoute(route.Route)
@@ -22,7 +23,7 @@ func RouteInit() {
 	route.SetUserContainerRoute(route.Route)
 	route.SetUserChallengeRoute(route.Route)
 	route.SetUserGroupRoute(route.Route)
-    route.SetUserGroupChallengeRoute(route.Route)
-    route.SetUserGroupContainerRoute(route.Route)
+	route.SetUserGroupChallengeRoute(route.Route)
+	route.SetUserGroupContainerRoute(route.Route)
 	route.SetAttachmentRoute(route.Route)
 }

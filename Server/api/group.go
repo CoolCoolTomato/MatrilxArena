@@ -44,7 +44,7 @@ func GetGroup(c *gin.Context) {
 func CreateGroup(c *gin.Context) {
 	var group model.Group
 	err := c.ShouldBindJSON(&group)
-	if err != nil {
+	if err != nil || group.Name == "" || group.Description == "" {
 		response.Fail(err, localizer.GetMessage("Group.InvalidArgument", c), c)
 		return
 	}
@@ -61,7 +61,7 @@ func CreateGroup(c *gin.Context) {
 func UpdateGroup(c *gin.Context) {
 	var group model.Group
 	err := c.ShouldBindJSON(&group)
-	if err != nil || group.ID == 0 {
+	if err != nil || group.ID == 0 || group.Name == "" || group.Description == "" {
 		response.Fail(err, localizer.GetMessage("Group.InvalidArgument", c), c)
 		return
 	}
