@@ -1,20 +1,22 @@
 package model
 
 import (
-    "github.com/CoolCoolTomato/MatrilxArena/Server/database"
-    "gorm.io/gorm"
-    "time"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/database"
+	"gorm.io/gorm"
+	"time"
 )
 
 type CTF struct {
-    gorm.Model
-    Name string
-    Description     string
-	Public          bool
-	CTFChallenges   []CTFChallenge   `gorm:"foreignKey:CTFID"`
-	Users           []User           `gorm:"many2many:ctf_user"`
-    StartTime       time.Time
-    EndTime         time.Time
+	gorm.Model
+	Name          string
+	Description   string
+	Public        bool
+	TeamSignIn    bool
+	CTFChallenges []CTFChallenge `gorm:"foreignKey:CTFID"`
+	Users         []User         `gorm:"many2many:ctf_user"`
+	CTFTeams      []CTFTeam      `gorm:"foreignKey:CTFID"`
+	StartTime     time.Time
+	EndTime       time.Time
 }
 
 func GetCTFList(queryCTF CTF) ([]CTF, error) {
@@ -53,7 +55,7 @@ func (ctf *CTF) CreateCTF() error {
 
 func (ctf *CTF) UpdateCTF() error {
 	return database.GetDatabase().Model(&CTF{}).
-		Select("Name", "Description", "Public", "StartTime", "EndTime").
+		Select("Name", "Description", "Public", "TeamSignIn", "StartTime", "EndTime").
 		Where("ID = ?", ctf.ID).
 		Updates(&ctf).
 		Error
