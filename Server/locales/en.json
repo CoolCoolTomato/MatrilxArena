@@ -68,6 +68,19 @@
     "DeleteCTFSuccess": "Delete CTF success",
     "InvalidArgument": "Invalid argument"
   },
+  "CTFTeam": {
+    "GetCTFTeamListFail": "Get CTF Team list fail",
+    "GetCTFTeamListSuccess": "Get CTF Team list success",
+    "GetCTFTeamFail": "Get CTF Team fail",
+    "GetCTFTeamSuccess": "Get CTF Team success",
+    "CreateCTFTeamFail": "Create CTF Team fail",
+    "CreateCTFTeamSuccess": "Create CTF Team success",
+    "UpdateCTFTeamFail": "Update CTF Team fail",
+    "UpdateCTFTeamSuccess": "Update CTF Team success",
+    "DeleteCTFTeamFail": "Delete CTF Team fail",
+    "DeleteCTFTeamSuccess": "Delete CTF Team success",
+    "InvalidArgument": "Invalid argument"
+  },
   "DockerNode": {
     "GetDockerNodeListFail": "Get dockerNode list fail",
     "GetDockerNodeListSuccess": "Get dockerNode list success",

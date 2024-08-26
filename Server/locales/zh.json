@@ -68,6 +68,19 @@
     "DeleteCTFSuccess": "CTF删除成功",
     "InvalidArgument": "参数错误"
   },
+  "CTFTeam": {
+    "GetCTFTeamListFail": "CTF队伍列表获取失败",
+    "GetCTFTeamListSuccess": "CTF队伍列表获取成功",
+    "GetCTFTeamFail": "CTF队伍获取失败",
+    "GetCTFTeamSuccess": "CTF队伍获取成功",
+    "CreateCTFTeamFail": "CTF队伍创建失败",
+    "CreateCTFTeamSuccess": "CTF队伍创建成功",
+    "UpdateCTFTeamFail": "CTF队伍更新失败",
+    "UpdateCTFTeamSuccess": "CTF队伍更新成功",
+    "DeleteCTFTeamFail": "CTF队伍删除失败",
+    "DeleteCTFTeamSuccess": "CTF队伍删除成功",
+    "InvalidArgument": "参数错误"
+  },
   "DockerNode": {
     "GetDockerNodeListFail": "Docker节点列表获取失败",
     "GetDockerNodeListSuccess": "Docker节点列表获取成功",
