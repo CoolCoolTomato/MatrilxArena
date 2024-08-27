@@ -68,6 +68,19 @@
     "DeleteCTFSuccess": "CTF删除成功",
     "InvalidArgument": "参数错误"
   },
+  "CTFChallenge": {
+    "GetCTFChallengeListFail": "CTF题目列表获取失败",
+    "GetCTFChallengeListSuccess": "CTF题目列表获取成功",
+    "GetCTFChallengeFail": "CTF题目获取失败",
+    "GetCTFChallengeSuccess": "CTF题目获取成功",
+    "CreateCTFChallengeFail": "CTF题目创建失败",
+    "CreateCTFChallengeSuccess": "CTF题目创建成功",
+    "UpdateCTFChallengeFail": "CTF题目更新失败",
+    "UpdateCTFChallengeSuccess": "CTF题目更新成功",
+    "DeleteCTFChallengeFail": "CTF题目删除失败",
+    "DeleteCTFTeamSuccess": "CTF题目删除成功",
+    "InvalidArgument": "参数错误"
+  },
   "CTFTeam": {
     "GetCTFTeamListFail": "CTF队伍列表获取失败",
     "GetCTFTeamListSuccess": "CTF队伍列表获取成功",

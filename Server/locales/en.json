@@ -68,6 +68,19 @@
     "DeleteCTFSuccess": "Delete CTF success",
     "InvalidArgument": "Invalid argument"
   },
+  "CTFChallenge": {
+    "GetCTFChallengeListFail": "Get CTF challenge list fail",
+    "GetCTFChallengeListSuccess": "Get CTF challenge list success",
+    "GetCTFChallengeFail": "Get CTF challenge fail",
+    "GetCTFChallengeSuccess": "Get CTF challenge success",
+    "CreateCTFChallengeFail": "Create CTF challenge fail",
+    "CreateCTFChallengeSuccess": "Create CTF challenge success",
+    "UpdateCTFChallengeFail": "Update CTF challenge fail",
+    "UpdateCTFChallengeSuccess": "Update CTF challenge success",
+    "DeleteCTFChallengeFail": "Delete CTF challenge fail",
+    "DeleteCTFChallengeSuccess": "Delete CTF challenge success",
+    "InvalidArgument": "Invalid argument"
+  },
   "CTFTeam": {
     "GetCTFTeamListFail": "Get CTF Team list fail",
     "GetCTFTeamListSuccess": "Get CTF Team list success",
