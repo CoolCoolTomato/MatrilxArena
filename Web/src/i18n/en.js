@@ -16,6 +16,7 @@ export default {
     "Challenge": "Challenge",
     "Category": "Category",
     "Group": "Group",
+    "CTF": "CTF",
     "Attachment": "Attachment",
     "User": "User"
   },

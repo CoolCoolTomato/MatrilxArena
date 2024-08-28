@@ -16,6 +16,7 @@ import AdminGroupDetail from "@/views/admin/AdminGroupDetail.vue"
 import AdminUser from "@/views/admin/AdminUser.vue"
 import AdminAttachment from "@/views/admin/AdminAttachment.vue"
 import AdminCategory from "@/views/admin/AdminCategory.vue"
+import AdminCTF from "@/views/admin/AdminCTF.vue"
 import authApi from "@/api/auth.js"
 import Profile from "@/views/Profile.vue"
 
@@ -37,6 +38,7 @@ const router = createRouter({
       { path: "image", component: AdminImage},
       { path: "category", component: AdminCategory },
       { path: "challenge", component: AdminChallenge },
+      { path: "ctf", component: AdminCTF },
       { path: "group", component: AdminGroup },
       { path: "group/:id(\\d+)", component: AdminGroupDetail },
       { path: "attachment", component: AdminAttachment },

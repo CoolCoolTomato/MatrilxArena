@@ -66,6 +66,12 @@
                     <template #title>{{ $t('BaseAdmin.Group') }}</template>
                   </el-menu-item>
                 </el-sub-menu>
+                <el-menu-item index="/admin/ctf">
+                  <el-icon>
+                    <CTF/>
+                  </el-icon>
+                  <template #title>{{ $t('BaseAdmin.CTF') }}</template>
+                </el-menu-item>
                 <el-menu-item index="/admin/attachment">
                   <el-icon>
                     <Attachment/>
@@ -99,6 +105,7 @@ import Menu from "@/components/icons/Menu.vue"
 import Home from "@/components/icons/Home.vue"
 import Docker from "@/components/icons/Docker.vue"
 import Challenge from "@/components/icons/Challenge.vue"
+import CTF from "@/components/icons/CTF.vue"
 import Attachment from "@/components/icons/Attachment.vue"
 import User from "@/components/icons/User.vue"
 import { useI18n } from "vue-i18n"
@@ -115,6 +122,7 @@ export default {
     Home,
     Docker,
     Challenge,
+    CTF,
     Attachment,
     User
   },
