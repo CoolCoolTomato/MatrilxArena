@@ -5,7 +5,6 @@ import (
     "github.com/CoolCoolTomato/MatrilxArena/Server/database"
     "github.com/CoolCoolTomato/MatrilxArena/Server/utils/gormType"
     "gorm.io/gorm"
-    "time"
 )
 
 type CTFChallenge struct {
@@ -22,7 +21,6 @@ type CTFChallenge struct {
 	Commands       gormType.StringSlice `gorm:"type:json"`
 	Flag           string
     Score          int
-    SolveTime      time.Time
 	Users          []User               `gorm:"many2many:ctf_challenge_user"`
 	CTFID          uint
 	CTF            CTF                  `gorm:"foreignKey:CTFID;constraint:OnDelete:SET NULL"`
@@ -86,7 +84,6 @@ func (ctfChallenge *CTFChallenge) CreateCTFChallenge() error {
 		"commands",
 		"flag",
         "score",
-        "solve_time",
 		"ctf_id",
 	}
 
@@ -100,7 +97,6 @@ func (ctfChallenge *CTFChallenge) CreateCTFChallenge() error {
 		"commands":        ctfChallenge.Commands,
 		"flag":            ctfChallenge.Flag,
         "score":           ctfChallenge.Score,
-        "solve_time":      ctfChallenge.SolveTime,
 		"ctf_id":          ctfChallenge.CTFID,
 	}
 
@@ -139,7 +135,6 @@ func (ctfChallenge *CTFChallenge) UpdateCTFChallenge() error {
 		"commands",
 		"flag",
         "score",
-        "solve_time",
 		"ctf_id",
 	}
 
@@ -154,7 +149,6 @@ func (ctfChallenge *CTFChallenge) UpdateCTFChallenge() error {
 		"commands":        ctfChallenge.Commands,
 		"flag":            ctfChallenge.Flag,
         "score":           ctfChallenge.Score,
-        "solve_time":      ctfChallenge.SolveTime,
 		"ctf_id":          ctfChallenge.CTFID,
 	}
 
