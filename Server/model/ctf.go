@@ -29,6 +29,7 @@ func GetCTFList(queryCTF CTF) ([]CTF, error) {
 	err := query.
 		Preload("CTFChallenges").
 		Preload("Users").
+        Preload("CTFTeams").
 		Find(&ctfList).
 		Error
 	if err != nil {
@@ -42,6 +43,7 @@ func (ctf *CTF) GetCTF() error {
 	return database.GetDatabase().Model(&CTF{}).
 		Preload("CTFChallenges").
 		Preload("Users.CTFChallenges", "ctf_id = ?", ctf.ID).
+        Preload("CTFTeams").
 		Where("ID = ?", ctf.ID).
 		First(&ctf).
 		Error
