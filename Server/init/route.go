@@ -18,6 +18,7 @@ func RouteInit() {
 	route.SetCTFRoute(route.Route)
 	route.SetCTFChallengeRoute(route.Route)
 	route.SetCTFTeamRoute(route.Route)
+    route.SetCTFUserRoute(route.Route)
 	route.SetGroupRoute(route.Route)
 	route.SetGroupChallengeRoute(route.Route)
 	route.SetGroupUserRoute(route.Route)
