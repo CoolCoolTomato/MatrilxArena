@@ -1,14 +1,14 @@
 <template>
   <el-header>
     <div style="display: flex; align-items: center;">
-      <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminGroupDetail.GroupDetail') }}</h2>
+      <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminCTFDetail.CTFDetail') }}</h2>
       <div style="flex-grow: 1;"></div>
       <div style="margin-right: 50px;">
         <el-button
           style="margin: 10px;"
           @click="goBack"
         >
-          {{ $t('AdminGroupDetail.Back') }}
+          {{ $t('AdminCTFDetail.Back') }}
         </el-button>
       </div>
     </div>
@@ -18,40 +18,40 @@
       v-model="activeTab"
       class="el-tabs-custom"
       >
-      <el-tab-pane :label="$t('AdminGroupDetail.Challenges')" name="challenges">
+      <el-tab-pane :label="$t('AdminCTFDetail.Challenges')" name="challenges">
         <div style="height: 50px; display: flex; align-items: center;">
           <el-button
-            @click="OpenCreateGroupChallengeForm"
+            @click="OpenCreateCTFChallengeForm"
             type="primary"
           >
-            {{ $t('AdminGroupDetail.Add') }}
+            {{ $t('AdminCTFDetail.Add') }}
           </el-button>
           <el-input
-            v-model="groupChallengeQueryTitle"
+            v-model="ctfChallengeQueryTitle"
             style="width: 560px; margin: 10px;"
-            :placeholder="$t('AdminGroupDetail.FindChallenges')"
+            :placeholder="$t('AdminCTFDetail.FindChallenges')"
           >
             <template #prepend>
               <el-select
-                v-model="groupChallengeQueryCategoryID"
+                v-model="ctfChallengeQueryCategoryID"
                 filterable
                 style="width: 110px;"
-                :placeholder="$t('AdminGroupDetail.Select')"
+                :placeholder="$t('AdminCTFDetail.Select')"
               >
                 <el-option
                   v-for="category in categoryList"
                   :key="category.ID"
-                  :label="category.ID === 0 ? $t('AdminGroupDetail.All') : category.Name"
+                  :label="category.ID === 0 ? $t('AdminCTFDetail.All') : category.Name"
                   :value="category.ID"
                 ></el-option>
               </el-select>
             </template>
             <template #append>
               <el-button
-                @click="GetGroupChallengeList"
+                @click="GetCTFChallengeList"
                 style="width: 100px;"
               >
-                {{ $t('AdminGroupDetail.Find') }}
+                {{ $t('AdminCTFDetail.Find') }}
                 <el-icon style="margin-left: 10px">
                   <Search fill="var(var(--el-button-text-color))"/>
                 </el-icon>
@@ -60,62 +60,62 @@
           </el-input>
         </div>
         <el-table
-          :data="groupChallengeList"
+          :data="ctfChallengeList"
           table-layout="fixed"
           height="calc(100% - 50px)"
           >
-          <el-table-column prop="Title" :label="$t('AdminGroupDetail.Title')"/>
-          <el-table-column prop="Description" :label="$t('AdminGroupDetail.Description')"/>
-          <el-table-column :label="$t('AdminGroupDetail.Category')">
+          <el-table-column prop="Title" :label="$t('AdminCTFDetail.Title')"/>
+          <el-table-column prop="Description" :label="$t('AdminCTFDetail.Description')"/>
+          <el-table-column :label="$t('AdminCTFDetail.Category')">
             <template  #default=scope>
-              {{ scope.row.Category.Name === "" ? $t('AdminGroupDetail.Null') : scope.row.Category.Name}}
+              {{ scope.row.Category.Name === "" ? $t('AdminCTFDetail.Null') : scope.row.Category.Name}}
             </template>
           </el-table-column>
-          <el-table-column :label="$t('AdminGroupDetail.Image')">
+          <el-table-column :label="$t('AdminCTFDetail.Image')">
             <template  #default=scope>
-              {{ scope.row.Image.Remark === "" ? $t('AdminGroupDetail.Null') : scope.row.Image.Remark}}
+              {{ scope.row.Image.Remark === "" ? $t('AdminCTFDetail.Null') : scope.row.Image.Remark}}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminGroupDetail.Operations')" width="300px">
+          <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="300px">
             <template #default=scope>
               <el-button
-                @click="OpenGroupChallengeDetail(scope.row)"
+                @click="OpenCTFChallengeDetail(scope.row)"
                 >
-                {{ $t('AdminGroupDetail.Detail') }}
+                {{ $t('AdminCTFDetail.Detail') }}
               </el-button>
               <el-button
-                @click="OpenUpdateGroupChallengeForm(scope.row)"
+                @click="OpenUpdateCTFChallengeForm(scope.row)"
                 >
-                {{ $t('AdminGroupDetail.Update') }}
+                {{ $t('AdminCTFDetail.Update') }}
               </el-button>
               <el-button
                 @click="OpenDeleteChallengeForm(scope.row)"
                 >
-                {{ $t('AdminGroupDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Delete') }}
               </el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane :label="$t('AdminGroupDetail.Users')" name="users">
+      <el-tab-pane :label="$t('AdminCTFDetail.Users')" name="users">
         <div style="height: 50px; display: flex; align-items: center;">
           <el-button
-            @click="OpenAddGroupUserForm"
+            @click="OpenAddCTFUserForm"
             type="primary"
             >
-            {{ $t('AdminGroupDetail.Add') }}
+            {{ $t('AdminCTFDetail.Add') }}
           </el-button>
           <el-input
-            v-model="groupUserQueryUsername"
+            v-model="ctfUserQueryUsername"
             style="width: 450px; margin: 10px;"
-            :placeholder="$t('AdminGroupDetail.FindUsers')"
+            :placeholder="$t('AdminCTFDetail.FindUsers')"
           >
             <template #append>
               <el-button
-                @click="GetGroupUserList"
+                @click="GetCTFUserList"
                 style="width: 100px;"
               >
-                {{ $t('AdminGroupDetail.Find') }}
+                {{ $t('AdminCTFDetail.Find') }}
                 <el-icon style="margin-left: 10px">
                   <Search fill="var(var(--el-button-text-color))"/>
                 </el-icon>
@@ -124,28 +124,28 @@
           </el-input>
         </div>
         <el-table
-          :data="groupUserList"
+          :data="ctfUserList"
           table-layout="fixed"
           height="calc(100% - 50px)"
           >
-          <el-table-column prop="Username" :label="$t('AdminGroupDetail.Username')"/>
-          <el-table-column prop="Email" :label="$t('AdminGroupDetail.Email')"/>
-          <el-table-column  :label="$t('AdminGroupDetail.SolvedChallenges')">
+          <el-table-column prop="Username" :label="$t('AdminCTFDetail.Username')"/>
+          <el-table-column prop="Email" :label="$t('AdminCTFDetail.Email')"/>
+          <el-table-column  :label="$t('AdminCTFDetail.SolvedChallenges')">
             <template #default="scope">
-              {{ scope.row.GroupChallenges.length }}
+              {{ scope.row.CTFChallenges.length }}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminGroupDetail.Operations')" width="230">
+          <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="230">
             <template #default=scope>
               <el-button
-                @click="OpenGroupUserDetailForm(scope.row)"
+                @click="OpenCTFUserDetailForm(scope.row)"
                 >
-                {{ $t('AdminGroupDetail.Detail') }}
+                {{ $t('AdminCTFDetail.Detail') }}
               </el-button>
               <el-button
-                @click="OpenRemoveGroupUserForm(scope.row)"
+                @click="OpenRemoveCTFUserForm(scope.row)"
                 >
-                {{ $t('AdminGroupDetail.Remove') }}
+                {{ $t('AdminCTFDetail.Remove') }}
               </el-button>
             </template>
           </el-table-column>
@@ -153,48 +153,51 @@
       </el-tab-pane>
     </el-tabs>
     <el-dialog
-      v-model="groupChallengeDetailVisible"
-      :title="$t('AdminGroupDetail.ChallengeDetail')"
+      v-model="ctfChallengeDetailVisible"
+      :title="$t('AdminCTFDetail.ChallengeDetail')"
       width="900"
-      @close="ClearGroupChallengeDetail"
+      @close="ClearCTFChallengeDetail"
       >
       <el-card>
-        <h2>{{ $t('AdminGroupDetail.Challenge') }}</h2>
+        <h2>{{ $t('AdminCTFDetail.Challenge') }}</h2>
         <el-row>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Title') }}: {{ groupChallengeDetail.Title }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Title') }}: {{ ctfChallengeDetail.Title }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Description') }}: {{ groupChallengeDetail.Description }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfChallengeDetail.Description }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Category') }}: {{ groupChallengeDetail.Category.Name === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Category.Name }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Category') }}: {{ ctfChallengeDetail.Category.Name === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Category.Name }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Image') }}: {{ groupChallengeDetail.Image.Remark === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.Remark }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Image') }}: {{ ctfChallengeDetail.Image.Remark === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.Remark }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.RepoTags') }}: {{ groupChallengeDetail.Image.RepoTags === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Image.RepoTags }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.RepoTags') }}: {{ ctfChallengeDetail.Image.RepoTags === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.RepoTags }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Attachment') }}: {{ groupChallengeDetail.Attachment.FileName === "" ? $t('AdminGroupDetail.Null') : groupChallengeDetail.Attachment.FileName }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Attachment') }}: {{ ctfChallengeDetail.Attachment.FileName === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Attachment.FileName }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.SpecifiedPorts') }}: {{ groupChallengeDetail.SpecifiedPorts }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.SpecifiedPorts') }}: {{ ctfChallengeDetail.SpecifiedPorts }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Commands') }}: {{ groupChallengeDetail.Commands }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Commands') }}: {{ ctfChallengeDetail.Commands }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Flag') }}: {{ groupChallengeDetail.Flag }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Score') }}: {{ ctfChallengeDetail.Score }}</p>
+          </el-col>
+          <el-col :span="12">
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Flag') }}: {{ ctfChallengeDetail.Flag }}</p>
           </el-col>
         </el-row>
-        <h2>{{ $t('AdminGroupDetail.Solver') }}</h2>
+        <h2>{{ $t('AdminCTFDetail.Solver') }}</h2>
         <div>
-          <el-row v-if="groupChallengeDetail.Users.length !== 0">
+          <el-row v-if="ctfChallengeDetail.Users.length !== 0">
             <el-col
               :span="4"
-              v-for="user in groupChallengeDetail.Users"
+              v-for="user in ctfChallengeDetail.Users"
             >
               <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
                 <el-avatar size="default">
@@ -205,32 +208,32 @@
             </el-col>
           </el-row>
           <el-text v-else>
-            {{ $t('AdminGroupDetail.Null') }}
+            {{ $t('AdminCTFDetail.Null') }}
           </el-text>
         </div>
       </el-card>
       <template #footer>
-        <el-button @click="groupChallengeDetailVisible = false">{{ $t('AdminGroupDetail.Close') }}</el-button>
+        <el-button @click="ctfChallengeDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="createGroupChallengeFormVisible"
-      :title="$t('AdminGroupDetail.CreateChallenge')"
+      v-model="createCTFChallengeFormVisible"
+      :title="$t('AdminCTFDetail.CreateChallenge')"
       width="600"
-      @close="ClearCreateGroupChallengeForm"
+      @close="ClearCreateCTFChallengeForm"
       >
-      <el-form :model=createGroupChallengeData>
-        <el-form-item :label="$t('AdminGroupDetail.Title')" :label-width="labelWidth">
-          <el-input v-model="createGroupChallengeData.Title"/>
+      <el-form :model=createCTFChallengeData>
+        <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
+          <el-input v-model="createCTFChallengeData.Title"/>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Description')" :label-width="labelWidth">
-          <el-input v-model="createGroupChallengeData.Description"/>
+        <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+          <el-input v-model="createCTFChallengeData.Description"/>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Category')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
           <el-select
-            v-model="createGroupChallengeData.CategoryID"
+            v-model="createCTFChallengeData.CategoryID"
             filterable
-            :placeholder="$t('AdminGroupDetail.Select')"
+            :placeholder="$t('AdminCTFDetail.Select')"
             >
             <el-option
               v-for="category in categoryList"
@@ -240,11 +243,11 @@
               ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Image')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
           <el-select
-            v-model="createGroupChallengeData.ImageID"
+            v-model="createCTFChallengeData.ImageID"
             filterable
-            :placeholder="$t('AdminGroupDetail.Select')"
+            :placeholder="$t('AdminCTFDetail.Select')"
             >
             <el-option
               v-for="image in imageList"
@@ -255,13 +258,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Attachment')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-select
               style="width: 50%"
-              v-model="createGroupChallengeData.AttachmentID"
+              v-model="createCTFChallengeData.AttachmentID"
               filterable
-              :placeholder="$t('AdminGroupDetail.Select')"
+              :placeholder="$t('AdminCTFDetail.Select')"
               >
               <el-option
                 v-for="attachment in attachmentList"
@@ -280,7 +283,7 @@
               :on-exceed="handleExceed"
             >
               <template #trigger>
-                <el-button style="margin-left: 20px">{{ $t('AdminGroupDetail.SelectFile') }}</el-button>
+                <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
               </template>
               <div style="display: inline-flex">
                 <el-button
@@ -288,21 +291,21 @@
                   style="margin-left: 10px"
                   type="primary"
                   >
-                  {{ $t('AdminGroupDetail.Upload') }}
+                  {{ $t('AdminCTFDetail.Upload') }}
                 </el-button>
               </div>
             </el-upload>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.SpecifiedPorts')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-input
-              v-model="createGroupChallengePort"
+              v-model="createCTFChallengePort"
             >
               <template #append>
                 <el-select
-                  v-model="createGroupChallengeProtocol"
-                  :placeholder="$t('AdminGroupDetail.Select')"
+                  v-model="createCTFChallengeProtocol"
+                  :placeholder="$t('AdminCTFDetail.Select')"
                   style="width: 100px"
                 >
                   <el-option label="tcp" value="tcp"/>
@@ -312,17 +315,17 @@
             </el-input>
             <el-button
               style="margin-left: 20px;"
-              @click="AddCreateGroupChallengeSpecifiedPort"
+              @click="AddCreateCTFChallengeSpecifiedPort"
             >
-              {{ $t('AdminGroupDetail.Add') }}
+              {{ $t('AdminCTFDetail.Add') }}
             </el-button>
           </div>
           <div
-            v-if="createGroupChallengeData.SpecifiedPorts.length > 0"
+            v-if="createCTFChallengeData.SpecifiedPorts.length > 0"
             style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
             >
             <div
-              v-for="(port, index) in createGroupChallengeData.SpecifiedPorts"
+              v-for="(port, index) in createCTFChallengeData.SpecifiedPorts"
               :key="index"
               style="display: flex; align-items: center; width: 100%; position: relative"
             >
@@ -330,30 +333,30 @@
               <div style="flex-grow: 1"></div>
               <el-button
                 size="small"
-                @click="RemoveCreateGroupChallengeSpecifiedPort(index)"
+                @click="RemoveCreateCTFChallengeSpecifiedPort(index)"
                 style="margin: 3px 10px 3px 3px;"
               >
-                {{ $t('AdminGroupDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Delete') }}
               </el-button>
             </div>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Commands')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
-            <el-input v-model="this.createGroupChallengeCommand" />
+            <el-input v-model="this.createCTFChallengeCommand" />
             <el-button
               style="margin-left: 20px;"
-              @click="AddCreateGroupChallengeCommand"
+              @click="AddCreateCTFChallengeCommand"
             >
-              {{ $t('AdminGroupDetail.Add') }}
+              {{ $t('AdminCTFDetail.Add') }}
             </el-button>
           </div>
           <div
-            v-if="createGroupChallengeData.Commands.length > 0"
+            v-if="createCTFChallengeData.Commands.length > 0"
             style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
           >
             <div
-              v-for="(command, index) in createGroupChallengeData.Commands"
+              v-for="(command, index) in createCTFChallengeData.Commands"
               :key="index"
               style="display: flex; align-items: center; width: 100%; position: relative"
             >
@@ -361,67 +364,70 @@
               <div style="flex-grow: 1"></div>
               <el-button
                 size="small"
-                @click="RemoveCreateGroupChallengeCommand(index)"
+                @click="RemoveCreateCTFChallengeCommand(index)"
                 style="margin: 3px 10px 3px 3px;"
               >
-                {{ $t('AdminGroupDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Delete') }}
               </el-button>
             </div>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Flag')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
+          <el-input-number v-model="createCTFChallengeData.Score"/>
+        </el-form-item>
+        <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-input
               style="width: 245px"
-              v-if="createGroupChallengeFlagType === 'auto'"
-              :placeholder="$t('AdminGroupDetail.Auto')"
+              v-if="createCTFChallengeFlagType === 'auto'"
+              :placeholder="$t('AdminCTFDetail.Auto')"
               disabled
             />
             <el-input
               style="width: 245px"
-              v-if="createGroupChallengeFlagType === 'specify'"
-              v-model="createGroupChallengeData.Flag"
+              v-if="createCTFChallengeFlagType === 'specify'"
+              v-model="createCTFChallengeData.Flag"
             />
-            <div style="flex-grow: 1" v-if="createGroupChallengeFlagType !== ''"></div>
-            <el-radio-group v-model="createGroupChallengeFlagType">
-              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminGroupDetail.Auto') }}</el-radio>
-              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminGroupDetail.Specify') }}</el-radio>
+            <div style="flex-grow: 1" v-if="createCTFChallengeFlagType !== ''"></div>
+            <el-radio-group v-model="createCTFChallengeFlagType">
+              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
+              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
             </el-radio-group>
           </div>
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button
-          @click="CreateGroupChallenge"
+          @click="CreateCTFChallenge"
           type="primary"
           >
-          {{ $t('AdminGroupDetail.Submit') }}
+          {{ $t('AdminCTFDetail.Submit') }}
         </el-button>
         <el-button
-          @click="createGroupChallengeFormVisible = false"
+          @click="createCTFChallengeFormVisible = false"
           >
-          {{ $t('AdminGroupDetail.Cancel') }}
+          {{ $t('AdminCTFDetail.Cancel') }}
         </el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="updateGroupChallengeFormVisible"
-      :title="$t('AdminGroupDetail.UpdateChallenge')"
+      v-model="updateCTFChallengeFormVisible"
+      :title="$t('AdminCTFDetail.UpdateChallenge')"
       width="600"
-      @close="ClearUpdateGroupChallengeForm"
+      @close="ClearUpdateCTFChallengeForm"
       >
-      <el-form :model=updateGroupChallengeData>
-        <el-form-item :label="$t('AdminGroupDetail.Title')" :label-width="labelWidth">
-          <el-input v-model="updateGroupChallengeData.Title"/>
+      <el-form :model=updateCTFChallengeData>
+        <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
+          <el-input v-model="updateCTFChallengeData.Title"/>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Description')" :label-width="labelWidth">
-          <el-input v-model="updateGroupChallengeData.Description"/>
+        <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+          <el-input v-model="updateCTFChallengeData.Description"/>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Category')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
           <el-select
-            v-model="updateGroupChallengeData.CategoryID"
+            v-model="updateCTFChallengeData.CategoryID"
             filterable
-            :placeholder="$t('AdminGroupDetail.Select')"
+            :placeholder="$t('AdminCTFDetail.Select')"
             >
             <el-option
               v-for="category in categoryList"
@@ -429,20 +435,20 @@
               :label="category.Name"
               :value="category.ID"
               ></el-option>
-            <template v-if="!categoryList.some(category => category.ID === updateGroupChallengeData.CategoryID)" slot="empty">
+            <template v-if="!categoryList.some(category => category.ID === updateCTFChallengeData.CategoryID)" slot="empty">
               <el-option
-                :label="$t('AdminGroupDetail.DeletedCategory')"
-                :value="updateGroupChallengeData.CategoryID"
+                :label="$t('AdminCTFDetail.DeletedCategory')"
+                :value="updateCTFChallengeData.CategoryID"
                 disabled
               />
             </template>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Image')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
           <el-select
-            v-model="updateGroupChallengeData.ImageID"
+            v-model="updateCTFChallengeData.ImageID"
             filterable
-            :placeholder="$t('AdminGroupDetail.Select')"
+            :placeholder="$t('AdminCTFDetail.Select')"
             >
             <el-option
               v-for="image in imageList"
@@ -451,22 +457,22 @@
               :value="image.ID"
               >
             </el-option>
-            <template v-if="!imageList.some(image => image.ID === updateGroupChallengeData.ImageID)" slot="empty">
+            <template v-if="!imageList.some(image => image.ID === updateCTFChallengeData.ImageID)" slot="empty">
               <el-option
-                :label="$t('AdminGroupDetail.DeletedImage')"
-                :value="updateGroupChallengeData.ImageID"
+                :label="$t('AdminCTFDetail.DeletedImage')"
+                :value="updateCTFChallengeData.ImageID"
                 disabled
               />
             </template>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Attachment')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-select
               style="width: 50%"
-              v-model="updateGroupChallengeData.AttachmentID"
+              v-model="updateCTFChallengeData.AttachmentID"
               filterable
-              :placeholder="$t('AdminGroupDetail.Select')"
+              :placeholder="$t('AdminCTFDetail.Select')"
               >
               <el-option
                 v-for="attachment in attachmentList"
@@ -475,10 +481,10 @@
                 :value="attachment.ID"
               >
               </el-option>
-              <template v-if="!attachmentList.some(attachment => attachment.ID === updateGroupChallengeData.AttachmentID)" slot="empty">
+              <template v-if="!attachmentList.some(attachment => attachment.ID === updateCTFChallengeData.AttachmentID)" slot="empty">
                 <el-option
-                  :label="$t('AdminGroupDetail.DeletedFile')"
-                  :value="updateGroupChallengeData.AttachmentID"
+                  :label="$t('AdminCTFDetail.DeletedFile')"
+                  :value="updateCTFChallengeData.AttachmentID"
                   disabled
                 />
               </template>
@@ -492,7 +498,7 @@
               :on-exceed="handleExceed"
             >
               <template #trigger>
-                <el-button style="margin-left: 20px">{{ $t('AdminGroupDetail.SelectFile') }}</el-button>
+                <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
               </template>
               <div style="display: inline-flex">
                 <el-button
@@ -500,21 +506,21 @@
                   style="margin-left: 10px"
                   type="primary"
                   >
-                  {{ $t('AdminGroupDetail.Upload') }}
+                  {{ $t('AdminCTFDetail.Upload') }}
                 </el-button>
               </div>
             </el-upload>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.SpecifiedPorts')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-input
-              v-model="updateGroupChallengePort"
+              v-model="updateCTFChallengePort"
             >
               <template #append>
                 <el-select
-                  v-model="updateGroupChallengeProtocol"
-                  :placeholder="$t('AdminGroupDetail.Select')"
+                  v-model="updateCTFChallengeProtocol"
+                  :placeholder="$t('AdminCTFDetail.Select')"
                   style="width: 100px"
                 >
                   <el-option label="tcp" value="tcp"/>
@@ -524,17 +530,17 @@
             </el-input>
             <el-button
               style="margin-left: 20px;"
-              @click="AddUpdateGroupChallengeSpecifiedPort"
+              @click="AddUpdateCTFChallengeSpecifiedPort"
             >
-              {{ $t('AdminGroupDetail.Add') }}
+              {{ $t('AdminCTFDetail.Add') }}
             </el-button>
           </div>
           <div
-            v-if="updateGroupChallengeData.SpecifiedPorts.length > 0"
+            v-if="updateCTFChallengeData.SpecifiedPorts.length > 0"
             style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
             >
             <div
-              v-for="(port, index) in updateGroupChallengeData.SpecifiedPorts"
+              v-for="(port, index) in updateCTFChallengeData.SpecifiedPorts"
               :key="index"
               style="display: flex; align-items: center; width: 100%; position: relative"
             >
@@ -542,30 +548,30 @@
               <div style="flex-grow: 1"></div>
               <el-button
                 size="small"
-                @click="RemoveUpdateGroupChallengeSpecifiedPort(index)"
+                @click="RemoveUpdateCTFChallengeSpecifiedPort(index)"
                 style="margin: 3px 10px 3px 3px;"
               >
-                {{ $t('AdminGroupDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Delete') }}
               </el-button>
             </div>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Commands')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
-            <el-input v-model="this.updateGroupChallengeCommand" />
+            <el-input v-model="this.updateCTFChallengeCommand" />
             <el-button
               style="margin-left: 20px;"
-              @click="AddUpdateGroupChallengeCommand"
+              @click="AddUpdateCTFChallengeCommand"
             >
-              {{ $t('AdminGroupDetail.Add') }}
+              {{ $t('AdminCTFDetail.Add') }}
             </el-button>
           </div>
           <div
-            v-if="updateGroupChallengeData.Commands.length > 0"
+            v-if="updateCTFChallengeData.Commands.length > 0"
             style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
           >
             <div
-              v-for="(command, index) in updateGroupChallengeData.Commands"
+              v-for="(command, index) in updateCTFChallengeData.Commands"
               :key="index"
               style="display: flex; align-items: center; width: 100%; position: relative"
             >
@@ -573,82 +579,85 @@
               <div style="flex-grow: 1"></div>
               <el-button
                 size="small"
-                @click="RemoveUpdateGroupChallengeCommand(index)"
+                @click="RemoveUpdateCTFChallengeCommand(index)"
                 style="margin: 3px 10px 3px 3px;"
               >
-                {{ $t('AdminGroupDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Delete') }}
               </el-button>
             </div>
           </div>
         </el-form-item>
-        <el-form-item :label="$t('AdminGroupDetail.Flag')" :label-width="labelWidth">
+        <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
+          <el-input-number v-model="createCTFChallengeData.Score"/>
+        </el-form-item>
+        <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
           <div style="display: flex; width: 100%;">
             <el-input
               style="width: 245px"
-              v-if="updateGroupChallengeFlagType === 'auto'"
-              :placeholder="$t('AdminGroupDetail.Auto')"
+              v-if="updateCTFChallengeFlagType === 'auto'"
+              :placeholder="$t('AdminCTFDetail.Auto')"
               disabled
             />
             <el-input
               style="width: 245px"
-              v-if="updateGroupChallengeFlagType === 'specify'"
-              v-model="updateGroupChallengeData.Flag"
+              v-if="updateCTFChallengeFlagType === 'specify'"
+              v-model="updateCTFChallengeData.Flag"
             />
-            <div style="flex-grow: 1" v-if="updateGroupChallengeFlagType !== ''"></div>
-            <el-radio-group v-model="updateGroupChallengeFlagType">
-              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminGroupDetail.Auto') }}</el-radio>
-              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminGroupDetail.Specify') }}</el-radio>
+            <div style="flex-grow: 1" v-if="updateCTFChallengeFlagType !== ''"></div>
+            <el-radio-group v-model="updateCTFChallengeFlagType">
+              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
+              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
             </el-radio-group>
           </div>
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button
-          @click="UpdateGroupChallenge"
+          @click="UpdateCTFChallenge"
           type="primary"
           >
-          {{ $t('AdminGroupDetail.Submit') }}
+          {{ $t('AdminCTFDetail.Submit') }}
         </el-button>
         <el-button
-          @click="updateGroupChallengeFormVisible = false"
+          @click="updateCTFChallengeFormVisible = false"
           >
-          {{ $t('AdminGroupDetail.Cancel') }}
+          {{ $t('AdminCTFDetail.Cancel') }}
         </el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="deleteGroupChallengeFormVisible"
-      :title="$t('AdminGroupDetail.DeleteChallenge')"
+      v-model="deleteCTFChallengeFormVisible"
+      :title="$t('AdminCTFDetail.DeleteChallenge')"
       width="500"
-      @close="ClearDeleteGroupChallengeForm"
+      @close="ClearDeleteCTFChallengeForm"
       >
-      <el-text>{{ $t('AdminGroupDetail.AreYouConfirmToDeleteTheChallenge') }}</el-text>
+      <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToDeleteTheChallenge') }}</el-text>
       <template #footer>
         <el-button
-          @click="DeleteGroupChallenge"
+          @click="DeleteCTFChallenge"
           type="primary"
           >
-          {{ $t('AdminGroupDetail.Confirm') }}
+          {{ $t('AdminCTFDetail.Confirm') }}
         </el-button>
         <el-button
-          @click="deleteGroupChallengeFormVisible = false"
+          @click="deleteCTFChallengeFormVisible = false"
           >
-          {{ $t('AdminGroupDetail.Cancel') }}
+          {{ $t('AdminCTFDetail.Cancel') }}
         </el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="addGroupUserFormVisible"
-      :title="$t('AdminGroupDetail.AddUser')"
+      v-model="addCTFUserFormVisible"
+      :title="$t('AdminCTFDetail.AddUser')"
       width="500"
-      @close="ClearAddGroupUserForm"
+      @close="ClearAddCTFUserForm"
       >
-      <el-form :model="addGroupUserData">
+      <el-form :model="addCTFUserData">
         <el-form-item>
           <el-select
-            v-model="addGroupUserData.UserID"
+            v-model="addCTFUserData.UserID"
             filterable
-            :placeholder="$t('AdminGroupDetail.Select')"
+            :placeholder="$t('AdminCTFDetail.Select')"
             >
             <el-option
               v-for="user in userList"
@@ -662,61 +671,61 @@
       </el-form>
       <template #footer>
         <el-button
-          @click="AddGroupUser"
+          @click="AddCTFUser"
           type="primary"
           >
-          {{ $t('AdminGroupDetail.Submit') }}
+          {{ $t('AdminCTFDetail.Submit') }}
         </el-button>
         <el-button
-          @click="addGroupUserFormVisible = false"
+          @click="addCTFUserFormVisible = false"
           >
-          {{ $t('AdminGroupDetail.Cancel') }}
+          {{ $t('AdminCTFDetail.Cancel') }}
         </el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="removeGroupUserFormVisible"
-      :title="$t('AdminGroupDetail.RemoveUser')"
+      v-model="removeCTFUserFormVisible"
+      :title="$t('AdminCTFDetail.RemoveUser')"
       width="500"
-      @close="ClearRemoveGroupUserForm"
+      @close="ClearRemoveCTFUserForm"
       >
-      <el-text>{{ $t('AdminGroupDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
+      <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
       <template #footer>
         <el-button
-          @click="RemoveGroupUser"
+          @click="RemoveCTFUser"
           type="primary"
           >
-          {{ $t('AdminGroupDetail.Confirm') }}
+          {{ $t('AdminCTFDetail.Confirm') }}
         </el-button>
         <el-button
-          @click="removeGroupUserFormVisible = false"
+          @click="removeCTFUserFormVisible = false"
           >
-          {{ $t('AdminGroupDetail.Cancel') }}
+          {{ $t('AdminCTFDetail.Cancel') }}
         </el-button>
       </template>
     </el-dialog>
     <el-dialog
-      v-model="groupUserDetailVisible"
-      :title="$t('AdminGroupDetail.UserDetail')"
+      v-model="ctfUserDetailVisible"
+      :title="$t('AdminCTFDetail.UserDetail')"
       width="900"
-      @close="ClearGroupUserDetail"
+      @close="ClearCTFUserDetail"
       >
       <el-card>
-        <h2>{{ $t('AdminGroupDetail.User') }}</h2>
+        <h2>{{ $t('AdminCTFDetail.User') }}</h2>
         <el-row>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Username') }}: {{ groupUserDetail.Username }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Username') }}: {{ ctfUserDetail.Username }}</p>
           </el-col>
           <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminGroupDetail.Email') }}: {{ groupUserDetail.Email }}</p>
+            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Email') }}: {{ ctfUserDetail.Email }}</p>
           </el-col>
         </el-row>
-        <h2>{{ $t('AdminGroupDetail.SolvedChallenges') }}</h2>
+        <h2>{{ $t('AdminCTFDetail.SolvedChallenges') }}</h2>
         <div>
-          <el-row v-if="groupUserDetail.GroupChallenges.length !== 0">
+          <el-row v-if="ctfUserDetail.CTFChallenges.length !== 0">
             <el-col
               :span="6"
-              v-for="groupChallenge in groupUserDetail.GroupChallenges"
+              v-for="ctfChallenge in ctfUserDetail.CTFChallenges"
             >
               <div
                 style="margin: 10px;
@@ -727,7 +736,7 @@
                 border-left: solid 5px var(--el-border-color);
                 position: relative"
               >
-                <el-text style="margin-left: 20px">{{ groupChallenge.Title }}</el-text>
+                <el-text style="margin-left: 20px">{{ ctfChallenge.Title }}</el-text>
                 <el-icon size="25" style="right: 20px; position: absolute">
                   <True fill="var(--el-color-primary)"/>
                 </el-icon>
@@ -735,20 +744,20 @@
             </el-col>
           </el-row>
           <el-text v-else>
-            {{ $t('AdminGroupDetail.Null') }}
+            {{ $t('AdminCTFDetail.Null') }}
           </el-text>
         </div>
       </el-card>
       <template #footer>
-        <el-button @click="groupUserDetailVisible = false">{{ $t('AdminGroupDetail.Close') }}</el-button>
+        <el-button @click="ctfUserDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
       </template>
     </el-dialog>
   </el-main>
 </template>
 <script>
-import groupApi from "@/api/group.js"
-import groupChallengeApi from "@/api/groupChallenge.js"
-import groupUser from "@/api/groupUser.js"
+import ctfApi from "@/api/ctf.js"
+import ctfChallengeApi from "@/api/ctfChallenge.js"
+import ctfUser from "@/api/ctfUser.js"
 import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
@@ -767,18 +776,18 @@ export default {
   data() {
     return {
       activeTab: "challenges",
-      group: {
+      ctf: {
         "ID": 0,
       },
       labelWidth: 120,
       categoryList: [],
       imageList: [],
       attachmentList: [],
-      groupChallengeQueryCategoryID: 0,
-      groupChallengeQueryTitle: "",
-      groupChallengeList: [],
-      groupChallengeDetailVisible: false,
-      groupChallengeDetail: {
+      ctfChallengeQueryCategoryID: 0,
+      ctfChallengeQueryTitle: "",
+      ctfChallengeList: [],
+      ctfChallengeDetailVisible: false,
+      ctfChallengeDetail: {
         "Title": "",
         "Description": "",
         "Category": {},
@@ -787,10 +796,12 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
-        "Users": []
+        "Score": 0,
+        "Users": [],
+        "CTFTeams": []
       },
-      createGroupChallengeFormVisible: false,
-      createGroupChallengeData: {
+      createCTFChallengeFormVisible: false,
+      createCTFChallengeData: {
         "Title": "",
         "Description": "",
         "CategoryID": 0,
@@ -799,14 +810,15 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
-        "GroupID": 0
+        "Score": 0,
+        "CTFID": 0
       },
-      createGroupChallengePort: "",
-      createGroupChallengeProtocol: "",
-      createGroupChallengeCommand: "",
-      createGroupChallengeFlagType: "",
-      updateGroupChallengeFormVisible: false,
-      updateGroupChallengeData: {
+      createCTFChallengePort: "",
+      createCTFChallengeProtocol: "",
+      createCTFChallengeCommand: "",
+      createCTFChallengeFlagType: "",
+      updateCTFChallengeFormVisible: false,
+      updateCTFChallengeData: {
         "ID": 0,
         "Title": "",
         "Description": "",
@@ -816,14 +828,15 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
-        "GroupID": 0
+        "Score": 0,
+        "CTFID": 0
       },
-      updateGroupChallengePort: "",
-      updateGroupChallengeProtocol: "",
-      updateGroupChallengeCommand: "",
-      updateGroupChallengeFlagType: "",
-      deleteGroupChallengeFormVisible: false,
-      deleteGroupChallengeData: {
+      updateCTFChallengePort: "",
+      updateCTFChallengeProtocol: "",
+      updateCTFChallengeCommand: "",
+      updateCTFChallengeFlagType: "",
+      deleteCTFChallengeFormVisible: false,
+      deleteCTFChallengeData: {
         "ID": 0,
       },
       uploadAttachmentData: {
@@ -831,22 +844,22 @@ export default {
         "file": null
       },
       userList: [],
-      groupUserQueryUsername: "",
-      groupUserList: [],
-      groupUserDetailVisible: false,
-      groupUserDetail: {
+      ctfUserQueryUsername: "",
+      ctfUserList: [],
+      ctfUserDetailVisible: false,
+      ctfUserDetail: {
         "Username": "",
         "Email": "",
-        "GroupChallenges": []
+        "CTFChallenges": []
       },
-      addGroupUserFormVisible: false,
-      addGroupUserData: {
-        "GroupID": 0,
+      addCTFUserFormVisible: false,
+      addCTFUserData: {
+        "CTFID": 0,
         "UserID": null
       },
-      removeGroupUserFormVisible: false,
-      removeGroupUserData: {
-        "GroupID": 0,
+      removeCTFUserFormVisible: false,
+      removeCTFUserData: {
+        "CTFID": 0,
         "UserID": null
       },
     }
@@ -855,7 +868,7 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
-    GetGroupChallengeCategoryList() {
+    GetCTFChallengeCategoryList() {
       categoryApi.GetCategoryList().then(res => {
         if (res.code === 0) {
           this.categoryList = res.data
@@ -902,10 +915,10 @@ export default {
         console.log(error)
       })
     },
-    GetGroup() {
-      groupApi.GetGroup(this.group).then(res => {
+    GetCTF() {
+      ctfApi.GetCTF(this.ctf).then(res => {
         if (res.code === 0) {
-          this.group = res.data
+          this.ctf = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -913,14 +926,14 @@ export default {
         console.log(error)
       })
     },
-    GetGroupChallengeList() {
-      groupChallengeApi.GetGroupChallengeList({
-        "CategoryID": this.groupChallengeQueryCategoryID,
-        "Title": this.groupChallengeQueryTitle,
-        "GroupID": this.group.ID
+    GetCTFChallengeList() {
+      ctfChallengeApi.GetCTFChallengeList({
+        "CategoryID": this.ctfChallengeQueryCategoryID,
+        "Title": this.ctfChallengeQueryTitle,
+        "CTFID": this.ctf.ID
       }).then(res => {
         if (res.code === 0) {
-          this.groupChallengeList = res.data
+          this.ctfChallengeList = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -928,12 +941,12 @@ export default {
         console.log(error)
       })
     },
-    OpenGroupChallengeDetail(row) {
-      this.groupChallengeDetail = row
-      this.groupChallengeDetailVisible = true
+    OpenCTFChallengeDetail(row) {
+      this.ctfChallengeDetail = row
+      this.ctfChallengeDetailVisible = true
     },
-    ClearGroupChallengeDetail() {
-      this.groupChallengeDetail = {
+    ClearCTFChallengeDetail() {
+      this.ctfChallengeDetail = {
         "Title": "",
         "Description": "",
         "Category": {},
@@ -942,54 +955,55 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
+        "Score": 0,
         "Users": []
       }
     },
-    AddCreateGroupChallengeSpecifiedPort() {
-      if (this.createGroupChallengePort === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputPort'))
+    AddCreateCTFChallengeSpecifiedPort() {
+      if (this.createCTFChallengePort === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputPort'))
         return
       }
-      if (this.createGroupChallengeProtocol === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputProtocol'))
+      if (this.createCTFChallengeProtocol === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputProtocol'))
         return
       }
-      let portProtocol = this.createGroupChallengePort + "/" + this.createGroupChallengeProtocol
-      if (this.createGroupChallengeData.SpecifiedPorts.includes(portProtocol)) {
-        ElMessage.error(this.t('AdminGroupDetail.DuplicateSpecifiedPort'))
+      let portProtocol = this.createCTFChallengePort + "/" + this.createCTFChallengeProtocol
+      if (this.createCTFChallengeData.SpecifiedPorts.includes(portProtocol)) {
+        ElMessage.error(this.t('AdminCTFDetail.DuplicateSpecifiedPort'))
         return
       }
-      this.createGroupChallengeData.SpecifiedPorts.push(portProtocol)
+      this.createCTFChallengeData.SpecifiedPorts.push(portProtocol)
     },
-    RemoveCreateGroupChallengeSpecifiedPort(index) {
-      this.createGroupChallengeData.SpecifiedPorts.splice(index, 1);
+    RemoveCreateCTFChallengeSpecifiedPort(index) {
+      this.createCTFChallengeData.SpecifiedPorts.splice(index, 1);
     },
-    AddCreateGroupChallengeCommand() {
-      if (this.createGroupChallengeCommand === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputCommand'))
+    AddCreateCTFChallengeCommand() {
+      if (this.createCTFChallengeCommand === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputCommand'))
         return
       }
-      if (this.createGroupChallengeData.Commands.includes(this.createGroupChallengeCommand)) {
-        ElMessage.error(this.t('AdminGroupDetail.DuplicateCommand'))
+      if (this.createCTFChallengeData.Commands.includes(this.createCTFChallengeCommand)) {
+        ElMessage.error(this.t('AdminCTFDetail.DuplicateCommand'))
         return
       }
-      this.createGroupChallengeData.Commands.push(this.createGroupChallengeCommand)
+      this.createCTFChallengeData.Commands.push(this.createCTFChallengeCommand)
     },
-    RemoveCreateGroupChallengeCommand(index) {
-      this.createGroupChallengeData.Commands.splice(index, 1);
+    RemoveCreateCTFChallengeCommand(index) {
+      this.createCTFChallengeData.Commands.splice(index, 1);
     },
-    CreateGroupChallenge() {
-      if (this.createGroupChallengeFlagType === "auto") {
-        this.createGroupChallengeData.Flag = "auto"
+    CreateCTFChallenge() {
+      if (this.createCTFChallengeFlagType === "auto") {
+        this.createCTFChallengeData.Flag = "auto"
       }
-      groupChallengeApi.CreateGroupChallenge(this.createGroupChallengeData).then(res => {
+      ctfChallengeApi.CreateCTFChallenge(this.createCTFChallengeData).then(res => {
         if (res.code === 0) {
-          this.createGroupChallengeFormVisible = false
+          this.createCTFChallengeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
             })
-          this.GetGroupChallengeList()
+          this.GetCTFChallengeList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -997,12 +1011,12 @@ export default {
         console.log(error)
       })
     },
-    OpenCreateGroupChallengeForm() {
-      this.createGroupChallengeData.GroupID = this.group.ID
-      this.createGroupChallengeFormVisible = true
+    OpenCreateCTFChallengeForm() {
+      this.createCTFChallengeData.CTFID = this.ctf.ID
+      this.createCTFChallengeFormVisible = true
     },
-    ClearCreateGroupChallengeForm() {
-      this.createGroupChallengeData = {
+    ClearCreateCTFChallengeForm() {
+      this.createCTFChallengeData = {
         "Title": "",
         "Description": "",
         "CategoryID": 0,
@@ -1011,59 +1025,60 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
-        "GroupID": 0
+        "Score": 0,
+        "CTFID": 0
       }
-      this.createGroupChallengePort = ""
-      this.createGroupChallengeProtocol = ""
-      this.createGroupChallengeCommand = ""
-      this.createGroupChallengeFlagType = ""
+      this.createCTFChallengePort = ""
+      this.createCTFChallengeProtocol = ""
+      this.createCTFChallengeCommand = ""
+      this.createCTFChallengeFlagType = ""
       this.ClearUploadAttachmentForm()
     },
-    AddUpdateGroupChallengeSpecifiedPort() {
-      if (this.updateGroupChallengePort === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputPort'))
+    AddUpdateCTFChallengeSpecifiedPort() {
+      if (this.updateCTFChallengePort === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputPort'))
         return
       }
-      if (this.updateGroupChallengeProtocol === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputProtocol'))
+      if (this.updateCTFChallengeProtocol === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputProtocol'))
         return
       }
-      let portProtocol = this.updateGroupChallengePort + "/" + this.updateGroupChallengeProtocol
-      if (this.updateGroupChallengeData.SpecifiedPorts.includes(portProtocol)) {
-        ElMessage.error(this.t('AdminGroupDetail.DuplicateSpecifiedPort'))
+      let portProtocol = this.updateCTFChallengePort + "/" + this.updateCTFChallengeProtocol
+      if (this.updateCTFChallengeData.SpecifiedPorts.includes(portProtocol)) {
+        ElMessage.error(this.t('AdminCTFDetail.DuplicateSpecifiedPort'))
         return
       }
-      this.updateGroupChallengeData.SpecifiedPorts.push(portProtocol)
+      this.updateCTFChallengeData.SpecifiedPorts.push(portProtocol)
     },
-    RemoveUpdateGroupChallengeSpecifiedPort(index) {
-      this.updateGroupChallengeData.SpecifiedPorts.splice(index, 1);
+    RemoveUpdateCTFChallengeSpecifiedPort(index) {
+      this.updateCTFChallengeData.SpecifiedPorts.splice(index, 1);
     },
-    AddUpdateGroupChallengeCommand() {
-      if (this.updateGroupChallengeCommand === "") {
-        ElMessage.error(this.t('AdminGroupDetail.PleaseInputCommand'))
+    AddUpdateCTFChallengeCommand() {
+      if (this.updateCTFChallengeCommand === "") {
+        ElMessage.error(this.t('AdminCTFDetail.PleaseInputCommand'))
         return
       }
-      if (this.updateGroupChallengeData.Commands.includes(this.updateGroupChallengeCommand)) {
-        ElMessage.error(this.t('AdminGroupDetail.DuplicateCommand'))
+      if (this.updateCTFChallengeData.Commands.includes(this.updateCTFChallengeCommand)) {
+        ElMessage.error(this.t('AdminCTFDetail.DuplicateCommand'))
         return
       }
-      this.updateGroupChallengeData.Commands.push(this.updateGroupChallengeCommand)
+      this.updateCTFChallengeData.Commands.push(this.updateCTFChallengeCommand)
     },
-    RemoveUpdateGroupChallengeCommand(index) {
-      this.updateGroupChallengeData.Commands.splice(index, 1);
+    RemoveUpdateCTFChallengeCommand(index) {
+      this.updateCTFChallengeData.Commands.splice(index, 1);
     },
-    UpdateGroupChallenge() {
-      if (this.updateGroupChallengeFlagType === "auto") {
-        this.updateGroupChallengeData.Flag = "auto"
+    UpdateCTFChallenge() {
+      if (this.updateCTFChallengeFlagType === "auto") {
+        this.updateCTFChallengeData.Flag = "auto"
       }
-      groupChallengeApi.UpdateGroupChallenge(this.updateGroupChallengeData).then(res => {
+      ctfChallengeApi.UpdateCTFChallenge(this.updateCTFChallengeData).then(res => {
         if (res.code === 0) {
-          this.updateGroupChallengeFormVisible = false
+          this.updateCTFChallengeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
             })
-          this.GetGroupChallengeList()
+          this.GetCTFChallengeList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -1071,8 +1086,8 @@ export default {
         console.log(error)
       })
     },
-    OpenUpdateGroupChallengeForm(row) {
-      this.updateGroupChallengeData = {
+    OpenUpdateCTFChallengeForm(row) {
+      this.updateCTFChallengeData = {
         "ID": row.ID,
         "Title": row.Title,
         "Description": row.Description,
@@ -1082,13 +1097,14 @@ export default {
         "SpecifiedPorts": row.SpecifiedPorts === null ? [] : [...row.SpecifiedPorts],
         "Commands": row.Commands === null ? [] : [...row.Commands],
         "Flag": row.Flag,
-        "GroupID": row.GroupID
+        "Score": row.Score,
+        "CTFID": row.CTFID
       }
-      this.updateGroupChallengeFlagType = row.Flag === "auto" ? "auto" : "specify"
-      this.updateGroupChallengeFormVisible = true
+      this.updateCTFChallengeFlagType = row.Flag === "auto" ? "auto" : "specify"
+      this.updateCTFChallengeFormVisible = true
     },
-    ClearUpdateGroupChallengeForm() {
-      this.updateGroupChallengeData = {
+    ClearUpdateCTFChallengeForm() {
+      this.updateCTFChallengeData = {
         "ID": 0,
         "ImageID": 0,
         "Title": "",
@@ -1098,23 +1114,24 @@ export default {
         "SpecifiedPorts": [],
         "Commands": [],
         "Flag": "",
-        "GroupID": 0
+        "Score": 0,
+        "CTFID": 0
       }
-      this.updateGroupChallengePort = ""
-      this.updateGroupChallengeProtocol = ""
-      this.updateGroupChallengeCommand = ""
-      this.updateGroupChallengeFlagType = ""
+      this.updateCTFChallengePort = ""
+      this.updateCTFChallengeProtocol = ""
+      this.updateCTFChallengeCommand = ""
+      this.updateCTFChallengeFlagType = ""
       this.ClearUploadAttachmentForm()
     },
-    DeleteGroupChallenge() {
-      groupChallengeApi.DeleteGroupChallenge(this.deleteGroupChallengeData).then(res => {
+    DeleteCTFChallenge() {
+      ctfChallengeApi.DeleteCTFChallenge(this.deleteCTFChallengeData).then(res => {
         if (res.code === 0) {
-          this.deleteGroupChallengeFormVisible = false
+          this.deleteCTFChallengeFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
             })
-          this.GetGroupChallengeList()
+          this.GetCTFChallengeList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -1123,23 +1140,23 @@ export default {
       })
     },
     OpenDeleteChallengeForm(row) {
-      this.deleteGroupChallengeData = {
+      this.deleteCTFChallengeData = {
         "ID": row.ID,
       }
-      this.deleteGroupChallengeFormVisible = true
+      this.deleteCTFChallengeFormVisible = true
     },
-    ClearDeleteGroupChallengeForm() {
-      this.deleteGroupChallengeData = {
+    ClearDeleteCTFChallengeForm() {
+      this.deleteCTFChallengeData = {
         "ID": 0,
       }
     },
     UploadAttachment() {
       attachmentApi.UploadAttachment(this.uploadAttachmentData.fileName, this.uploadAttachmentData.file).then(res => {
         if (res.code === 0) {
-          if (this.createGroupChallengeFormVisible) {
-            this.createGroupChallengeData.AttachmentID = res.data.ID
-          } else if (this.updateGroupChallengeFormVisible) {
-            this.updateGroupChallengeData.AttachmentID = res.data.ID
+          if (this.createCTFChallengeFormVisible) {
+            this.createCTFChallengeData.AttachmentID = res.data.ID
+          } else if (this.updateCTFChallengeFormVisible) {
+            this.updateCTFChallengeData.AttachmentID = res.data.ID
           }
           ElMessage({
             message: res.msg,
@@ -1187,13 +1204,13 @@ export default {
         console.log(error)
       })
     },
-    GetGroupUserList() {
-      groupUser.GetGroupUserList({
-        "GroupID": this.group.ID,
-        "Username": this.groupUserQueryUsername
+    GetCTFUserList() {
+      ctfUser.GetCTFUserList({
+        "CTFID": this.ctf.ID,
+        "Username": this.ctfUserQueryUsername
       }).then(res => {
         if (res.code === 0) {
-          this.groupUserList = res.data
+          this.ctfUserList = res.data
         } else {
           ElMessage.error(res.msg)
         }
@@ -1201,31 +1218,31 @@ export default {
         console.log(error)
       })
     },
-    OpenGroupUserDetailForm(row) {
-      this.groupUserDetail = {
+    OpenCTFUserDetailForm(row) {
+      this.ctfUserDetail = {
         "Username": row.Username,
         "Email": row.Email,
-        "GroupChallenges": row.GroupChallenges
+        "CTFChallenges": row.CTFChallenges
       }
-      this.groupUserDetailVisible = true
+      this.ctfUserDetailVisible = true
     },
-    ClearGroupUserDetail() {
-      this.groupUserDetail = {
+    ClearCTFUserDetail() {
+      this.ctfUserDetail = {
         "Username": "",
         "Email": "",
-        "GroupChallenges": []
+        "CTFChallenges": []
       }
     },
-    AddGroupUser() {
-      groupUser.AddGroupUser(this.addGroupUserData).then(res => {
+    AddCTFUser() {
+      ctfUser.AddCTFUser(this.addCTFUserData).then(res => {
         if (res.code === 0) {
-          this.addGroupUserFormVisible = false
+          this.addCTFUserFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
             })
-          this.GetGroup()
-          this.GetGroupUserList()
+          this.GetCTF()
+          this.GetCTFUserList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -1233,26 +1250,26 @@ export default {
         console.log(error)
       })
     },
-    OpenAddGroupUserForm() {
-      this.addGroupUserData.GroupID = this.group.ID
-      this.addGroupUserFormVisible = true
+    OpenAddCTFUserForm() {
+      this.addCTFUserData.CTFID = this.ctf.ID
+      this.addCTFUserFormVisible = true
     },
-    ClearAddGroupUserForm() {
-      this.addGroupUserData = {
-        "GroupID": 0,
+    ClearAddCTFUserForm() {
+      this.addCTFUserData = {
+        "CTFID": 0,
         "UserID": null
       }
     },
-    RemoveGroupUser() {
-      groupUser.RemoveGroupUser(this.removeGroupUserData).then(res => {
+    RemoveCTFUser() {
+      ctfUser.RemoveCTFUser(this.removeCTFUserData).then(res => {
         if (res.code === 0) {
-          this.removeGroupUserFormVisible = false
+          this.removeCTFUserFormVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
             })
-          this.GetGroup()
-          this.GetGroupUserList()
+          this.GetCTF()
+          this.GetCTFUserList()
         } else {
           ElMessage.error(res.msg)
         }
@@ -1260,27 +1277,27 @@ export default {
         console.log(error)
       })
     },
-    OpenRemoveGroupUserForm(row) {
-      this.removeGroupUserData.GroupID = this.group.ID
-      this.removeGroupUserData.UserID = row.ID
-      this.removeGroupUserFormVisible = true
+    OpenRemoveCTFUserForm(row) {
+      this.removeCTFUserData.CTFID = this.ctf.ID
+      this.removeCTFUserData.UserID = row.ID
+      this.removeCTFUserFormVisible = true
     },
-    ClearRemoveGroupUserForm() {
-      this.removeGroupUserData = {
-        "GroupID": 0,
+    ClearRemoveCTFUserForm() {
+      this.removeCTFUserData = {
+        "CTFID": 0,
         "UserID": null
       }
     },
   },
   mounted() {
-    this.group.ID = Number(this.$route.params.id)
-    this.GetGroup()
-    this.GetGroupChallengeCategoryList()
+    this.ctf.ID = Number(this.$route.params.id)
+    this.GetCTF()
+    this.GetCTFChallengeCategoryList()
     this.GetImageList()
     this.GetAttachmentList()
-    this.GetGroupChallengeList()
+    this.GetCTFChallengeList()
     this.GetUserList()
-    this.GetGroupUserList()
+    this.GetCTFUserList()
   }
 }
 </script>
