@@ -12,6 +12,7 @@ type CTFTeam struct {
 	CTFID       uint
 	CTF         CTF    `gorm:"foreignKey:CTFID;constraint:OnDelete:SET NULL"`
 	Users       []User `gorm:"many2many:ctf_team_user"`
+    CTFChallenges   []CTFChallenge   `gorm:"many2many:ctf_challenge_ctf_teams"`
 }
 
 func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {

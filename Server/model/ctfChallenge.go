@@ -21,7 +21,8 @@ type CTFChallenge struct {
 	Commands       gormType.StringSlice `gorm:"type:json"`
 	Flag           string
     Score          int
-	Users          []User               `gorm:"many2many:ctf_challenge_user"`
+	Users          []User               `gorm:"many2many:ctf_challenge_users"`
+    CTFTeams       []CTFTeam            `gorm:"many2many:ctf_challenge_ctf_teams"`
 	CTFID          uint
 	CTF            CTF                  `gorm:"foreignKey:CTFID;constraint:OnDelete:SET NULL"`
 }

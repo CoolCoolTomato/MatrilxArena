@@ -34,6 +34,7 @@ func DatabaseInit() {
 		&model.CTFChallenge{},
         &model.CTFChallengeUser{},
 		&model.CTFTeam{},
+        &model.CTFChallengeCTFTeam{},
 		&model.DockerNode{},
 		&model.Group{},
 		&model.GroupChallenge{},
