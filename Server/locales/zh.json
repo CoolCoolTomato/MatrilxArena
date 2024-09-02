@@ -94,6 +94,17 @@
     "DeleteCTFTeamSuccess": "CTF队伍删除成功",
     "InvalidArgument": "参数错误"
   },
+  "CTFTeamUser": {
+    "GetCTFTeamFail": "CTF队伍获取失败",
+    "GetUserListFail": "用户列表获取失败",
+    "GetUserListSuccess": "用户列表获取成功",
+    "GetUserFail": "用户获取失败",
+    "AddUserFail": "用户添加失败",
+    "AddUserSuccess": "用户添加成功",
+    "RemoveUserFail": "用户移除失败",
+    "RemoveUserSuccess": "用户移除成功",
+    "InvalidArgument": "参数错误"
+  },
   "CTFUser": {
     "GetCTFFail": "CTF获取失败",
     "GetUserListFail": "用户列表获取失败",
