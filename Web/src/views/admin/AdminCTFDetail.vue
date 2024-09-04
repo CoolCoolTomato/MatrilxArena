@@ -1,758 +1,963 @@
 <template>
-  <el-header>
-    <div style="display: flex; align-items: center;">
-      <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminCTFDetail.CTFDetail') }}</h2>
-      <div style="flex-grow: 1;"></div>
-      <div style="margin-right: 50px;">
-        <el-button
-          style="margin: 10px;"
-          @click="goBack"
-        >
-          {{ $t('AdminCTFDetail.Back') }}
-        </el-button>
+  <el-container>
+    <el-header>
+      <div style="display: flex; align-items: center;">
+        <h2 style="color: var(--el-text-color-primary);">{{ $t('AdminCTFDetail.CTFDetail') }}</h2>
+        <div style="flex-grow: 1;"></div>
+        <div style="margin-right: 50px;">
+          <el-button
+            style="margin: 10px;"
+            @click="goBack"
+          >
+            {{ $t('AdminCTFDetail.Back') }}
+          </el-button>
+        </div>
       </div>
-    </div>
-  </el-header>
-  <el-main>
-    <el-tabs
-      v-model="activeTab"
-      class="el-tabs-custom"
-      >
-      <el-tab-pane :label="$t('AdminCTFDetail.Challenges')" name="challenges">
-        <div style="height: 50px; display: flex; align-items: center;">
-          <el-button
-            @click="OpenCreateCTFChallengeForm"
-            type="primary"
-          >
-            {{ $t('AdminCTFDetail.Add') }}
-          </el-button>
-          <el-input
-            v-model="ctfChallengeQueryTitle"
-            style="width: 560px; margin: 10px;"
-            :placeholder="$t('AdminCTFDetail.FindChallenges')"
-          >
-            <template #prepend>
-              <el-select
-                v-model="ctfChallengeQueryCategoryID"
-                filterable
-                style="width: 110px;"
-                :placeholder="$t('AdminCTFDetail.Select')"
-              >
-                <el-option
-                  v-for="category in categoryList"
-                  :key="category.ID"
-                  :label="category.ID === 0 ? $t('AdminCTFDetail.All') : category.Name"
-                  :value="category.ID"
-                ></el-option>
-              </el-select>
-            </template>
-            <template #append>
-              <el-button
-                @click="GetCTFChallengeList"
-                style="width: 100px;"
-              >
-                {{ $t('AdminCTFDetail.Find') }}
-                <el-icon style="margin-left: 10px">
-                  <Search fill="var(var(--el-button-text-color))"/>
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-        <el-table
-          :data="ctfChallengeList"
-          table-layout="fixed"
-          height="calc(100% - 50px)"
-          >
-          <el-table-column prop="Title" :label="$t('AdminCTFDetail.Title')"/>
-          <el-table-column prop="Description" :label="$t('AdminCTFDetail.Description')"/>
-          <el-table-column :label="$t('AdminCTFDetail.Category')">
-            <template  #default=scope>
-              {{ scope.row.Category.Name === "" ? $t('AdminCTFDetail.Null') : scope.row.Category.Name}}
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('AdminCTFDetail.Image')">
-            <template  #default=scope>
-              {{ scope.row.Image.Remark === "" ? $t('AdminCTFDetail.Null') : scope.row.Image.Remark}}
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="300px">
-            <template #default=scope>
-              <el-button
-                @click="OpenCTFChallengeDetail(scope.row)"
-                >
-                {{ $t('AdminCTFDetail.Detail') }}
-              </el-button>
-              <el-button
-                @click="OpenUpdateCTFChallengeForm(scope.row)"
-                >
-                {{ $t('AdminCTFDetail.Update') }}
-              </el-button>
-              <el-button
-                @click="OpenDeleteChallengeForm(scope.row)"
-                >
-                {{ $t('AdminCTFDetail.Delete') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('AdminCTFDetail.Users')" name="users">
-        <div style="height: 50px; display: flex; align-items: center;">
-          <el-button
-            @click="OpenAddCTFUserForm"
-            type="primary"
+    </el-header>
+    <el-main>
+      <el-tabs
+        v-model="activeTab"
+        class="el-tabs-custom"
+        >
+        <el-tab-pane :label="$t('AdminCTFDetail.Challenges')" name="challenges">
+          <div style="height: 50px; display: flex; align-items: center;">
+            <el-button
+              @click="OpenCreateCTFChallengeForm"
+              type="primary"
             >
-            {{ $t('AdminCTFDetail.Add') }}
-          </el-button>
-          <el-input
-            v-model="ctfUserQueryUsername"
-            style="width: 450px; margin: 10px;"
-            :placeholder="$t('AdminCTFDetail.FindUsers')"
-          >
-            <template #append>
-              <el-button
-                @click="GetCTFUserList"
-                style="width: 100px;"
-              >
-                {{ $t('AdminCTFDetail.Find') }}
-                <el-icon style="margin-left: 10px">
-                  <Search fill="var(var(--el-button-text-color))"/>
-                </el-icon>
-              </el-button>
-            </template>
-          </el-input>
-        </div>
-        <el-table
-          :data="ctfUserList"
-          table-layout="fixed"
-          height="calc(100% - 50px)"
-          >
-          <el-table-column prop="Username" :label="$t('AdminCTFDetail.Username')"/>
-          <el-table-column prop="Email" :label="$t('AdminCTFDetail.Email')"/>
-          <el-table-column  :label="$t('AdminCTFDetail.SolvedChallenges')">
-            <template #default="scope">
-              {{ scope.row.CTFChallenges.length }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="230">
-            <template #default=scope>
-              <el-button
-                @click="OpenCTFUserDetailForm(scope.row)"
-                >
-                {{ $t('AdminCTFDetail.Detail') }}
-              </el-button>
-              <el-button
-                @click="OpenRemoveCTFUserForm(scope.row)"
-                >
-                {{ $t('AdminCTFDetail.Remove') }}
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-    </el-tabs>
-    <el-dialog
-      v-model="ctfChallengeDetailVisible"
-      :title="$t('AdminCTFDetail.ChallengeDetail')"
-      width="900"
-      @close="ClearCTFChallengeDetail"
-      >
-      <el-card>
-        <h2>{{ $t('AdminCTFDetail.Challenge') }}</h2>
-        <el-row>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Title') }}: {{ ctfChallengeDetail.Title }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfChallengeDetail.Description }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Category') }}: {{ ctfChallengeDetail.Category.Name === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Category.Name }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Image') }}: {{ ctfChallengeDetail.Image.Remark === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.Remark }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.RepoTags') }}: {{ ctfChallengeDetail.Image.RepoTags === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.RepoTags }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Attachment') }}: {{ ctfChallengeDetail.Attachment.FileName === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Attachment.FileName }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.SpecifiedPorts') }}: {{ ctfChallengeDetail.SpecifiedPorts }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Commands') }}: {{ ctfChallengeDetail.Commands }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Score') }}: {{ ctfChallengeDetail.Score }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Flag') }}: {{ ctfChallengeDetail.Flag }}</p>
-          </el-col>
-        </el-row>
-        <h2>{{ $t('AdminCTFDetail.Solver') }}</h2>
-        <div>
-          <el-row v-if="ctfChallengeDetail.Users.length !== 0">
-            <el-col
-              :span="4"
-              v-for="user in ctfChallengeDetail.Users"
+              {{ $t('AdminCTFDetail.Add') }}
+            </el-button>
+            <el-input
+              v-model="ctfChallengeQueryTitle"
+              style="width: 560px; margin: 10px;"
+              :placeholder="$t('AdminCTFDetail.FindChallenges')"
             >
-              <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
-                <el-avatar size="default">
-                  {{ user.Username[0] }}
-                </el-avatar>
-                <el-text>{{ user.Username }}</el-text>
-              </div>
+              <template #prepend>
+                <el-select
+                  v-model="ctfChallengeQueryCategoryID"
+                  filterable
+                  style="width: 110px;"
+                  :placeholder="$t('AdminCTFDetail.Select')"
+                >
+                  <el-option
+                    v-for="category in categoryList"
+                    :key="category.ID"
+                    :label="category.ID === 0 ? $t('AdminCTFDetail.All') : category.Name"
+                    :value="category.ID"
+                  ></el-option>
+                </el-select>
+              </template>
+              <template #append>
+                <el-button
+                  @click="GetCTFChallengeList"
+                  style="width: 100px;"
+                >
+                  {{ $t('AdminCTFDetail.Find') }}
+                  <el-icon style="margin-left: 10px">
+                    <Search fill="var(var(--el-button-text-color))"/>
+                  </el-icon>
+                </el-button>
+              </template>
+            </el-input>
+          </div>
+          <el-table
+            :data="ctfChallengeList"
+            table-layout="fixed"
+            height="calc(100% - 50px)"
+            >
+            <el-table-column prop="Title" :label="$t('AdminCTFDetail.Title')"/>
+            <el-table-column prop="Description" :label="$t('AdminCTFDetail.Description')"/>
+            <el-table-column :label="$t('AdminCTFDetail.Category')">
+              <template  #default=scope>
+                {{ scope.row.Category.Name === "" ? $t('AdminCTFDetail.Null') : scope.row.Category.Name}}
+              </template>
+            </el-table-column>
+            <el-table-column :label="$t('AdminCTFDetail.Image')">
+              <template  #default=scope>
+                {{ scope.row.Image.Remark === "" ? $t('AdminCTFDetail.Null') : scope.row.Image.Remark}}
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="300px">
+              <template #default=scope>
+                <el-button
+                  @click="OpenCTFChallengeDetail(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Detail') }}
+                </el-button>
+                <el-button
+                  @click="OpenUpdateCTFChallengeForm(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Update') }}
+                </el-button>
+                <el-button
+                  @click="OpenDeleteChallengeForm(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('AdminCTFDetail.Users')" name="users">
+          <div style="height: 50px; display: flex; align-items: center;">
+            <el-button
+              @click="OpenAddCTFUserForm"
+              type="primary"
+              >
+              {{ $t('AdminCTFDetail.Add') }}
+            </el-button>
+            <el-input
+              v-model="ctfUserQueryUsername"
+              style="width: 450px; margin: 10px;"
+              :placeholder="$t('AdminCTFDetail.FindUsers')"
+            >
+              <template #append>
+                <el-button
+                  @click="GetCTFUserList"
+                  style="width: 100px;"
+                >
+                  {{ $t('AdminCTFDetail.Find') }}
+                  <el-icon style="margin-left: 10px">
+                    <Search fill="var(var(--el-button-text-color))"/>
+                  </el-icon>
+                </el-button>
+              </template>
+            </el-input>
+          </div>
+          <el-table
+            :data="ctfUserList"
+            table-layout="fixed"
+            height="calc(100% - 50px)"
+            >
+            <el-table-column prop="Username" :label="$t('AdminCTFDetail.Username')"/>
+            <el-table-column prop="Email" :label="$t('AdminCTFDetail.Email')"/>
+            <el-table-column  :label="$t('AdminCTFDetail.SolvedChallenges')">
+              <template #default="scope">
+                {{ scope.row.CTFChallenges.length }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="230">
+              <template #default=scope>
+                <el-button
+                  @click="OpenCTFUserDetail(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Detail') }}
+                </el-button>
+                <el-button
+                  @click="OpenRemoveCTFUserForm(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Remove') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('AdminCTFDetail.Teams')" name="teams">
+          <div style="height: 50px; display: flex; align-items: center;">
+            <el-button
+              @click="OpenCreateCTFTeamForm"
+              type="primary"
+              >
+              {{ $t('AdminCTFDetail.Add') }}
+            </el-button>
+            <el-input
+              v-model="ctfTeamQueryName"
+              style="width: 450px; margin: 10px;"
+              :placeholder="$t('AdminCTFDetail.FindTeams')"
+            >
+              <template #append>
+                <el-button
+                  @click="GetCTFTeamList"
+                  style="width: 100px;"
+                >
+                  {{ $t('AdminCTFDetail.Find') }}
+                  <el-icon style="margin-left: 10px">
+                    <Search fill="var(var(--el-button-text-color))"/>
+                  </el-icon>
+                </el-button>
+              </template>
+            </el-input>
+          </div>
+          <el-table
+            :data="ctfTeamList"
+            table-layout="fixed"
+            height="calc(100% - 50px)"
+          >
+            <el-table-column prop="Name" :label="$t('AdminCTFDetail.Name')"/>
+            <el-table-column :label="$t('AdminCTFDetail.Users')">
+              <template #default="scope">
+                {{ scope.row.Users.length }}
+              </template>
+            </el-table-column>
+            <el-table-column :label="$t('AdminCTFDetail.Challenges')">
+              <template #default="scope">
+                {{ scope.row.CTFChallenges.length }}
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="300px">
+              <template #default=scope>
+                <el-button
+                  @click="OpenCTFTeamDetail(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Detail') }}
+                </el-button>
+                <el-button
+                  @click="OpenUpdateCTFTeamForm(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Update') }}
+                </el-button>
+                <el-button
+                  @click="OpenDeleteCTFTeamForm(scope.row)"
+                  >
+                  {{ $t('AdminCTFDetail.Delete') }}
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <el-dialog
+        v-model="ctfChallengeDetailVisible"
+        :title="$t('AdminCTFDetail.ChallengeDetail')"
+        width="900"
+        @close="ClearCTFChallengeDetail"
+        >
+        <el-card>
+          <h2>{{ $t('AdminCTFDetail.Challenge') }}</h2>
+          <el-row>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Title') }}: {{ ctfChallengeDetail.Title }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfChallengeDetail.Description }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Category') }}: {{ ctfChallengeDetail.Category.Name === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Category.Name }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Image') }}: {{ ctfChallengeDetail.Image.Remark === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.Remark }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.RepoTags') }}: {{ ctfChallengeDetail.Image.RepoTags === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Image.RepoTags }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Attachment') }}: {{ ctfChallengeDetail.Attachment.FileName === "" ? $t('AdminCTFDetail.Null') : ctfChallengeDetail.Attachment.FileName }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.SpecifiedPorts') }}: {{ ctfChallengeDetail.SpecifiedPorts }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Commands') }}: {{ ctfChallengeDetail.Commands }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Score') }}: {{ ctfChallengeDetail.Score }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Flag') }}: {{ ctfChallengeDetail.Flag }}</p>
             </el-col>
           </el-row>
-          <el-text v-else>
-            {{ $t('AdminCTFDetail.Null') }}
-          </el-text>
-        </div>
-      </el-card>
-      <template #footer>
-        <el-button @click="ctfChallengeDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="createCTFChallengeFormVisible"
-      :title="$t('AdminCTFDetail.CreateChallenge')"
-      width="600"
-      @close="ClearCreateCTFChallengeForm"
-      >
-      <el-form :model=createCTFChallengeData>
-        <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
-          <el-input v-model="createCTFChallengeData.Title"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
-          <el-input v-model="createCTFChallengeData.Description"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
-          <el-select
-            v-model="createCTFChallengeData.CategoryID"
-            filterable
-            :placeholder="$t('AdminCTFDetail.Select')"
-            >
-            <el-option
-              v-for="category in categoryList"
-              :key="category.ID"
-              :label="category.Name"
-              :value="category.ID"
-              ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
-          <el-select
-            v-model="createCTFChallengeData.ImageID"
-            filterable
-            :placeholder="$t('AdminCTFDetail.Select')"
-            >
-            <el-option
-              v-for="image in imageList"
-              :key="image.ID"
-              :label="image.Remark"
-              :value="image.ID"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
+          <h2>{{ $t('AdminCTFDetail.Solver') }}</h2>
+          <div>
+            <el-row v-if="ctfChallengeDetail.Users.length !== 0">
+              <el-col
+                :span="4"
+                v-for="user in ctfChallengeDetail.Users"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
+                  <el-avatar size="default">
+                    {{ user.Username[0] }}
+                  </el-avatar>
+                  <el-text>{{ user.Username }}</el-text>
+                </div>
+              </el-col>
+            </el-row>
+            <el-text v-else>
+              {{ $t('AdminCTFDetail.Null') }}
+            </el-text>
+          </div>
+        </el-card>
+        <template #footer>
+          <el-button @click="ctfChallengeDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="createCTFChallengeFormVisible"
+        :title="$t('AdminCTFDetail.CreateChallenge')"
+        width="600"
+        @close="ClearCreateCTFChallengeForm"
+        >
+        <el-form :model=createCTFChallengeData>
+          <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
+            <el-input v-model="createCTFChallengeData.Title"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+            <el-input v-model="createCTFChallengeData.Description"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
             <el-select
-              style="width: 50%"
-              v-model="createCTFChallengeData.AttachmentID"
+              v-model="createCTFChallengeData.CategoryID"
               filterable
               :placeholder="$t('AdminCTFDetail.Select')"
               >
               <el-option
-                v-for="attachment in attachmentList"
-                :key="attachment.ID"
-                :label="attachment.FileName"
-                :value="attachment.ID"
+                v-for="category in categoryList"
+                :key="category.ID"
+                :label="category.Name"
+                :value="category.ID"
+                ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
+            <el-select
+              v-model="createCTFChallengeData.ImageID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="image in imageList"
+                :key="image.ID"
+                :label="image.Remark"
+                :value="image.ID"
               >
               </el-option>
             </el-select>
-            <el-upload
-              style="width: 50%;"
-              ref="upload"
-              :limit="1"
-              :auto-upload="false"
-              :on-change="handleFileChange"
-              :on-exceed="handleExceed"
-            >
-              <template #trigger>
-                <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
-              </template>
-              <div style="display: inline-flex">
-                <el-button
-                  @click="UploadAttachment"
-                  style="margin-left: 10px"
-                  type="primary"
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-select
+                style="width: 50%"
+                v-model="createCTFChallengeData.AttachmentID"
+                filterable
+                :placeholder="$t('AdminCTFDetail.Select')"
+                >
+                <el-option
+                  v-for="attachment in attachmentList"
+                  :key="attachment.ID"
+                  :label="attachment.FileName"
+                  :value="attachment.ID"
+                >
+                </el-option>
+              </el-select>
+              <el-upload
+                style="width: 50%;"
+                ref="upload"
+                :limit="1"
+                :auto-upload="false"
+                :on-change="handleFileChange"
+                :on-exceed="handleExceed"
+              >
+                <template #trigger>
+                  <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
+                </template>
+                <div style="display: inline-flex">
+                  <el-button
+                    @click="UploadAttachment"
+                    style="margin-left: 10px"
+                    type="primary"
+                    >
+                    {{ $t('AdminCTFDetail.Upload') }}
+                  </el-button>
+                </div>
+              </el-upload>
+            </div>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input
+                v-model="createCTFChallengePort"
+              >
+                <template #append>
+                  <el-select
+                    v-model="createCTFChallengeProtocol"
+                    :placeholder="$t('AdminCTFDetail.Select')"
+                    style="width: 100px"
                   >
-                  {{ $t('AdminCTFDetail.Upload') }}
+                    <el-option label="tcp" value="tcp"/>
+                    <el-option label="udp" value="udp"/>
+                  </el-select>
+                </template>
+              </el-input>
+              <el-button
+                style="margin-left: 20px;"
+                @click="AddCreateCTFChallengeSpecifiedPort"
+              >
+                {{ $t('AdminCTFDetail.Add') }}
+              </el-button>
+            </div>
+            <div
+              v-if="createCTFChallengeData.SpecifiedPorts.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+              >
+              <div
+                v-for="(port, index) in createCTFChallengeData.SpecifiedPorts"
+                :key="index"
+                style="display: flex; align-items: center; width: 100%; position: relative"
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
+                <div style="flex-grow: 1"></div>
+                <el-button
+                  size="small"
+                  @click="RemoveCreateCTFChallengeSpecifiedPort(index)"
+                  style="margin: 3px 10px 3px 3px;"
+                >
+                  {{ $t('AdminCTFDetail.Delete') }}
                 </el-button>
               </div>
-            </el-upload>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input
-              v-model="createCTFChallengePort"
+            </div>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input v-model="this.createCTFChallengeCommand" />
+              <el-button
+                style="margin-left: 20px;"
+                @click="AddCreateCTFChallengeCommand"
+              >
+                {{ $t('AdminCTFDetail.Add') }}
+              </el-button>
+            </div>
+            <div
+              v-if="createCTFChallengeData.Commands.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
             >
-              <template #append>
-                <el-select
-                  v-model="createCTFChallengeProtocol"
-                  :placeholder="$t('AdminCTFDetail.Select')"
-                  style="width: 100px"
+              <div
+                v-for="(command, index) in createCTFChallengeData.Commands"
+                :key="index"
+                style="display: flex; align-items: center; width: 100%; position: relative"
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
+                <div style="flex-grow: 1"></div>
+                <el-button
+                  size="small"
+                  @click="RemoveCreateCTFChallengeCommand(index)"
+                  style="margin: 3px 10px 3px 3px;"
                 >
-                  <el-option label="tcp" value="tcp"/>
-                  <el-option label="udp" value="udp"/>
-                </el-select>
-              </template>
-            </el-input>
-            <el-button
-              style="margin-left: 20px;"
-              @click="AddCreateCTFChallengeSpecifiedPort"
-            >
-              {{ $t('AdminCTFDetail.Add') }}
-            </el-button>
-          </div>
-          <div
-            v-if="createCTFChallengeData.SpecifiedPorts.length > 0"
-            style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
-            >
-            <div
-              v-for="(port, index) in createCTFChallengeData.SpecifiedPorts"
-              :key="index"
-              style="display: flex; align-items: center; width: 100%; position: relative"
-            >
-              <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
-              <div style="flex-grow: 1"></div>
-              <el-button
-                size="small"
-                @click="RemoveCreateCTFChallengeSpecifiedPort(index)"
-                style="margin: 3px 10px 3px 3px;"
-              >
-                {{ $t('AdminCTFDetail.Delete') }}
-              </el-button>
+                  {{ $t('AdminCTFDetail.Delete') }}
+                </el-button>
+              </div>
             </div>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input v-model="this.createCTFChallengeCommand" />
-            <el-button
-              style="margin-left: 20px;"
-              @click="AddCreateCTFChallengeCommand"
-            >
-              {{ $t('AdminCTFDetail.Add') }}
-            </el-button>
-          </div>
-          <div
-            v-if="createCTFChallengeData.Commands.length > 0"
-            style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
-          >
-            <div
-              v-for="(command, index) in createCTFChallengeData.Commands"
-              :key="index"
-              style="display: flex; align-items: center; width: 100%; position: relative"
-            >
-              <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
-              <div style="flex-grow: 1"></div>
-              <el-button
-                size="small"
-                @click="RemoveCreateCTFChallengeCommand(index)"
-                style="margin: 3px 10px 3px 3px;"
-              >
-                {{ $t('AdminCTFDetail.Delete') }}
-              </el-button>
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
-          <el-input-number v-model="createCTFChallengeData.Score"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input
-              style="width: 245px"
-              v-if="createCTFChallengeFlagType === 'auto'"
-              :placeholder="$t('AdminCTFDetail.Auto')"
-              disabled
-            />
-            <el-input
-              style="width: 245px"
-              v-if="createCTFChallengeFlagType === 'specify'"
-              v-model="createCTFChallengeData.Flag"
-            />
-            <div style="flex-grow: 1" v-if="createCTFChallengeFlagType !== ''"></div>
-            <el-radio-group v-model="createCTFChallengeFlagType">
-              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
-              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
-            </el-radio-group>
-          </div>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button
-          @click="CreateCTFChallenge"
-          type="primary"
-          >
-          {{ $t('AdminCTFDetail.Submit') }}
-        </el-button>
-        <el-button
-          @click="createCTFChallengeFormVisible = false"
-          >
-          {{ $t('AdminCTFDetail.Cancel') }}
-        </el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="updateCTFChallengeFormVisible"
-      :title="$t('AdminCTFDetail.UpdateChallenge')"
-      width="600"
-      @close="ClearUpdateCTFChallengeForm"
-      >
-      <el-form :model=updateCTFChallengeData>
-        <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
-          <el-input v-model="updateCTFChallengeData.Title"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
-          <el-input v-model="updateCTFChallengeData.Description"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
-          <el-select
-            v-model="updateCTFChallengeData.CategoryID"
-            filterable
-            :placeholder="$t('AdminCTFDetail.Select')"
-            >
-            <el-option
-              v-for="category in categoryList"
-              :key="category.ID"
-              :label="category.Name"
-              :value="category.ID"
-              ></el-option>
-            <template v-if="!categoryList.some(category => category.ID === updateCTFChallengeData.CategoryID)" slot="empty">
-              <el-option
-                :label="$t('AdminCTFDetail.DeletedCategory')"
-                :value="updateCTFChallengeData.CategoryID"
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
+            <el-input-number v-model="createCTFChallengeData.Score"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input
+                style="width: 245px"
+                v-if="createCTFChallengeFlagType === 'auto'"
+                :placeholder="$t('AdminCTFDetail.Auto')"
                 disabled
               />
-            </template>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
-          <el-select
-            v-model="updateCTFChallengeData.ImageID"
-            filterable
-            :placeholder="$t('AdminCTFDetail.Select')"
-            >
-            <el-option
-              v-for="image in imageList"
-              :key="image.ID"
-              :label="image.Remark"
-              :value="image.ID"
-              >
-            </el-option>
-            <template v-if="!imageList.some(image => image.ID === updateCTFChallengeData.ImageID)" slot="empty">
-              <el-option
-                :label="$t('AdminCTFDetail.DeletedImage')"
-                :value="updateCTFChallengeData.ImageID"
-                disabled
+              <el-input
+                style="width: 245px"
+                v-if="createCTFChallengeFlagType === 'specify'"
+                v-model="createCTFChallengeData.Flag"
               />
-            </template>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
+              <div style="flex-grow: 1" v-if="createCTFChallengeFlagType !== ''"></div>
+              <el-radio-group v-model="createCTFChallengeFlagType">
+                <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
+                <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="CreateCTFChallenge"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="createCTFChallengeFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="updateCTFChallengeFormVisible"
+        :title="$t('AdminCTFDetail.UpdateChallenge')"
+        width="600"
+        @close="ClearUpdateCTFChallengeForm"
+        >
+        <el-form :model=updateCTFChallengeData>
+          <el-form-item :label="$t('AdminCTFDetail.Title')" :label-width="labelWidth">
+            <el-input v-model="updateCTFChallengeData.Title"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+            <el-input v-model="updateCTFChallengeData.Description"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Category')" :label-width="labelWidth">
             <el-select
-              style="width: 50%"
-              v-model="updateCTFChallengeData.AttachmentID"
+              v-model="updateCTFChallengeData.CategoryID"
               filterable
               :placeholder="$t('AdminCTFDetail.Select')"
               >
               <el-option
-                v-for="attachment in attachmentList"
-                :key="attachment.ID"
-                :label="attachment.FileName"
-                :value="attachment.ID"
-              >
-              </el-option>
-              <template v-if="!attachmentList.some(attachment => attachment.ID === updateCTFChallengeData.AttachmentID)" slot="empty">
+                v-for="category in categoryList"
+                :key="category.ID"
+                :label="category.Name"
+                :value="category.ID"
+                ></el-option>
+              <template v-if="!categoryList.some(category => category.ID === updateCTFChallengeData.CategoryID)" slot="empty">
                 <el-option
-                  :label="$t('AdminCTFDetail.DeletedFile')"
-                  :value="updateCTFChallengeData.AttachmentID"
+                  :label="$t('AdminCTFDetail.DeletedCategory')"
+                  :value="updateCTFChallengeData.CategoryID"
                   disabled
                 />
               </template>
             </el-select>
-            <el-upload
-              style="width: 50%;"
-              ref="upload"
-              :limit="1"
-              :auto-upload="false"
-              :on-change="handleFileChange"
-              :on-exceed="handleExceed"
-            >
-              <template #trigger>
-                <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Image')" :label-width="labelWidth">
+            <el-select
+              v-model="updateCTFChallengeData.ImageID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="image in imageList"
+                :key="image.ID"
+                :label="image.Remark"
+                :value="image.ID"
+                >
+              </el-option>
+              <template v-if="!imageList.some(image => image.ID === updateCTFChallengeData.ImageID)" slot="empty">
+                <el-option
+                  :label="$t('AdminCTFDetail.DeletedImage')"
+                  :value="updateCTFChallengeData.ImageID"
+                  disabled
+                />
               </template>
-              <div style="display: inline-flex">
-                <el-button
-                  @click="UploadAttachment"
-                  style="margin-left: 10px"
-                  type="primary"
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Attachment')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-select
+                style="width: 50%"
+                v-model="updateCTFChallengeData.AttachmentID"
+                filterable
+                :placeholder="$t('AdminCTFDetail.Select')"
+                >
+                <el-option
+                  v-for="attachment in attachmentList"
+                  :key="attachment.ID"
+                  :label="attachment.FileName"
+                  :value="attachment.ID"
+                >
+                </el-option>
+                <template v-if="!attachmentList.some(attachment => attachment.ID === updateCTFChallengeData.AttachmentID)" slot="empty">
+                  <el-option
+                    :label="$t('AdminCTFDetail.DeletedFile')"
+                    :value="updateCTFChallengeData.AttachmentID"
+                    disabled
+                  />
+                </template>
+              </el-select>
+              <el-upload
+                style="width: 50%;"
+                ref="upload"
+                :limit="1"
+                :auto-upload="false"
+                :on-change="handleFileChange"
+                :on-exceed="handleExceed"
+              >
+                <template #trigger>
+                  <el-button style="margin-left: 20px">{{ $t('AdminCTFDetail.SelectFile') }}</el-button>
+                </template>
+                <div style="display: inline-flex">
+                  <el-button
+                    @click="UploadAttachment"
+                    style="margin-left: 10px"
+                    type="primary"
+                    >
+                    {{ $t('AdminCTFDetail.Upload') }}
+                  </el-button>
+                </div>
+              </el-upload>
+            </div>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input
+                v-model="updateCTFChallengePort"
+              >
+                <template #append>
+                  <el-select
+                    v-model="updateCTFChallengeProtocol"
+                    :placeholder="$t('AdminCTFDetail.Select')"
+                    style="width: 100px"
                   >
-                  {{ $t('AdminCTFDetail.Upload') }}
+                    <el-option label="tcp" value="tcp"/>
+                    <el-option label="udp" value="udp"/>
+                  </el-select>
+                </template>
+              </el-input>
+              <el-button
+                style="margin-left: 20px;"
+                @click="AddUpdateCTFChallengeSpecifiedPort"
+              >
+                {{ $t('AdminCTFDetail.Add') }}
+              </el-button>
+            </div>
+            <div
+              v-if="updateCTFChallengeData.SpecifiedPorts.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
+              >
+              <div
+                v-for="(port, index) in updateCTFChallengeData.SpecifiedPorts"
+                :key="index"
+                style="display: flex; align-items: center; width: 100%; position: relative"
+              >
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
+                <div style="flex-grow: 1"></div>
+                <el-button
+                  size="small"
+                  @click="RemoveUpdateCTFChallengeSpecifiedPort(index)"
+                  style="margin: 3px 10px 3px 3px;"
+                >
+                  {{ $t('AdminCTFDetail.Delete') }}
                 </el-button>
               </div>
-            </el-upload>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.SpecifiedPorts')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input
-              v-model="updateCTFChallengePort"
-            >
-              <template #append>
-                <el-select
-                  v-model="updateCTFChallengeProtocol"
-                  :placeholder="$t('AdminCTFDetail.Select')"
-                  style="width: 100px"
-                >
-                  <el-option label="tcp" value="tcp"/>
-                  <el-option label="udp" value="udp"/>
-                </el-select>
-              </template>
-            </el-input>
-            <el-button
-              style="margin-left: 20px;"
-              @click="AddUpdateCTFChallengeSpecifiedPort"
-            >
-              {{ $t('AdminCTFDetail.Add') }}
-            </el-button>
-          </div>
-          <div
-            v-if="updateCTFChallengeData.SpecifiedPorts.length > 0"
-            style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
-            >
-            <div
-              v-for="(port, index) in updateCTFChallengeData.SpecifiedPorts"
-              :key="index"
-              style="display: flex; align-items: center; width: 100%; position: relative"
-            >
-              <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ port }}</el-text>
-              <div style="flex-grow: 1"></div>
+            </div>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input v-model="this.updateCTFChallengeCommand" />
               <el-button
-                size="small"
-                @click="RemoveUpdateCTFChallengeSpecifiedPort(index)"
-                style="margin: 3px 10px 3px 3px;"
+                style="margin-left: 20px;"
+                @click="AddUpdateCTFChallengeCommand"
               >
-                {{ $t('AdminCTFDetail.Delete') }}
+                {{ $t('AdminCTFDetail.Add') }}
               </el-button>
             </div>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Commands')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input v-model="this.updateCTFChallengeCommand" />
-            <el-button
-              style="margin-left: 20px;"
-              @click="AddUpdateCTFChallengeCommand"
-            >
-              {{ $t('AdminCTFDetail.Add') }}
-            </el-button>
-          </div>
-          <div
-            v-if="updateCTFChallengeData.Commands.length > 0"
-            style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
-          >
             <div
-              v-for="(command, index) in updateCTFChallengeData.Commands"
-              :key="index"
-              style="display: flex; align-items: center; width: 100%; position: relative"
-            >
-              <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
-              <div style="flex-grow: 1"></div>
-              <el-button
-                size="small"
-                @click="RemoveUpdateCTFChallengeCommand(index)"
-                style="margin: 3px 10px 3px 3px;"
-              >
-                {{ $t('AdminCTFDetail.Delete') }}
-              </el-button>
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
-          <el-input-number v-model="createCTFChallengeData.Score"/>
-        </el-form-item>
-        <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
-          <div style="display: flex; width: 100%;">
-            <el-input
-              style="width: 245px"
-              v-if="updateCTFChallengeFlagType === 'auto'"
-              :placeholder="$t('AdminCTFDetail.Auto')"
-              disabled
-            />
-            <el-input
-              style="width: 245px"
-              v-if="updateCTFChallengeFlagType === 'specify'"
-              v-model="updateCTFChallengeData.Flag"
-            />
-            <div style="flex-grow: 1" v-if="updateCTFChallengeFlagType !== ''"></div>
-            <el-radio-group v-model="updateCTFChallengeFlagType">
-              <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
-              <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
-            </el-radio-group>
-          </div>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button
-          @click="UpdateCTFChallenge"
-          type="primary"
-          >
-          {{ $t('AdminCTFDetail.Submit') }}
-        </el-button>
-        <el-button
-          @click="updateCTFChallengeFormVisible = false"
-          >
-          {{ $t('AdminCTFDetail.Cancel') }}
-        </el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="deleteCTFChallengeFormVisible"
-      :title="$t('AdminCTFDetail.DeleteChallenge')"
-      width="500"
-      @close="ClearDeleteCTFChallengeForm"
-      >
-      <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToDeleteTheChallenge') }}</el-text>
-      <template #footer>
-        <el-button
-          @click="DeleteCTFChallenge"
-          type="primary"
-          >
-          {{ $t('AdminCTFDetail.Confirm') }}
-        </el-button>
-        <el-button
-          @click="deleteCTFChallengeFormVisible = false"
-          >
-          {{ $t('AdminCTFDetail.Cancel') }}
-        </el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="addCTFUserFormVisible"
-      :title="$t('AdminCTFDetail.AddUser')"
-      width="500"
-      @close="ClearAddCTFUserForm"
-      >
-      <el-form :model="addCTFUserData">
-        <el-form-item>
-          <el-select
-            v-model="addCTFUserData.UserID"
-            filterable
-            :placeholder="$t('AdminCTFDetail.Select')"
-            >
-            <el-option
-              v-for="user in userList"
-              :key="user.ID"
-              :label="user.Username"
-              :value="user.ID"
-              >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button
-          @click="AddCTFUser"
-          type="primary"
-          >
-          {{ $t('AdminCTFDetail.Submit') }}
-        </el-button>
-        <el-button
-          @click="addCTFUserFormVisible = false"
-          >
-          {{ $t('AdminCTFDetail.Cancel') }}
-        </el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="removeCTFUserFormVisible"
-      :title="$t('AdminCTFDetail.RemoveUser')"
-      width="500"
-      @close="ClearRemoveCTFUserForm"
-      >
-      <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
-      <template #footer>
-        <el-button
-          @click="RemoveCTFUser"
-          type="primary"
-          >
-          {{ $t('AdminCTFDetail.Confirm') }}
-        </el-button>
-        <el-button
-          @click="removeCTFUserFormVisible = false"
-          >
-          {{ $t('AdminCTFDetail.Cancel') }}
-        </el-button>
-      </template>
-    </el-dialog>
-    <el-dialog
-      v-model="ctfUserDetailVisible"
-      :title="$t('AdminCTFDetail.UserDetail')"
-      width="900"
-      @close="ClearCTFUserDetail"
-      >
-      <el-card>
-        <h2>{{ $t('AdminCTFDetail.User') }}</h2>
-        <el-row>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Username') }}: {{ ctfUserDetail.Username }}</p>
-          </el-col>
-          <el-col :span="12">
-            <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Email') }}: {{ ctfUserDetail.Email }}</p>
-          </el-col>
-        </el-row>
-        <h2>{{ $t('AdminCTFDetail.SolvedChallenges') }}</h2>
-        <div>
-          <el-row v-if="ctfUserDetail.CTFChallenges.length !== 0">
-            <el-col
-              :span="6"
-              v-for="ctfChallenge in ctfUserDetail.CTFChallenges"
+              v-if="updateCTFChallengeData.Commands.length > 0"
+              style="position: relative; width: 100%; border: var(--el-border); margin-top: 20px;"
             >
               <div
-                style="margin: 10px;
-                height: 50px;
-                display: flex;
-                align-items: center;
-                border: solid 1px var(--el-border-color);
-                border-left: solid 5px var(--el-border-color);
-                position: relative"
+                v-for="(command, index) in updateCTFChallengeData.Commands"
+                :key="index"
+                style="display: flex; align-items: center; width: 100%; position: relative"
               >
-                <el-text style="margin-left: 20px">{{ ctfChallenge.Title }}</el-text>
-                <el-icon size="25" style="right: 20px; position: absolute">
-                  <True fill="var(--el-color-primary)"/>
-                </el-icon>
+                <el-text style="margin: 3px 3px 3px 10px;" size="small">{{ command }}</el-text>
+                <div style="flex-grow: 1"></div>
+                <el-button
+                  size="small"
+                  @click="RemoveUpdateCTFChallengeCommand(index)"
+                  style="margin: 3px 10px 3px 3px;"
+                >
+                  {{ $t('AdminCTFDetail.Delete') }}
+                </el-button>
               </div>
+            </div>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Score')" :label-width="labelWidth">
+            <el-input-number v-model="createCTFChallengeData.Score"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Flag')" :label-width="labelWidth">
+            <div style="display: flex; width: 100%;">
+              <el-input
+                style="width: 245px"
+                v-if="updateCTFChallengeFlagType === 'auto'"
+                :placeholder="$t('AdminCTFDetail.Auto')"
+                disabled
+              />
+              <el-input
+                style="width: 245px"
+                v-if="updateCTFChallengeFlagType === 'specify'"
+                v-model="updateCTFChallengeData.Flag"
+              />
+              <div style="flex-grow: 1" v-if="updateCTFChallengeFlagType !== ''"></div>
+              <el-radio-group v-model="updateCTFChallengeFlagType">
+                <el-radio value="auto" style="margin: 0" border>{{ $t('AdminCTFDetail.Auto') }}</el-radio>
+                <el-radio value="specify" style="margin: 0" border>{{ $t('AdminCTFDetail.Specify') }}</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="UpdateCTFChallenge"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateCTFChallengeFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="deleteCTFChallengeFormVisible"
+        :title="$t('AdminCTFDetail.DeleteChallenge')"
+        width="500"
+        @close="ClearDeleteCTFChallengeForm"
+        >
+        <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToDeleteTheChallenge') }}</el-text>
+        <template #footer>
+          <el-button
+            @click="DeleteCTFChallenge"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteCTFChallengeFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+
+      <el-dialog
+        v-model="ctfUserDetailVisible"
+        :title="$t('AdminCTFDetail.UserDetail')"
+        width="900"
+        @close="ClearCTFUserDetail"
+        >
+        <el-card>
+          <h2>{{ $t('AdminCTFDetail.User') }}</h2>
+          <el-row>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Username') }}: {{ ctfUserDetail.Username }}</p>
+            </el-col>
+            <el-col :span="12">
+              <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Email') }}: {{ ctfUserDetail.Email }}</p>
             </el-col>
           </el-row>
-          <el-text v-else>
-            {{ $t('AdminCTFDetail.Null') }}
-          </el-text>
-        </div>
-      </el-card>
-      <template #footer>
-        <el-button @click="ctfUserDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
-      </template>
-    </el-dialog>
-  </el-main>
+          <h2>{{ $t('AdminCTFDetail.SolvedChallenges') }}</h2>
+          <div>
+            <el-row v-if="ctfUserDetail.CTFChallenges.length !== 0">
+              <el-col
+                :span="6"
+                v-for="ctfChallenge in ctfUserDetail.CTFChallenges"
+              >
+                <div
+                  style="margin: 10px;
+                  height: 50px;
+                  display: flex;
+                  align-items: center;
+                  border: solid 1px var(--el-border-color);
+                  border-left: solid 5px var(--el-border-color);
+                  position: relative"
+                >
+                  <el-text style="margin-left: 20px">{{ ctfChallenge.Title }}</el-text>
+                  <el-icon size="25" style="right: 20px; position: absolute">
+                    <True fill="var(--el-color-primary)"/>
+                  </el-icon>
+                </div>
+              </el-col>
+            </el-row>
+            <el-text v-else>
+              {{ $t('AdminCTFDetail.Null') }}
+            </el-text>
+          </div>
+        </el-card>
+        <template #footer>
+          <el-button @click="ctfUserDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="addCTFUserFormVisible"
+        :title="$t('AdminCTFDetail.AddUser')"
+        width="500"
+        @close="ClearAddCTFUserForm"
+        >
+        <el-form :model="addCTFUserData">
+          <el-form-item>
+            <el-select
+              v-model="addCTFUserData.UserID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="user in userList"
+                :key="user.ID"
+                :label="user.Username"
+                :value="user.ID"
+                >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="AddCTFUser"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="addCTFUserFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="removeCTFUserFormVisible"
+        :title="$t('AdminCTFDetail.RemoveUser')"
+        width="500"
+        @close="ClearRemoveCTFUserForm"
+        >
+        <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
+        <template #footer>
+          <el-button
+            @click="RemoveCTFUser"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="removeCTFUserFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+
+      <el-dialog
+        v-model="ctfTeamDetailVisible"
+        :title = "$t('AdminCTFDetail.TeamDetail')"
+        width="900"
+        @close="ClearCTFTeamDetail"
+      >
+        <el-card>
+          <h2>{{ $t('AdminCTFDetail.Team') }}</h2>
+          <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Name') }}: {{ ctfTeamDetail.Name }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfTeamDetail.Description }}</p>
+          <h2>{{ $t('AdminCTFDetail.Users') }}</h2>
+          <div>
+            <el-row v-if="ctfTeamDetail.Users.length !== 0">
+              <el-col
+                :span="4"
+                v-for="user in ctfTeamDetail.Users"
+              >
+                <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
+                  <el-avatar size="default">
+                    {{ user.Username[0] }}
+                  </el-avatar>
+                  <el-text>{{ user.Username }}</el-text>
+                </div>
+              </el-col>
+            </el-row>
+            <el-text v-else>
+              {{ $t('AdminCTFDetail.Null') }}
+            </el-text>
+          </div>
+          <h2>{{ $t('AdminCTFDetail.SolvedChallenges') }}</h2>
+          <div>
+            <el-row v-if="ctfTeamDetail.CTFChallenges.length !== 0">
+              <el-col
+                :span="6"
+                v-for="ctfChallenge in ctfTeamDetail.CTFChallenges"
+              >
+                <div
+                  style="margin: 10px;
+                  height: 50px;
+                  display: flex;
+                  align-items: center;
+                  border: solid 1px var(--el-border-color);
+                  border-left: solid 5px var(--el-border-color);
+                  position: relative"
+                >
+                  <el-text style="margin-left: 20px">{{ ctfChallenge.Title }}</el-text>
+                  <el-icon size="25" style="right: 20px; position: absolute">
+                    <True fill="var(--el-color-primary)"/>
+                  </el-icon>
+                </div>
+              </el-col>
+            </el-row>
+            <el-text v-else>
+              {{ $t('AdminCTFDetail.Null') }}
+            </el-text>
+          </div>
+        </el-card>
+        <template #footer>
+          <el-button @click="ctfTeamDetailVisible = false">{{ $t('AdminCTFDetail.Close') }}</el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="createCTFTeamFormVisible"
+        :title="$t('AdminCTFDetail.CreateCTFTeam')"
+        width="500"
+        @close="ClearCreateCTFTeamForm"
+      >
+        <el-form :model="createCTFTeamData">
+          <el-form-item :label="$t('AdminCTFDetail.Name')" :label-width="labelWidth">
+            <el-input v-model="createCTFTeamData.Name"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+            <el-input v-model="createCTFTeamData.Description"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="CreateCTFTeam"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="createCTFTeamFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="updateCTFTeamFormVisible"
+        :title="$t('AdminCTFDetail.UpdateCTFTeam')"
+        width="500"
+        @close="ClearUpdateCTFTeamForm"
+      >
+        <el-form :model="updateCTFTeamData">
+          <el-form-item :label="$t('AdminCTFDetail.Name')" :label-width="labelWidth">
+            <el-input v-model="updateCTFTeamData.Name"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
+            <el-input v-model="updateCTFTeamData.Description"/>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="UpdateCTFTeam"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="updateCTFTeamFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="deleteCTFTeamFormVisible"
+        :title="$t('AdminCTFDetail.DeleteCTFTeam')"
+        width="500"
+        @close="ClearDeleteCTFTeamForm"
+        >
+        <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToDeleteTheCTFTeam') }}</el-text>
+        <template #footer>
+          <el-button
+            @click="DeleteCTFTeam"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="deleteCTFTeamFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import ctfApi from "@/api/ctf.js"
@@ -762,6 +967,7 @@ import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
 import userApi from "@/api/user.js"
+import ctfTeamApi from "@/api/ctfTeam.js"
 import Search from "@/components/icons/Search.vue"
 import True from "@/components/icons/True.vue"
 import {ElMessage} from "element-plus"
@@ -775,7 +981,7 @@ export default {
   components: { Search, True },
   data() {
     return {
-      activeTab: "challenges",
+      activeTab: "teams",
       ctf: {
         "ID": 0,
       },
@@ -843,6 +1049,7 @@ export default {
         "fileName": "",
         "file": null
       },
+
       userList: [],
       ctfUserQueryUsername: "",
       ctfUserList: [],
@@ -862,6 +1069,33 @@ export default {
         "CTFID": 0,
         "UserID": null
       },
+
+      ctfTeamList: [],
+      ctfTeamQueryName: "",
+      ctfTeamDetailVisible: false,
+      ctfTeamDetail: {
+        "Name": "",
+        "Description": "",
+        "Users": [],
+        "CTFChallenges": []
+      },
+      createCTFTeamFormVisible: false,
+      createCTFTeamData: {
+        "Name": "",
+        "Description": "",
+        "CTFID": 0
+      },
+      updateCTFTeamFormVisible: false,
+      updateCTFTeamData: {
+        "ID": 0,
+        "Name": "",
+        "Description": "",
+        "CTFID": 0
+      },
+      deleteCTFTeamFormVisible: false,
+      deleteCTFTeamData: {
+        "ID": 0
+      }
     }
   },
   methods: {
@@ -1002,7 +1236,7 @@ export default {
           ElMessage({
             message: res.msg,
             type: 'success',
-            })
+          })
           this.GetCTFChallengeList()
         } else {
           ElMessage.error(res.msg)
@@ -1141,13 +1375,13 @@ export default {
     },
     OpenDeleteChallengeForm(row) {
       this.deleteCTFChallengeData = {
-        "ID": row.ID,
+        "ID": row.ID
       }
       this.deleteCTFChallengeFormVisible = true
     },
     ClearDeleteCTFChallengeForm() {
       this.deleteCTFChallengeData = {
-        "ID": 0,
+        "ID": 0
       }
     },
     UploadAttachment() {
@@ -1218,12 +1452,8 @@ export default {
         console.log(error)
       })
     },
-    OpenCTFUserDetailForm(row) {
-      this.ctfUserDetail = {
-        "Username": row.Username,
-        "Email": row.Email,
-        "CTFChallenges": row.CTFChallenges
-      }
+    OpenCTFUserDetail(row) {
+      this.ctfUserDetail = row
       this.ctfUserDetailVisible = true
     },
     ClearCTFUserDetail() {
@@ -1288,6 +1518,120 @@ export default {
         "UserID": null
       }
     },
+
+    OpenCTFTeamDetail(row) {
+      this.ctfTeamDetail = row
+      this.ctfTeamDetailVisible = true
+    },
+    ClearCTFTeamDetail() {
+      this.ctfTeamDetail = {
+        "Name": "",
+        "Description": "",
+        "Users": [],
+        "CTFChallenges": []
+      }
+    },
+    GetCTFTeamList(){
+      ctfTeamApi.GetCTFTeamList({
+        "Name": this.ctfTeamQueryName,
+        "CTFID": this.ctf.ID
+      }).then(res => {
+        if (res.code === 0) {
+          this.ctfTeamList = res.data
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    CreateCTFTeam(){
+      ctfTeamApi.CreateCTFTeam(this.createCTFTeamData).then(res => {
+        if (res.code === 0) {
+          this.createCTFTeamFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+          this.GetCTFTeamList()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenCreateCTFTeamForm() {
+      this.createCTFTeamData.CTFID = this.ctf.ID
+      this.createCTFTeamFormVisible = true
+    },
+    ClearCreateCTFTeamForm() {
+      this.createCTFTeamData = {
+        "Name": "",
+        "Description": "",
+        "CTFID": 0
+      }
+    },
+    UpdateCTFTeam(){
+      ctfTeamApi.UpdateCTFTeam(this.updateCTFTeamData).then(res => {
+        if (res.code === 0) {
+          this.updateCTFTeamFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+          this.GetCTFTeamList()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenUpdateCTFTeamForm(row) {
+      this.updateCTFTeamData = {
+        "ID": row.ID,
+        "Name": row.Name,
+        "Description": row.Description,
+        "CTFID": row.CTFID
+      }
+      this.updateCTFTeamFormVisible = true
+    },
+    ClearUpdateCTFTeamForm() {
+      this.updateCTFTeamData = {
+        "ID": 0,
+        "Name": "",
+        "Description": "",
+        "CTFID": 0
+      }
+    },
+    DeleteCTFTeam() {
+      ctfTeamApi.DeleteCTFTeam(this.deleteCTFTeamData).then(res => {
+        if (res.code === 0) {
+          this.deleteCTFTeamFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+            })
+          this.GetCTFTeamList()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenDeleteCTFTeamForm(row) {
+      this.deleteCTFTeamData = {
+        "ID": row.ID,
+      }
+      this.deleteCTFTeamFormVisible = true
+    },
+    ClearDeleteCTFTeamForm() {
+      this.deleteCTFTeamData = {
+        "ID": 0,
+      }
+    },
   },
   mounted() {
     this.ctf.ID = Number(this.$route.params.id)
@@ -1298,6 +1642,7 @@ export default {
     this.GetCTFChallengeList()
     this.GetUserList()
     this.GetCTFUserList()
+    this.GetCTFTeamList()
   }
 }
 </script>

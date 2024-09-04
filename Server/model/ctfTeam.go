@@ -24,6 +24,7 @@ func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {
 	var ctfTeamList []CTFTeam
 	err := query.
 		Preload("Users").
+        Preload("CTFChallenges").
 		Find(&ctfTeamList).
 		Error
 	if err != nil {
@@ -36,6 +37,7 @@ func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {
 func (ctfTeam *CTFTeam) GetCTFTeam() error {
 	return database.GetDatabase().Model(&CTFTeam{}).
 		Preload("Users").
+        Preload("CTFChallenges").
 		Where("ID = ?", ctfTeam.ID).
 		First(&ctfTeam).
 		Error
