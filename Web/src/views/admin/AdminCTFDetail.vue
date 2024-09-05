@@ -189,7 +189,7 @@
                 {{ scope.row.Users.length }}
               </template>
             </el-table-column>
-            <el-table-column :label="$t('AdminCTFDetail.Challenges')">
+            <el-table-column :label="$t('AdminCTFDetail.SolvedChallenges')">
               <template #default="scope">
                 {{ scope.row.CTFChallenges.length }}
               </template>
@@ -847,7 +847,7 @@
             >
               <el-table-column prop="Username" :label="$t('AdminCTFDetail.Username')"/>
               <el-table-column prop="Email" :label="$t('AdminCTFDetail.Email')"/>
-              <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="100">
+              <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="130">
                 <template #default=scope>
                   <el-button
                     @click="OpenRemoveCTFTeamUserForm(ctfTeamDetail.ID, scope.row.ID)"
@@ -1056,7 +1056,7 @@ export default {
   components: { Search, True },
   data() {
     return {
-      activeTab: "teams",
+      activeTab: "challenges",
       ctf: {
         "ID": 0,
       },
