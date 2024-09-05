@@ -828,21 +828,36 @@
           <h2>{{ $t('AdminCTFDetail.Team') }}</h2>
           <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Name') }}: {{ ctfTeamDetail.Name }}</p>
           <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfTeamDetail.Description }}</p>
-          <h2>{{ $t('AdminCTFDetail.Users') }}</h2>
+          <div style="display: flex; align-items: center;">
+            <h2>{{ $t('AdminCTFDetail.Users') }}</h2>
+            <el-button
+              @click="OpenAddCTFTeamUserForm(ctfTeamDetail.ID)"
+              size="small"
+              type="primary"
+              style="margin-left: 20px;"
+            >
+              {{ $t('AdminCTFDetail.Add') }}
+            </el-button>
+          </div>
           <div>
-            <el-row v-if="ctfTeamDetail.Users.length !== 0">
-              <el-col
-                :span="4"
-                v-for="user in ctfTeamDetail.Users"
-              >
-                <div style="display: flex; flex-direction: column; align-items: center; margin: 10px">
-                  <el-avatar size="default">
-                    {{ user.Username[0] }}
-                  </el-avatar>
-                  <el-text>{{ user.Username }}</el-text>
-                </div>
-              </el-col>
-            </el-row>
+            <el-table
+              v-if="ctfTeamDetail.Users.length !== 0"
+              :data="ctfTeamDetail.Users"
+              table-layout="fixed"
+            >
+              <el-table-column prop="Username" :label="$t('AdminCTFDetail.Username')"/>
+              <el-table-column prop="Email" :label="$t('AdminCTFDetail.Email')"/>
+              <el-table-column fixed="right" :label="$t('AdminCTFDetail.Operations')" width="100">
+                <template #default=scope>
+                  <el-button
+                    @click="OpenRemoveCTFTeamUserForm(ctfTeamDetail.ID, scope.row.ID)"
+                    size="small"
+                  >
+                    {{ $t('AdminCTFDetail.Remove') }}
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
             <el-text v-else>
               {{ $t('AdminCTFDetail.Null') }}
             </el-text>
@@ -956,18 +971,78 @@
           </el-button>
         </template>
       </el-dialog>
+
+      <el-dialog
+        v-model="addCTFTeamUserFormVisible"
+        :title="$t('AdminCTFDetail.AddUser')"
+        width="500"
+        @close="ClearAddCTFTeamUserForm"
+        >
+        <el-form :model="addCTFTeamUserData">
+          <el-form-item>
+            <el-select
+              v-model="addCTFTeamUserData.UserID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="user in userList"
+                :key="user.ID"
+                :label="user.Username"
+                :value="user.ID"
+                >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button
+            @click="AddCTFTeamUser"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Submit') }}
+          </el-button>
+          <el-button
+            @click="addCTFTeamUserFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
+      <el-dialog
+        v-model="removeCTFTeamUserFormVisible"
+        :title="$t('AdminCTFDetail.RemoveUser')"
+        width="500"
+        @close="ClearRemoveCTFTeamUserForm"
+        >
+        <el-text>{{ $t('AdminCTFDetail.AreYouConfirmToRemoveTheUser') }}</el-text>
+        <template #footer>
+          <el-button
+            @click="RemoveCTFTeamUser"
+            type="primary"
+            >
+            {{ $t('AdminCTFDetail.Confirm') }}
+          </el-button>
+          <el-button
+            @click="removeCTFTeamUserFormVisible = false"
+            >
+            {{ $t('AdminCTFDetail.Cancel') }}
+          </el-button>
+        </template>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
 <script>
 import ctfApi from "@/api/ctf.js"
 import ctfChallengeApi from "@/api/ctfChallenge.js"
-import ctfUser from "@/api/ctfUser.js"
+import ctfUserApi from "@/api/ctfUser.js"
 import categoryApi from "@/api/category.js"
 import imageApi from "@/api/image.js"
 import attachmentApi from "@/api/attachment.js"
 import userApi from "@/api/user.js"
 import ctfTeamApi from "@/api/ctfTeam.js"
+import ctfTeamUserApi from "@/api/ctfTeamUser.js"
 import Search from "@/components/icons/Search.vue"
 import True from "@/components/icons/True.vue"
 import {ElMessage} from "element-plus"
@@ -1095,7 +1170,18 @@ export default {
       deleteCTFTeamFormVisible: false,
       deleteCTFTeamData: {
         "ID": 0
-      }
+      },
+
+      addCTFTeamUserFormVisible: false,
+      addCTFTeamUserData: {
+        "CTFTeamID": 0,
+        "UserID": null
+      },
+      removeCTFTeamUserFormVisible: false,
+      removeCTFTeamUserData: {
+        "CTFTeamID": 0,
+        "UserID": null
+      },
     }
   },
   methods: {
@@ -1439,7 +1525,7 @@ export default {
       })
     },
     GetCTFUserList() {
-      ctfUser.GetCTFUserList({
+      ctfUserApi.GetCTFUserList({
         "CTFID": this.ctf.ID,
         "Username": this.ctfUserQueryUsername
       }).then(res => {
@@ -1464,7 +1550,7 @@ export default {
       }
     },
     AddCTFUser() {
-      ctfUser.AddCTFUser(this.addCTFUserData).then(res => {
+      ctfUserApi.AddCTFUser(this.addCTFUserData).then(res => {
         if (res.code === 0) {
           this.addCTFUserFormVisible = false
           ElMessage({
@@ -1491,7 +1577,7 @@ export default {
       }
     },
     RemoveCTFUser() {
-      ctfUser.RemoveCTFUser(this.removeCTFUserData).then(res => {
+      ctfUserApi.RemoveCTFUser(this.removeCTFUserData).then(res => {
         if (res.code === 0) {
           this.removeCTFUserFormVisible = false
           ElMessage({
@@ -1531,8 +1617,8 @@ export default {
         "CTFChallenges": []
       }
     },
-    GetCTFTeamList(){
-      ctfTeamApi.GetCTFTeamList({
+    async GetCTFTeamList(){
+      return ctfTeamApi.GetCTFTeamList({
         "Name": this.ctfTeamQueryName,
         "CTFID": this.ctf.ID
       }).then(res => {
@@ -1632,6 +1718,66 @@ export default {
         "ID": 0,
       }
     },
+
+    AddCTFTeamUser() {
+      ctfTeamUserApi.AddCTFTeamUser(this.addCTFTeamUserData).then(async res => {
+        if (res.code === 0) {
+          this.addCTFTeamUserFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+          await this.GetCTFTeamList()
+          this.ctfTeamDetail = this.ctfTeamList.find(ctfTeam => ctfTeam.ID === this.ctfTeamDetail.ID)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenAddCTFTeamUserForm(teamID) {
+      this.addCTFTeamUserData.CTFTeamID = teamID
+      this.addCTFTeamUserFormVisible = true
+    },
+    ClearAddCTFTeamUserForm() {
+      this.addCTFTeamUserData = {
+        "CTFTeamID": 0,
+        "UserID": null
+      }
+    },
+    RemoveCTFTeamUser() {
+      ctfTeamUserApi.RemoveCTFTeamUser(this.removeCTFTeamUserData).then(async res => {
+        if (res.code === 0) {
+          this.removeCTFTeamUserFormVisible = false
+          ElMessage({
+            message: res.msg,
+            type: 'success',
+          })
+          this.GetCTFTeamList()
+          await this.GetCTFTeamList()
+          this.ctfTeamDetail = this.ctfTeamList.find(ctfTeam => ctfTeam.ID === this.ctfTeamDetail.ID)
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    OpenRemoveCTFTeamUserForm(teamID, userID) {
+      this.removeCTFTeamUserData = {
+        "CTFTeamID": teamID,
+        "UserID": userID
+      }
+      this.removeCTFTeamUserFormVisible = true
+    },
+    ClearRemoveCTFTeamUserForm() {
+      this.removeCTFTeamUserData = {
+        "CTFTeamID": 0,
+        "UserID": null
+      }
+    },
+
   },
   mounted() {
     this.ctf.ID = Number(this.$route.params.id)
