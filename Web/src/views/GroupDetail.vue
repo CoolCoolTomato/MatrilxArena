@@ -574,7 +574,7 @@ export default {
         new URL(attachment.FilePath)
         window.open(attachment.FilePath, '_blank')
       } catch (err) {
-        attachmentApi.DownloadAttachment(attachment).then(ok => {
+        attachmentApi.DownloadAttachment(attachment.ID).then(ok => {
           if (!ok) {
             ElMessage.error(this.t('GroupDetail.DownloadAttachmentFail'))
           }
