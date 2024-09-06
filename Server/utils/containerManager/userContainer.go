@@ -1,4 +1,4 @@
-package manager
+package containerManager
 
 import (
     "context"

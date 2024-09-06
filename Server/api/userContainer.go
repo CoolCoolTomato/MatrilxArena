@@ -1,17 +1,17 @@
 package api
 
 import (
-	"encoding/base64"
-	"fmt"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/docker"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
-	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
-	"strings"
+    "encoding/base64"
+    "fmt"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/docker"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/containerManager"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/flag"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+    "github.com/gin-gonic/gin"
+    "github.com/mitchellh/mapstructure"
+    "strings"
 )
 
 type PortBinding struct {
@@ -48,7 +48,7 @@ func GetContainerListByUser(c *gin.Context) {
 		return
 	}
 
-	userContainers, err := manager.GetUserContainerList(username.(string), manager.StandardContainerManager{})
+	userContainers, err := containerManager.GetUserContainerList(username.(string), containerManager.StandardContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
@@ -72,7 +72,7 @@ func CreateContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userContainers, err := manager.GetUserContainerList(username.(string), manager.StandardContainerManager{})
+	userContainers, err := containerManager.GetUserContainerList(username.(string), containerManager.StandardContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
@@ -141,11 +141,11 @@ func CreateContainerByUser(c *gin.Context) {
 		return
 	}
 
-	var portMaps []manager.PortMap
+	var portMaps []containerManager.PortMap
 	portBindings := containerResponse.Data.HostConfig.PortBindings
 	for portProtocol, bindings := range portBindings {
 		for _, binding := range bindings {
-			portMaps = append(portMaps, manager.PortMap{
+			portMaps = append(portMaps, containerManager.PortMap{
 				PortProtocol: portProtocol,
 				Link:         dockerNode.Address + ":" + binding.HostPort,
 			})
@@ -159,7 +159,7 @@ func CreateContainerByUser(c *gin.Context) {
 		userFlag = challenge.Flag
 	}
 
-	err = manager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID, userFlag, manager.StandardContainerManager{})
+	err = containerManager.AddUserContainer(username.(string), containerID, portMaps, dockerNode.ID, challenge.ID, userFlag, containerManager.StandardContainerManager{})
 	if err != nil {
 		response.Fail(err, localizer.GetMessage("UserContainer.AddUserContainerFail", c), c)
 		return
@@ -207,7 +207,7 @@ func DestroyContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userContainers, err := manager.GetUserContainerList(username.(string), manager.StandardContainerManager{})
+	userContainers, err := containerManager.GetUserContainerList(username.(string), containerManager.StandardContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
@@ -222,7 +222,7 @@ func DestroyContainerByUser(c *gin.Context) {
 				response.Fail(err, localizer.GetMessage("UserContainer.GetDockerNodeFail", c), c)
 				return
 			}
-			err = manager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID, manager.StandardContainerManager{})
+			err = containerManager.DeleteUserContainer(username.(string), userContainer.DockerNodeContainerID, containerManager.StandardContainerManager{})
 			if err != nil {
 				response.Fail(err, localizer.GetMessage("UserContainer.DeleteUserContainerFail", c), c)
 				return
@@ -261,7 +261,7 @@ func DelayContainerByUser(c *gin.Context) {
 		return
 	}
 
-	userContainers, err := manager.GetUserContainerList(username.(string), manager.StandardContainerManager{})
+	userContainers, err := containerManager.GetUserContainerList(username.(string), containerManager.StandardContainerManager{})
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserContainer.GetUserContainerListFail", c), c)
 		return
@@ -276,7 +276,7 @@ func DelayContainerByUser(c *gin.Context) {
 				response.Fail(err, localizer.GetMessage("UserContainer.GetDockerNodeFail", c), c)
 				return
 			}
-			err = manager.ResetUserContainerTime(userContainer.DockerNodeContainerID, manager.StandardContainerManager{})
+			err = containerManager.ResetUserContainerTime(userContainer.DockerNodeContainerID, containerManager.StandardContainerManager{})
 			if err != nil {
 				if strings.Contains(err.Error(), "remaining time is greater than 10 minutes") {
 					response.Fail(err, localizer.GetMessage("UserContainer.RemainingTimeIsGreaterThan10Minutes", c), c)

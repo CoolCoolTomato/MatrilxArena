@@ -1,11 +1,11 @@
 package api
 
 import (
-	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/manager"
-	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
-	"github.com/gin-gonic/gin"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/containerManager"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
+    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+    "github.com/gin-gonic/gin"
 )
 
 type UserChallengeRequest struct {
@@ -134,7 +134,7 @@ func CheckChallengeFlag(c *gin.Context) {
 }
 
 func checkFlagFromContainer(user model.User, userChallengeRequest UserChallengeRequest, challenge model.Challenge) (bool, error) {
-	userContainers, err := manager.GetUserContainerList(user.Username, manager.StandardContainerManager{})
+	userContainers, err := containerManager.GetUserContainerList(user.Username, containerManager.StandardContainerManager{})
 	if err != nil {
 		return false, err
 	}
