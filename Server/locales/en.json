@@ -274,7 +274,21 @@
     "AddUserCTFFail": "Add user ctf fail",
     "AddUserCTFSuccess": "Add user ctf success",
     "RemoveUserCTFFail": "Remove user ctf fail",
-    "RemoveUserGroupSuccess": "Remove user ctf success",
+    "RemoveUserCTFSuccess": "Remove user ctf success",
+    "InvalidArgument": "Invalid argument"
+  },
+  "UserCTFChallenge": {
+    "InvalidToken": "Invalid token",
+    "UserNotFound": "User not found",
+    "GetUserCTFChallengeListFail": "Get user ctf challenge list fail",
+    "GetUserCTFChallengeListSuccess": "Get user ctf challenge list success",
+    "GetUserCTFChallengeFail": "Get user ctf challenge fail",
+    "DeleteUserCTFChallengeFail": "Delete user ctf challenge fail",
+    "ResetCTFChallengeSuccess": "Reset ctf challenge success",
+    "CheckFlagFromChallengeFail": "Check flag from challenge fail",
+    "CheckFlagFromContainerFail": "Check flag from container fail",
+    "IncorrectFlag": "Incorrect flag",
+    "CorrectFlag": "Correct flag",
     "InvalidArgument": "Invalid argument"
   },
   "UserGroup": {

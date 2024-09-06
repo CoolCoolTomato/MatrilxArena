@@ -28,6 +28,7 @@ func RouteInit() {
     route.SetUserChallengeRoute(route.Route)
 	route.SetUserContainerRoute(route.Route)
     route.SetUserCTFRoute(route.Route)
+    route.SetUserCTFChallengeRoute(route.Route)
 	route.SetUserGroupRoute(route.Route)
 	route.SetUserGroupChallengeRoute(route.Route)
 	route.SetUserGroupContainerRoute(route.Route)
