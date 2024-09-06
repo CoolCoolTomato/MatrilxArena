@@ -1,7 +1,7 @@
 import {apiClient, handleResponse, handleError} from "./api.js"
 
-function GetUserGroupChallengeList() {
-  return apiClient.post("/userGroupChallenge/GetUserGroupChallengeList").then(handleResponse).catch(handleError)
+function GetUserGroupChallengeList(data) {
+  return apiClient.post("/userGroupChallenge/GetUserGroupChallengeList", data).then(handleResponse).catch(handleError)
 }
 
 function ResetUserGroupChallenge(data) {

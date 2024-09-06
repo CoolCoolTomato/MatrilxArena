@@ -133,13 +133,18 @@ func (user *User) DeleteGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Delete(group)
 }
 
-func (user *User) GetGroupChallengeList() ([]GroupChallenge, error) {
-	var groupChallengeList []GroupChallenge
-	err := database.GetDatabase().Model(user).
+func (user *User) GetGroupChallengeList(queryGroup Group) ([]GroupChallenge, error) {
+    query := database.GetDatabase().Model(user).
 		Preload("Category").
 		Preload("Image").
 		Preload("Attachment").
-		Preload("Group").
+		Preload("Group")
+    if queryGroup.ID != 0 {
+        query = query.Where("group_challenges.group_id = ?", queryGroup.ID)
+    }
+
+	var groupChallengeList []GroupChallenge
+	err := query.
 		Association("GroupChallenges").
 		Find(&groupChallengeList)
 	if err != nil {
@@ -192,13 +197,18 @@ func (user *User) DeleteCTF(ctf *CTF) error {
 	return database.GetDatabase().Model(user).Association("CTFs").Delete(ctf)
 }
 
-func (user *User) GetCTFChallengeList() ([]CTFChallenge, error) {
-	var ctfChallengeList []CTFChallenge
-	err := database.GetDatabase().Model(user).
+func (user *User) GetCTFChallengeList(queryCTF CTF) ([]CTFChallenge, error) {
+    query := database.GetDatabase().Model(user).
 		Preload("Category").
 		Preload("Image").
 		Preload("Attachment").
-		Preload("CTF").
+		Preload("CTF")
+    if queryCTF.ID != 0 {
+        query = query.Where("ctf_challenges.ctf_id = ?", queryCTF.ID)
+    }
+    
+	var ctfChallengeList []CTFChallenge
+	err := query.
 		Association("CTFChallenges").
 		Find(&ctfChallengeList)
 	if err != nil {

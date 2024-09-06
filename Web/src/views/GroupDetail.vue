@@ -527,7 +527,9 @@ export default {
       })
     },
     GetuserGroupChallengeList() {
-      userGroupChallengeApi.GetUserGroupChallengeList().then(res => {
+      userGroupChallengeApi.GetUserGroupChallengeList({
+        "ID": this.group.ID
+      }).then(res => {
         if (res.code === 0) {
           this.userGroupChallengeList = res.data == null ? [] : res.data
         } else {

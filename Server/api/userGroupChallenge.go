@@ -30,7 +30,14 @@ func GetUserGroupChallengeList(c *gin.Context) {
 		return
 	}
 
-	groupChallengeList, err := user.GetGroupChallengeList()
+    var group model.Group
+    err = c.ShouldBindJSON(&group)
+    if err != nil {
+        response.Fail(err, localizer.GetMessage("UserGroupChallenge.InvalidArgument", c), c)
+		return
+    }
+
+	groupChallengeList, err := user.GetGroupChallengeList(group)
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserGroupChallenge.GetUserGroupChallengeListFail", c), c)
 		return
