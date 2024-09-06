@@ -263,6 +263,20 @@
     "DelayContainerSuccess": "Delay container success",
     "InvalidArgument": "Invalid argument"
   },
+  "UserCTF": {
+    "InvalidToken": "Invalid token",
+    "UserNotFound": "User not found",
+    "GetCTFFail": "Get ctf fail",
+    "GetUserCTFListFail": "Get user ctf list fail",
+    "GetUserCTFListSuccess": "Get user ctf list success",
+    "GetVisibleUserCTFListFail": "Get visible user ctf list fail",
+    "GetVisibleUserCTFListSuccess": "Get visible user ctf list success",
+    "AddUserCTFFail": "Add user ctf fail",
+    "AddUserCTFSuccess": "Add user ctf success",
+    "RemoveUserCTFFail": "Remove user ctf fail",
+    "RemoveUserGroupSuccess": "Remove user ctf success",
+    "InvalidArgument": "Invalid argument"
+  },
   "UserGroup": {
     "InvalidToken": "Invalid token",
     "UserNotFound": "User not found",

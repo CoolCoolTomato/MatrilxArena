@@ -263,6 +263,20 @@
     "DelayContainerSuccess": "容器延时成功",
     "InvalidArgument": "参数错误"
   },
+  "UserCTF": {
+    "InvalidToken": "Token无效",
+    "UserNotFound": "找不到用户",
+    "GetCTFFail": "获取CTF失败",
+    "GetUserCTFListFail": "用户CTF列表获取失败",
+    "GetUserCTFListSuccess": "用户CTF列表获取成功",
+    "GetVisibleUserCTFListFail": "可见CTF列表获取失败",
+    "GetVisibleUserCTFListSuccess": "可见CTF列表获取失败成功",
+    "AddUserCTFFail": "CTF添加失败",
+    "AddUserCTFSuccess": "CTF添加成功",
+    "RemoveUserCTFFail": "CTF移除失败",
+    "RemoveUserGroupSuccess": "CTF移除成功",
+    "InvalidArgument": "参数错误"
+  },
   "UserGroup": {
     "InvalidToken": "Token无效",
     "UserNotFound": "找不到用户",
