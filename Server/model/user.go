@@ -36,23 +36,18 @@ func GetUserList(queryUser User) ([]User, error) {
 	}
 	return userList, nil
 }
-
 func (user *User) GetUser() error {
 	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Select("ID", "Username", "Email", "Role").First(&user).Error
 }
-
 func (user *User) CreateUser() error {
 	return database.GetDatabase().Model(&User{}).Create(&user).Error
 }
-
 func (user *User) UpdateUser() error {
 	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Updates(&user).Error
 }
-
 func (user *User) DeleteUser() error {
 	return database.GetDatabase().Model(&User{}).Where("ID = ?", user.ID).Delete(&user).Error
 }
-
 func (user *User) GetUserByUsernameOrEmail() error {
 	if user.Username != "" {
 		return database.GetDatabase().Model(&User{}).
@@ -68,7 +63,6 @@ func (user *User) GetUserByUsernameOrEmail() error {
 	}
 	return gorm.ErrRecordNotFound
 }
-
 func (user *User) SetPassword(password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -77,7 +71,6 @@ func (user *User) SetPassword(password string) error {
 	user.Password = string(hashedPassword)
 	return nil
 }
-
 func (user *User) CheckPassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 }
@@ -95,11 +88,9 @@ func (user *User) GetChallengeList() ([]Challenge, error) {
 	}
 	return challengeList, nil
 }
-
 func (user *User) AddChallenge(challenge *Challenge) error {
 	return database.GetDatabase().Model(user).Association("Challenges").Append(challenge)
 }
-
 func (user *User) DeleteChallenge(challenge *Challenge) error {
 	return database.GetDatabase().Model(user).Association("Challenges").Delete(challenge)
 }
@@ -119,7 +110,6 @@ func (user *User) GetGroupList(queryGroup Group) ([]Group, error) {
 	}
 	return groupList, nil
 }
-
 func (user *User) GetVisibleGroupList(queryGroup Group) ([]Group, error) {
 	query := database.GetDatabase().Model(&Group{})
 	if queryGroup.Name != "" {
@@ -136,11 +126,9 @@ func (user *User) GetVisibleGroupList(queryGroup Group) ([]Group, error) {
 	}
 	return groupList, nil
 }
-
 func (user *User) AddGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Append(group)
 }
-
 func (user *User) DeleteGroup(group *Group) error {
 	return database.GetDatabase().Model(user).Association("Groups").Delete(group)
 }
@@ -159,11 +147,68 @@ func (user *User) GetGroupChallengeList() ([]GroupChallenge, error) {
 	}
 	return groupChallengeList, nil
 }
-
 func (user *User) AddGroupChallenge(groupChallenge *GroupChallenge) error {
 	return database.GetDatabase().Model(user).Association("GroupChallenges").Append(groupChallenge)
 }
-
 func (user *User) DeleteGroupChallenge(groupChallenge *GroupChallenge) error {
 	return database.GetDatabase().Model(user).Association("GroupChallenges").Delete(groupChallenge)
+}
+
+func (user *User) GetCTFList(queryCTF CTF) ([]CTF, error) {
+    query := database.GetDatabase().Model(user)
+    if queryCTF.Name != "" {
+        query = query.Where("ctfs.name LIKE ?", "%"+queryCTF.Name+"%")
+    }
+
+    var ctfList []CTF
+    err := query.
+        Association("CTFs").
+        Find(&ctfList)
+    if err != nil {
+        return nil, err
+    }
+    return ctfList, nil
+}
+func (user *User) GetVisibleCTFList(queryCTF CTF) ([]CTF, error) {
+	query := database.GetDatabase().Model(&CTF{})
+	if queryCTF.Name != "" {
+		query = query.Where("name LIKE ?", "%"+queryCTF.Name+"%")
+	}
+
+	var ctfList []CTF
+	err := query.
+		Where("id IN (?) OR public = ?",
+			database.GetDatabase().Table("ctf_user").Select("ctf_id").Where("user_id = ?", user.ID), true).
+		Find(&ctfList).Error
+	if err != nil {
+		return nil, err
+	}
+	return ctfList, nil
+}
+func (user *User) AddCTF(ctf *CTF) error {
+    return database.GetDatabase().Model(user).Association("CTFs").Append(ctf)
+}
+func (user *User) DeleteCTF(ctf *CTF) error {
+	return database.GetDatabase().Model(user).Association("CTFs").Delete(ctf)
+}
+
+func (user *User) GetCTFChallengeList() ([]CTFChallenge, error) {
+	var ctfChallengeList []CTFChallenge
+	err := database.GetDatabase().Model(user).
+		Preload("Category").
+		Preload("Image").
+		Preload("Attachment").
+		Preload("CTF").
+		Association("CTFChallenges").
+		Find(&ctfChallengeList)
+	if err != nil {
+		return nil, err
+	}
+	return ctfChallengeList, nil
+}
+func (user *User) AddCTFChallenge(ctfChallenge *CTFChallenge) error {
+	return database.GetDatabase().Model(user).Association("CTFChallenges").Append(ctfChallenge)
+}
+func (user *User) DeleteCTFChallenge(ctfChallenge *CTFChallenge) error {
+	return database.GetDatabase().Model(user).Association("CTFChallenges").Delete(ctfChallenge)
 }
