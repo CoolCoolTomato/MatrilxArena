@@ -3,6 +3,8 @@ import Base from "@/components/Base.vue"
 import Login from "@/views/Login.vue"
 import Index from "@/views/Index.vue"
 import Challenge from "@/views/Challenge.vue"
+import CTF from "@/views/CTF.vue"
+import CTFDetail from "@/views/CTFDetail.vue"
 import Group from "@/views/Group.vue"
 import GroupDetail from "@/views/GroupDetail.vue"
 import BaseAdmin from "@/components/BaseAdmin.vue"
@@ -30,6 +32,8 @@ const router = createRouter({
       { path: "challenge/:category?", component: Challenge },
       { path: "group", component: Group },
       { path: "group/:id(\\d+)/:category?", component: GroupDetail },
+      { path: "ctf", component: CTF },
+      { path: "ctf/:id(\\d+)/:category?", component: CTFDetail },
       { path: "profile", component: Profile },
     ]},
     { path: "/admin", component: BaseAdmin, children: [

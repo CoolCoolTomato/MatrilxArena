@@ -3,6 +3,7 @@ export default {
     "MatrilxArena": "MatrilxArena",
     "Challenge": "题目",
     "Group": "题集",
+    "CTF": "CTF",
     "AWD": "AWD",
     "Profile": "个人中心"
   },
@@ -429,6 +430,16 @@ export default {
     "ContainerList": "容器列表",
     "NoContainerIsRunning": "没有容器正在运行",
     "DownloadAttachmentFail": "附件下载失败"
+  },
+  "CTF": {
+    "FindCTFs": "查询CTF",
+    "Find": "查询",
+    "ShowAddedCTFs": "显示已添加CTF",
+    "CTFDetail": "CTF详情",
+    "Open": "打开",
+    "Add": "添加",
+    "Remove": "移除",
+    "Cancel": "取消",
   },
   "Group": {
     "FindGroups": "查询题集",

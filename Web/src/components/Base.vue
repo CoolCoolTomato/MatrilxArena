@@ -18,8 +18,8 @@
           <el-menu-item index="/group">
             <el-text size="large" tag="b">{{ $t('Base.Group') }}</el-text>
           </el-menu-item>
-          <el-menu-item index="/awd">
-            <el-text size="large" tag="b">{{ $t('Base.AWD') }}</el-text>
+          <el-menu-item index="/ctf">
+            <el-text size="large" tag="b">{{ $t('Base.CTF') }}</el-text>
           </el-menu-item>
           <el-menu-item index="/profile">
             <el-text size="large" tag="b">{{ $t('Base.Profile') }}</el-text>

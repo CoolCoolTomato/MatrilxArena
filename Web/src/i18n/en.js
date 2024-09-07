@@ -3,6 +3,7 @@ export default {
     "MatrilxArena": "MatrilxArena",
     "Challenge": "Challenge",
     "Group": "Group",
+    "CTF": "CTF",
     "AWD": "AWD",
     "Profile": "Profile"
   },
@@ -429,6 +430,16 @@ export default {
     "ContainerList": "Container List",
     "NoContainerIsRunning": "No container is running",
     "DownloadAttachmentFail": "Download attachment fail"
+  },
+  "CTF": {
+    "FindCTFs": "Find CTFs",
+    "Find": "Find",
+    "ShowAddedCTFs": "Show added CTFs",
+    "CTFDetail": "CTF Detail",
+    "Open": "Open",
+    "Add": "Add",
+    "Remove": "Remove",
+    "Cancel": "Cancel",
   },
   "Group": {
     "FindGroups": "Find groups",
