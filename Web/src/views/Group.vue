@@ -52,13 +52,13 @@
         </el-row>
       </el-scrollbar>
       <el-dialog
-        v-model="userGroupFormVisible"
+        v-model="groupDetailVisible"
         :title="$t('Group.GroupDetail')"
         width="600"
         @close="ClearUserGroupForm"
         >
-        <h2 style="color: var(--el-text-color-primary)">{{ userGroupData.Name }}</h2>
-        <el-text truncated>{{ userGroupData.Description }}</el-text>
+        <h2 style="color: var(--el-text-color-primary)">{{ groupDetail.Name }}</h2>
+        <el-text truncated>{{ groupDetail.Description }}</el-text>
         <template #footer>
           <el-button
             v-if="userInGroup"
@@ -81,7 +81,7 @@
             {{ $t('Group.Remove') }}
           </el-button>
           <el-button
-            @click="userGroupFormVisible = false"
+            @click="groupDetailVisible = false"
           >
             {{ $t('Group.Cancel') }}
           </el-button>
@@ -108,8 +108,8 @@ export default {
       userGroupList: [],
       visibleUserGroupQueryName: "",
       visibleUserGroupList: [],
-      userGroupFormVisible: false,
-      userGroupData: {
+      groupDetailVisible: false,
+      groupDetail: {
         "ID": 0,
         "Name": "",
         "Description": ""
@@ -146,17 +146,17 @@ export default {
       })
     },
     GroupClick(group) {
-      this.userGroupData = group
-      this.userInGroup = this.checkUserInGroup(this.userGroupData.ID)
-      this.userGroupFormVisible = true
+      this.groupDetail = group
+      this.userInGroup = this.checkUserInGroup(this.groupDetail.ID)
+      this.groupDetailVisible = true
     },
     OpenGroupDetail() {
-      this.$router.push(`/group/${this.userGroupData.ID}`)
+      this.$router.push(`/group/${this.groupDetail.ID}`)
     },
     AddUserGroup() {
-      userGroupApi.AddUserGroup(this.userGroupData).then(res => {
+      userGroupApi.AddUserGroup(this.groupDetail).then(res => {
         if (res.code === 0) {
-          this.userGroupFormVisible = false
+          this.groupDetailVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -171,9 +171,9 @@ export default {
       })
     },
     RemoveUserGroup() {
-      userGroupApi.RemoveUserGroup(this.userGroupData).then(res => {
+      userGroupApi.RemoveUserGroup(this.groupDetail).then(res => {
         if (res.code === 0) {
-          this.userGroupFormVisible = false
+          this.groupDetailVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -188,7 +188,7 @@ export default {
       })
     },
     ClearUserGroupForm() {
-      this.userGroupData = {
+      this.groupDetail = {
         "ID": 0,
         "Name": "",
         "Description": ""

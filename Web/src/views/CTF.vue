@@ -52,13 +52,13 @@
         </el-row>
       </el-scrollbar>
       <el-dialog
-        v-model="userCTFFormVisible"
+        v-model="ctfDetailVisible"
         :title="$t('CTF.CTFDetail')"
         width="600"
         @close="ClearUserCTFForm"
         >
-        <h2 style="color: var(--el-text-color-primary)">{{ userCTFData.Name }}</h2>
-        <el-text truncated>{{ userCTFData.Description }}</el-text>
+        <h2 style="color: var(--el-text-color-primary)">{{ ctfDetail.Name }}</h2>
+        <el-text truncated>{{ ctfDetail.Description }}</el-text>
         <template #footer>
           <el-button
             v-if="userInCTF"
@@ -81,7 +81,7 @@
             {{ $t('CTF.Remove') }}
           </el-button>
           <el-button
-            @click="userCTFFormVisible = false"
+            @click="ctfDetailVisible = false"
           >
             {{ $t('CTF.Cancel') }}
           </el-button>
@@ -108,8 +108,8 @@ export default {
       userCTFList: [],
       visibleUserCTFQueryName: "",
       visibleUserCTFList: [],
-      userCTFFormVisible: false,
-      userCTFData: {
+      ctfDetailVisible: false,
+      ctfDetail: {
         "ID": 0,
         "Name": "",
         "Description": ""
@@ -146,17 +146,17 @@ export default {
       })
     },
     CTFClick(ctf) {
-      this.userCTFData = ctf
-      this.userInCTF = this.checkUserInCTF(this.userCTFData.ID)
-      this.userCTFFormVisible = true
+      this.ctfDetail = ctf
+      this.userInCTF = this.checkUserInCTF(this.ctfDetail.ID)
+      this.ctfDetailVisible = true
     },
     OpenCTFDetail() {
-      this.$router.push(`/ctf/${this.userCTFData.ID}`)
+      this.$router.push(`/ctf/${this.ctfDetail.ID}`)
     },
     AddUserCTF() {
-      userCTFApi.AddUserCTF(this.userCTFData).then(res => {
+      userCTFApi.AddUserCTF(this.ctfDetail).then(res => {
         if (res.code === 0) {
-          this.userCTFFormVisible = false
+          this.ctfDetailVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -171,9 +171,9 @@ export default {
       })
     },
     RemoveUserCTF() {
-      userCTFApi.RemoveUserCTF(this.userCTFData).then(res => {
+      userCTFApi.RemoveUserCTF(this.ctfDetail).then(res => {
         if (res.code === 0) {
-          this.userCTFFormVisible = false
+          this.ctfDetailVisible = false
           ElMessage({
             message: res.msg,
             type: 'success',
@@ -188,7 +188,7 @@ export default {
       })
     },
     ClearUserCTFForm() {
-      this.userCTFData = {
+      this.ctfDetail = {
         "ID": 0,
         "Name": "",
         "Description": ""
