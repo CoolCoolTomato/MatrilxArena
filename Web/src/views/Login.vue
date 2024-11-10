@@ -18,27 +18,65 @@
         </el-menu>
       </el-header>
       <el-main>
-        <div id="login_form">
-          <el-form
-            v-model="userForm"
-            label-position="left"
-            label-width="auto"
-            style="width: 320px"
-          >
-            <el-form-item>
-              <h2 style="width: 100%; text-align: center; margin: 0; color: var(--el-text-color-regular); font-size: 25px">MtrilxArena</h2>
-            </el-form-item>
-            <el-form-item label="Username">
-              <el-input v-model="userForm.Username"/>
-            </el-form-item>
-            <el-form-item label="Password">
-              <el-input v-model="userForm.Password"/>
-            </el-form-item>
-            <el-form-item style="display:flex;">
-              <el-button @click="Login" style="width: 100%">Login</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
+        <el-row style="margin: 20px">
+          <el-col :span="12">
+            <div id="login_content">
+              <div style="display: flex; flex-direction: column; justify-items: center; align-items: center;">
+                <el-text style="font-size: 60px; margin: 60px 0 10px 50px; color: var(--el-text-color-primary);" tag="b">Advanced Cybersecurity Learning Platform</el-text>
+                <el-text style="font-size: 20px; margin: 10px 0 10px 50px; color: var(--el-text-color-primary);">MatrilxArena is an advanced cybersecurity learning platform, it uses multiple nodes to manage docker servers and provides flexible challenge, image, container management.</el-text>
+              </div>
+              <div style="margin: 20px 0 0 30px;">
+                <el-row>
+                  <el-col :span="12">
+                    <el-card style="margin: 25px; border-radius: 10px; color: var(--el-text-color-primary);">
+                      <p><b>Multi-node docker server management</b></p>
+                    </el-card>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-card style="margin: 25px; border-radius: 10px; color: var(--el-text-color-primary);">
+                      <p><b>Support for custom docker repositories</b></p>
+                    </el-card>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
+                    <el-card style="margin: 25px; border-radius: 10px; color: var(--el-text-color-primary);">
+                      <p><b>Flexible topic management</b></p>
+                    </el-card>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-card style="margin: 25px; border-radius: 10px; color: var(--el-text-color-primary);">
+                      <p><b>Cross-platform software installation</b></p>
+                    </el-card>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div id="login_form">
+              <el-form
+                v-model="userForm"
+                label-position="left"
+                label-width="auto"
+                style="width: 500px"
+              >
+                <el-form-item>
+                  <h2 style="width: 100%; text-align: center; margin: 10px; color: var(--el-text-color-regular); font-size: 30px">MtrilxArena</h2>
+                </el-form-item>
+                <el-form-item label="Username" size="large">
+                  <el-input v-model="userForm.Username" size="large"/>
+                </el-form-item>
+                <el-form-item label="Password" size="large">
+                  <el-input v-model="userForm.Password" type="password" size="large"/>
+                </el-form-item>
+                <el-form-item style="display:flex;">
+                  <el-button @click="Login" style="width: 100%" size="large">Login</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-col>
+        </el-row>
       </el-main>
       <el-footer>
         <Copyright />
@@ -104,8 +142,13 @@ export default {
   width: 100%;
   height: 100%;
 }
+.el-main{
+  display: flex;
+}
+#login_content{
+  height: 100%;
+}
 #login_form{
-  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
