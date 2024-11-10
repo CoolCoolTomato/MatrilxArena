@@ -41,12 +41,38 @@
             <div class="ctf" @click="CTFClick(ctf)">
               <h2 style="color: var(--el-text-color-primary)">{{ ctf.Name }}</h2>
               <el-text truncated>{{ ctf.Description }}</el-text>
+              <el-progress
+                :percentage="ctf.Progress"
+              >
+                <el-countdown
+                  :value="ctf.RemainingTime"
+                  value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+                />
+              </el-progress>
+              <div style="display:flex;">
+                <el-text style="margin: 0 20px 0 20px;">{{ formatDateTime(ctf.StartTime) }}</el-text>
+                <div style="flex: 1"></div>
+                <el-text style="margin: 0 20px 0 20px;">{{ formatDateTime(ctf.EndTime) }}</el-text>
+              </div>
             </div>
           </el-col>
           <el-col v-for="ctf in userCTFList" :span="8" v-if="showUserCTFList">
             <div class="ctf" @click="CTFClick(ctf)">
               <h2 style="color: var(--el-text-color-primary)">{{ ctf.Name }}</h2>
               <el-text truncated>{{ ctf.Description }}</el-text>
+              <el-progress
+                :percentage="ctf.Progress"
+              >
+                <el-countdown
+                  :value="ctf.RemainingTime"
+                  value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+                />
+              </el-progress>
+              <div style="display:flex;">
+                <el-text style="margin: 0 20px 0 20px;">{{ formatDateTime(ctf.StartTime) }}</el-text>
+                <div style="flex: 1"></div>
+                <el-text style="margin: 0 20px 0 20px;">{{ formatDateTime(ctf.EndTime) }}</el-text>
+              </div>
             </div>
           </el-col>
         </el-row>
@@ -59,6 +85,19 @@
         >
         <h2 style="color: var(--el-text-color-primary)">{{ ctfDetail.Name }}</h2>
         <el-text truncated>{{ ctfDetail.Description }}</el-text>
+        <el-progress
+          :percentage="ctfDetail.Progress"
+        >
+          <el-countdown
+            :value="ctfDetail.RemainingTime"
+            value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+          />
+        </el-progress>
+        <div style="display:flex;">
+          <el-text>{{ formatDateTime(ctfDetail.StartTime) }}</el-text>
+          <div style="flex: 1"></div>
+          <el-text>{{ formatDateTime(ctfDetail.EndTime) }}</el-text>
+        </div>
         <template #footer>
           <el-button
             v-if="userInCTF"
@@ -112,7 +151,9 @@ export default {
       ctfDetail: {
         "ID": 0,
         "Name": "",
-        "Description": ""
+        "Description": "",
+        "StartTime": "",
+        "EndTime": "",
       },
       userInCTF: false,
       showUserCTFList: false
@@ -125,6 +166,12 @@ export default {
       }).then(res => {
         if (res.code === 0) {
           this.userCTFList = res.data
+          this.userCTFList = this.userCTFList.map(ctf => {
+            const newCTF = {...ctf}
+            newCTF.Progress = this.getProgress(ctf)
+            newCTF.RemainingTime = this.toTimestamp(ctf.EndTime) * 1000
+            return newCTF
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -138,6 +185,12 @@ export default {
       }).then(res => {
         if (res.code === 0) {
           this.visibleUserCTFList = res.data
+          this.visibleUserCTFList = this.visibleUserCTFList.map(ctf => {
+            const newCTF = {...ctf}
+            newCTF.Progress = this.getProgress(ctf)
+            newCTF.RemainingTime = this.toTimestamp(ctf.EndTime) * 1000
+            return newCTF
+          })
         } else {
           ElMessage.error(res.msg)
         }
@@ -203,7 +256,31 @@ export default {
     },
     checkUserInCTF(id) {
       return this.userCTFList.some(item => item.ID === id)
-    }
+    },
+    getProgress(ctf) {
+      const remain = this.toTimestamp(ctf.EndTime) - Math.floor(Date.now() / 1000)
+      const total = this.toTimestamp(ctf.EndTime) - this.toTimestamp(ctf.StartTime)
+      if (remain <= 0) {
+        return 0
+      }
+      if (remain >= total) {
+        return 100
+      }
+      return Math.floor(remain / total * 100)
+    },
+    toTimestamp(dateStr) {
+      const date = new Date(dateStr)
+      return Math.floor(date.getTime() / 1000)
+    },
+    formatDateTime(dateTime) {
+      dateTime = new Date(dateTime)
+      const year = dateTime.getFullYear()
+      const month = String(dateTime.getMonth() + 1).padStart(2, '0')
+      const day = String(dateTime.getDate()).padStart(2, '0')
+      const hours = String(dateTime.getHours()).padStart(2, '0')
+      const minutes = String(dateTime.getMinutes()).padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    },
   },
   mounted() {
     this.GetUserCTFList()
@@ -219,10 +296,13 @@ export default {
   cursor: pointer;
 }
 .ctf h2{
-  margin: 20px;
+  margin: 10px 20px 10px 20px;
 }
-.ctf .el-text{
-  margin: 20px;
+.ctf > .el-text{
+  margin: 10px 20px 10px 20px;
   width: calc(100% - 40px);
+}
+.ctf .el-progress {
+  margin: 10px 20px 10px 20px;
 }
 </style>

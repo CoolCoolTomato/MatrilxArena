@@ -70,7 +70,7 @@
         <el-table-column :label="t('AdminCTF.EndTime')">
           <template #default="scope">
             <el-text>
-              {{ formatDateTime(scope.row.StartTime) }}
+              {{ formatDateTime(scope.row.EndTime) }}
             </el-text>
           </template>
         </el-table-column>
