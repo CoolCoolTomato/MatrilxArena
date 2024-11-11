@@ -74,6 +74,13 @@
             </el-text>
           </template>
         </el-table-column>
+        <el-table-column :label="t('AdminCTF.Status')">
+          <template #default="scope">
+            <el-text>
+              {{ getCTFStatus(scope) }}
+            </el-text>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" :label="t('AdminCTF.Operations')" width="300">
           <template #default=scope>
             <el-button
@@ -421,6 +428,18 @@ export default {
       const minutes = String(dateTime.getMinutes()).padStart(2, '0')
       return `${year}-${month}-${day} ${hours}:${minutes}`
     },
+    getCTFStatus(ctf) {
+      const startTime = new Date(ctf.StartTime).getTime()
+      const endTime = new Date(ctf.EndTime).getTime()
+      const now = Date.now()
+      if (now >= endTime) {
+        return this.$t(`AdminCTF.End`)
+      } else if (now <= startTime) {
+        return this.$t(`AdminCTF.NotStarted`)
+      } else {
+        return this.$t(`AdminCTF.Live`)
+      }
+    }
   },
   mounted() {
     this.GetCTFList()
