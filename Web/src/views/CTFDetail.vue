@@ -291,8 +291,8 @@ export default {
     toggleSidebar() {
       this.isMenuOpen = !this.isMenuOpen;
     },
-    GetCTF() {
-      ctfApi.GetCTF(this.ctf).then(res => {
+    async GetCTF() {
+      return ctfApi.GetCTF(this.ctf).then(res => {
         if (res.code === 0) {
           this.ctf = res.data
         } else {
@@ -597,11 +597,31 @@ export default {
     },
     getCategory(categoryName) {
       return this.categoryList.find(category => category.Name === categoryName)
-    }
+    },
+    getProgress(ctf) {
+      const remain = this.toTimestamp(ctf.EndTime) - Math.floor(Date.now() / 1000)
+      const total = this.toTimestamp(ctf.EndTime) - this.toTimestamp(ctf.StartTime)
+      if (remain <= 0) {
+        return 0
+      }
+      if (remain >= total) {
+        return 100
+      }
+      return Math.floor(remain / total * 100)
+    },
+    toTimestamp(dateStr) {
+      const date = new Date(dateStr)
+      return Math.floor(date.getTime() / 1000)
+    },
   },
   async mounted() {
     this.ctf.ID = Number(this.$route.params.id)
-    this.GetCTF()
+    await this.GetCTF()
+    const progress = this.getProgress(this.ctf)
+    console.log(this.ctf)
+    if (progress === 0 || progress === 1) {
+      this.$router.push("/ctf/")
+    }
     await this.GetCTFContainerListByUser()
     await this.GetCategoryList()
     const category = this.getCategory(this.$route.params.category)

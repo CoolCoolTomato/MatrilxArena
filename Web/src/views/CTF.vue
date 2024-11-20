@@ -100,7 +100,7 @@
         </div>
         <template #footer>
           <el-button
-            v-if="userInCTF"
+            v-if="userInCTF && ctfDetail.Active === 3"
             @click="OpenCTFDetail"
             type="primary"
           >
@@ -154,6 +154,7 @@ export default {
         "Description": "",
         "StartTime": "",
         "EndTime": "",
+        "Active": 1,
       },
       userInCTF: false,
       showUserCTFList: false
@@ -169,6 +170,13 @@ export default {
           this.userCTFList = this.userCTFList.map(ctf => {
             const newCTF = {...ctf}
             newCTF.Progress = this.getProgress(ctf)
+            if (newCTF.Progress === 0) {
+              newCTF.Active = 1
+            } else if (newCTF.Progress === 1) {
+              newCTF.Active = 2
+            } else {
+              newCTF.Active = 3
+            }
             newCTF.RemainingTime = this.toTimestamp(ctf.EndTime) * 1000
             return newCTF
           })
@@ -188,6 +196,13 @@ export default {
           this.visibleUserCTFList = this.visibleUserCTFList.map(ctf => {
             const newCTF = {...ctf}
             newCTF.Progress = this.getProgress(ctf)
+            if (newCTF.Progress === 0) {
+              newCTF.Active = 1
+            } else if (newCTF.Progress === 1) {
+              newCTF.Active = 2
+            } else {
+              newCTF.Active = 3
+            }
             newCTF.RemainingTime = this.toTimestamp(ctf.EndTime) * 1000
             return newCTF
           })
