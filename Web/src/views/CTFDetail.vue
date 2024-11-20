@@ -618,7 +618,6 @@ export default {
     this.ctf.ID = Number(this.$route.params.id)
     await this.GetCTF()
     const progress = this.getProgress(this.ctf)
-    console.log(this.ctf)
     if (progress === 0 || progress === 1) {
       this.$router.push("/ctf/")
     }
@@ -631,7 +630,11 @@ export default {
   },
   async beforeRouteUpdate(to, from, next) {
     this.ctf.ID = Number(to.params.id)
-    this.GetCTF()
+    await this.GetCTF()
+    const progress = this.getProgress(this.ctf)
+    if (progress === 0 || progress === 1) {
+      this.$router.push("/ctf/")
+    }
     await this.GetCTFContainerListByUser()
     await this.GetCategoryList()
     const category = this.getCategory(to.params.category)
