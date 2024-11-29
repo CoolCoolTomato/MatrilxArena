@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/challenge"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
 	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,8 @@ func GetCTFChallengeList(c *gin.Context) {
 		return
 	}
 
+	ctfChallengeList = challenge.CalculateCTFChallengeListScore(ctfChallengeList)
+
 	response.OK(ctfChallengeList, localizer.GetMessage("CTFChallenge.GetCTFChallengeListSuccess", c), c)
 }
 
@@ -37,6 +40,8 @@ func GetCTFChallenge(c *gin.Context) {
 		response.Fail(err, localizer.GetMessage("CTFChallenge.GetCTFChallengeFail", c), c)
 		return
 	}
+
+	ctfChallenge = challenge.CalculateCTFChallengeScore(ctfChallenge)
 
 	response.OK(ctfChallenge, localizer.GetMessage("CTFChallenge.GetCTFChallengeSuccess", c), c)
 }

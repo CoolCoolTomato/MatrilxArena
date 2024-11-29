@@ -1,15 +1,16 @@
 package api
 
 import (
-    "github.com/CoolCoolTomato/MatrilxArena/Server/model"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/containerManager"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
-    "github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
-    "github.com/gin-gonic/gin"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/model"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/challenge"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/containerManager"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/localizer"
+	"github.com/CoolCoolTomato/MatrilxArena/Server/utils/response"
+	"github.com/gin-gonic/gin"
 )
 
 type UserCTFChallengeRequest struct {
-	CTFChallengeID      uint
+	CTFChallengeID        uint
 	DockerNodeID          uint
 	DockerNodeContainerID string
 	Flag                  string
@@ -30,18 +31,20 @@ func GetUserCTFChallengeList(c *gin.Context) {
 		return
 	}
 
-    var ctf model.CTF
-    err = c.ShouldBindJSON(&ctf)
-    if err != nil {
-        response.Fail(err, localizer.GetMessage("UserCTFChallenge.InvalidArgument", c), c)
+	var ctf model.CTF
+	err = c.ShouldBindJSON(&ctf)
+	if err != nil {
+		response.Fail(err, localizer.GetMessage("UserCTFChallenge.InvalidArgument", c), c)
 		return
-    }
+	}
 
 	ctfChallengeList, err := user.GetCTFChallengeList(ctf)
 	if err != nil {
 		response.Fail(nil, localizer.GetMessage("UserCTFChallenge.GetUserCTFChallengeListFail", c), c)
 		return
 	}
+
+	ctfChallengeList = challenge.CalculateCTFChallengeListScore(ctfChallengeList)
 
 	response.OK(ctfChallengeList, localizer.GetMessage("UserCTFChallenge.GetUserCTFChallengeListSuccess", c), c)
 }
