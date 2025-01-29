@@ -31,7 +31,11 @@ export default {
     "LiveDockerNode": "在线节点",
     "NumberOfImages": "镜像数量",
     "ChallengesByCategory": "题目分类",
-    "Uncategorized": "未分类"
+    "Uncategorized": "未分类",
+    "CTF": "CTF",
+    "NotStarted": "未开始",
+    "Live": "进行中",
+    "End": "已结束",
   },
   "AdminAttachment": {
     "AttachmentManager": "附件管理",

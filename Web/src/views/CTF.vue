@@ -198,7 +198,7 @@ export default {
             newCTF.Progress = this.getProgress(ctf)
             if (newCTF.Progress === 0) {
               newCTF.Active = 1
-            } else if (newCTF.Progress === 1) {
+            } else if (newCTF.Progress === 100) {
               newCTF.Active = 2
             } else {
               newCTF.Active = 3

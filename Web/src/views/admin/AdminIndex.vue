@@ -33,8 +33,27 @@
           </el-col>
           <el-col :span="10">
             <el-card>
-              <el-text size="large">Hello World</el-text>
-              <div style="height: 350px;"></div>
+              <el-text size="large">{{ $t('AdminIndex.CTF') }}</el-text>
+              <div style="height: 350px;">
+                <div v-for="ctf in ctfList" style="margin: 10px;">
+                  <div style="float: left; width: 100px;">
+                    <el-text truncated>{{ ctf.Name }}</el-text>
+                  </div>
+                  <div style="float: left; margin-right: 10px; width: 100px;">
+                    <el-text v-if="ctf.Progress === 0">({{ $t('AdminIndex.End') }})</el-text>
+                    <el-text v-else-if="ctf.Progress === 100">({{ $t('AdminIndex.NotStarted') }})</el-text>
+                    <el-text v-else>({{ $t('AdminIndex.Live') }})</el-text>
+                  </div>
+                  <el-progress
+                    :percentage="ctf.Progress"
+                  >
+                    <el-countdown
+                      :value="ctf.RemainingTime"
+                      value-style="font-size: var(--el-font-size-base); color: var(--el-text-color-regular); line-height: 2;"
+                    />
+                  </el-progress>
+                </div>
+              </div>
             </el-card>
           </el-col>
           <el-col :span="4">
@@ -70,6 +89,7 @@ import imageApi from "@/api/image.js"
 import categoryApi from "@/api/category.js"
 import challengeApi from "@/api/challenge.js"
 import userApi from "@/api/user.js"
+import ctfApi from "@/api/ctf.js"
 import LanguageSelect from "@/components/LanguageSelect.vue"
 import ThemeSelect from "@/components/ThemeSelect.vue"
 import { ElMessage } from "element-plus"
@@ -88,6 +108,7 @@ export default {
       categoryList: [],
       challengeList: [],
       userList: [],
+      ctfList: [],
       challengeByCategoryChartOptions: {},
     }
   },
@@ -203,6 +224,46 @@ export default {
         }],
       }
     },
+    GetctfList() {
+      ctfApi.GetCTFList({}).then(res => {
+        if (res.code === 0) {
+          this.ctfList = res.data
+          this.ctfList = this.ctfList.map(ctf => {
+            const newCTF = {...ctf}
+            newCTF.Progress = this.getProgress(ctf)
+            newCTF.RemainingTime = this.toTimestamp(ctf.EndTime) * 1000
+            if (newCTF.Progress === 0) {
+              newCTF.Active = 1
+            } else if (newCTF.Progress === 100) {
+              newCTF.RemainingTime = this.toTimestamp(ctf.StartTime) * 1000
+              newCTF.Active = 2
+            } else {
+              newCTF.Active = 3
+            }
+            return newCTF
+          })
+        } else {
+          ElMessage.error(res.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    getProgress(ctf) {
+      const remain = this.toTimestamp(ctf.EndTime) - Math.floor(Date.now() / 1000)
+      const total = this.toTimestamp(ctf.EndTime) - this.toTimestamp(ctf.StartTime)
+      if (remain <= 0) {
+        return 0
+      }
+      if (remain >= total) {
+        return 100
+      }
+      return Math.floor(remain / total * 100)
+    },  
+    toTimestamp(dateStr) {
+      const date = new Date(dateStr)
+      return Math.floor(date.getTime() / 1000)
+    },
     ChangeLanguageHandle() {
       this.GetChallengeByCategoryChart()
     },
@@ -222,6 +283,7 @@ export default {
     await this.GetCategoryList()
     await this.GetChallengeList()
     await this.GetUserList()
+    this.GetctfList()
     this.GetChallengeByCategoryChart()
   },
 }
