@@ -184,6 +184,11 @@
             height="calc(100% - 50px)"
           >
             <el-table-column prop="Name" :label="$t('AdminCTFDetail.Name')"/>
+            <el-table-column :label="$t('AdminCTFDetail.Captain')">
+              <template #default="scope">
+                {{ scope.row.User.Username }}
+              </template>
+            </el-table-column>
             <el-table-column :label="$t('AdminCTFDetail.Users')">
               <template #default="scope">
                 {{ scope.row.Users.length }}
@@ -827,6 +832,7 @@
         <el-card>
           <h2>{{ $t('AdminCTFDetail.Team') }}</h2>
           <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Name') }}: {{ ctfTeamDetail.Name }}</p>
+          <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Captain') }}: {{ ctfTeamDetail.User }}</p>
           <p style="word-break: break-all;">{{ $t('AdminCTFDetail.Description') }}: {{ ctfTeamDetail.Description }}</p>
           <div style="display: flex; align-items: center;">
             <h2>{{ $t('AdminCTFDetail.Users') }}</h2>
@@ -904,6 +910,21 @@
           <el-form-item :label="$t('AdminCTFDetail.Name')" :label-width="labelWidth">
             <el-input v-model="createCTFTeamData.Name"/>
           </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Captain')" :label-width="labelWidth">
+            <el-select
+              v-model="createCTFTeamData.UserID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="user in userList"
+                :key="user.ID"
+                :label="user.Username"
+                :value="user.ID"
+                >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
             <el-input v-model="createCTFTeamData.Description"/>
           </el-form-item>
@@ -931,6 +952,21 @@
         <el-form :model="updateCTFTeamData">
           <el-form-item :label="$t('AdminCTFDetail.Name')" :label-width="labelWidth">
             <el-input v-model="updateCTFTeamData.Name"/>
+          </el-form-item>
+          <el-form-item :label="$t('AdminCTFDetail.Captain')" :label-width="labelWidth">
+            <el-select
+              v-model="updateCTFTeamData.UserID"
+              filterable
+              :placeholder="$t('AdminCTFDetail.Select')"
+              >
+              <el-option
+                v-for="user in userList"
+                :key="user.ID"
+                :label="user.Username"
+                :value="user.ID"
+                >
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item :label="$t('AdminCTFDetail.Description')" :label-width="labelWidth">
             <el-input v-model="updateCTFTeamData.Description"/>
@@ -1149,7 +1185,9 @@ export default {
       ctfTeamQueryName: "",
       ctfTeamDetailVisible: false,
       ctfTeamDetail: {
+        "ID": 0,
         "Name": "",
+        "User": "",
         "Description": "",
         "Users": [],
         "CTFChallenges": []
@@ -1158,6 +1196,7 @@ export default {
       createCTFTeamData: {
         "Name": "",
         "Description": "",
+        "UserID": null,
         "CTFID": 0
       },
       updateCTFTeamFormVisible: false,
@@ -1165,6 +1204,7 @@ export default {
         "ID": 0,
         "Name": "",
         "Description": "",
+        "UserID": null,
         "CTFID": 0
       },
       deleteCTFTeamFormVisible: false,
@@ -1606,12 +1646,21 @@ export default {
     },
 
     OpenCTFTeamDetail(row) {
-      this.ctfTeamDetail = row
+      this.ctfTeamDetail = {
+        "ID": row.ID,
+        "Name": row.Name,
+        "User": row.User.Username,
+        "Description": row.Description,
+        "Users": row.Users,
+        "CTFChallenges": row.CTFChallenges
+      }
       this.ctfTeamDetailVisible = true
     },
     ClearCTFTeamDetail() {
       this.ctfTeamDetail = {
+        "CTFTeamID": 0,
         "Name": "",
+        "User": "",
         "Description": "",
         "Users": [],
         "CTFChallenges": []
@@ -1655,6 +1704,7 @@ export default {
       this.createCTFTeamData = {
         "Name": "",
         "Description": "",
+        "UserID": null,
         "CTFID": 0
       }
     },
@@ -1679,6 +1729,7 @@ export default {
         "ID": row.ID,
         "Name": row.Name,
         "Description": row.Description,
+        "UserID": row.UserID,
         "CTFID": row.CTFID
       }
       this.updateCTFTeamFormVisible = true
@@ -1688,6 +1739,7 @@ export default {
         "ID": 0,
         "Name": "",
         "Description": "",
+        "UserID": null,
         "CTFID": 0
       }
     },
@@ -1729,6 +1781,7 @@ export default {
           })
           await this.GetCTFTeamList()
           this.ctfTeamDetail = this.ctfTeamList.find(ctfTeam => ctfTeam.ID === this.ctfTeamDetail.ID)
+          this.ctfTeamDetail.User = this.ctfTeamDetail.User.Username
         } else {
           ElMessage.error(res.msg)
         }
@@ -1757,6 +1810,7 @@ export default {
           this.GetCTFTeamList()
           await this.GetCTFTeamList()
           this.ctfTeamDetail = this.ctfTeamList.find(ctfTeam => ctfTeam.ID === this.ctfTeamDetail.ID)
+          this.ctfTeamDetail.User = this.ctfTeamDetail.User.Username
         } else {
           ElMessage.error(res.msg)
         }

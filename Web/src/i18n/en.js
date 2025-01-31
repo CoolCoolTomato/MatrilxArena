@@ -220,6 +220,7 @@ export default {
     "Name": "Name",
     "TeamDetail": "Team Detail",
     "Team": "Team",
+    "Captain": "Captain",
     "CreateCTFTeam": "Create Team",
     "UpdateCTFTeam": "Update Team",
     "DeleteCTFTeam": "Delete Team",

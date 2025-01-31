@@ -220,6 +220,7 @@ export default {
     "Name": "名称",
     "TeamDetail": "队伍详情",
     "Team": "队伍",
+    "Captain": "队长",
     "CreateCTFTeam": "创建队伍",
     "UpdateCTFTeam": "更新队伍",
     "DeleteCTFTeam": "删除队伍",

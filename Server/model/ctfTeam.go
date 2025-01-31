@@ -7,12 +7,14 @@ import (
 
 type CTFTeam struct {
 	gorm.Model
-	Name        string
-	Description string
-	CTFID       uint
-	CTF         CTF    `gorm:"foreignKey:CTFID;constraint:OnDelete:SET NULL"`
-	Users       []User `gorm:"many2many:ctf_team_user"`
-    CTFChallenges   []CTFChallenge   `gorm:"many2many:ctf_challenge_ctf_teams"`
+	Name          string
+	Description   string
+	CTFID         uint
+	UserID        uint
+	User          User           `gorm:"foreignKey:UserID;constraint:OnDelete:SET NULL"`
+	CTF           CTF            `gorm:"foreignKey:CTFID;constraint:OnDelete:SET NULL"`
+	Users         []User         `gorm:"many2many:ctf_team_user"`
+	CTFChallenges []CTFChallenge `gorm:"many2many:ctf_challenge_ctf_teams"`
 }
 
 func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {
@@ -24,7 +26,8 @@ func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {
 	var ctfTeamList []CTFTeam
 	err := query.
 		Preload("Users").
-        Preload("CTFChallenges").
+		Preload("User").
+		Preload("CTFChallenges").
 		Find(&ctfTeamList).
 		Error
 	if err != nil {
@@ -37,7 +40,8 @@ func GetCTFTeamList(queryCTFTeam CTFTeam) ([]CTFTeam, error) {
 func (ctfTeam *CTFTeam) GetCTFTeam() error {
 	return database.GetDatabase().Model(&CTFTeam{}).
 		Preload("Users").
-        Preload("CTFChallenges").
+		Preload("User").
+		Preload("CTFChallenges").
 		Where("ID = ?", ctfTeam.ID).
 		First(&ctfTeam).
 		Error
@@ -51,7 +55,6 @@ func (ctfTeam *CTFTeam) CreateCTFTeam() error {
 
 func (ctfTeam *CTFTeam) UpdateCTFTeam() error {
 	return database.GetDatabase().Model(&CTFTeam{}).
-		Select("Name", "Description").
 		Where("ID = ?", ctfTeam.ID).
 		Updates(&ctfTeam).
 		Error

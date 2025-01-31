@@ -44,7 +44,7 @@ func GetCTFTeam(c *gin.Context) {
 func CreateCTFTeam(c *gin.Context) {
 	var ctfTeam model.CTFTeam
 	err := c.ShouldBindJSON(&ctfTeam)
-	if err != nil || ctfTeam.Name == "" || ctfTeam.Description == "" {
+	if err != nil || ctfTeam.ID == 0 || ctfTeam.Name == "" || ctfTeam.Description == "" || ctfTeam.UserID == 0 {
 		response.Fail(err, localizer.GetMessage("CTFTeam.InvalidArgument", c), c)
 		return
 	}
@@ -61,7 +61,7 @@ func CreateCTFTeam(c *gin.Context) {
 func UpdateCTFTeam(c *gin.Context) {
 	var ctfTeam model.CTFTeam
 	err := c.ShouldBindJSON(&ctfTeam)
-	if err != nil || ctfTeam.ID == 0 || ctfTeam.Name == "" || ctfTeam.Description == "" {
+	if err != nil || ctfTeam.ID == 0 || ctfTeam.Name == "" || ctfTeam.Description == "" || ctfTeam.UserID == 0 {
 		response.Fail(err, localizer.GetMessage("CTFTeam.InvalidArgument", c), c)
 		return
 	}
